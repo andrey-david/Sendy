@@ -1,0 +1,1339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Cropper</class>
+ <widget class="QMainWindow" name="Cropper">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1900</width>
+    <height>1045</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sendy Cropper</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>sendy.ico</normaloff>sendy.ico</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+    background-color: #F0F0F0;
+}
+
+QWidget {
+    background-color: #F0F0F0;
+    color: #000000;
+    font-family: &quot;Helvetica&quot;;
+    font-size: 15px;
+}
+
+QMenuBar {
+    background-color: #F0F0F0;
+    color: #000000;
+}
+
+QMenuBar::item:selected {
+    background-color: #D0D0D0;
+}
+
+QMenu {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+QMenu::item:selected {
+    background-color: #D0D0D0;
+    color: #000000;
+}
+
+QStatusBar {
+    background-color: #F0F0F0;
+    color: #FF0000;
+}
+
+QPushButton {
+    background-color: #E0E0E0;
+    color: #000000;
+    border: 2px solid #A0A0A0;
+    border-radius: 5px;
+    padding: 12px 10px;
+    font-family: &quot;Helvetica&quot;;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+QPushButton:hover {
+    background-color: #D0D0D0;
+}
+
+QPushButton:pressed {
+    background-color: #C0C0C0;
+}
+
+QLineEdit {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 2px solid #A0A0A0;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: &quot;Helvetica&quot;;
+    font-size: 22px;
+}
+
+QComboBox {
+    font: 18pt &quot;Helvetica&quot;;
+    color: #000000;
+    background-color: #FFFFFF;
+    border: 2px solid #A0A0A0;
+    border-radius: 6px;
+    padding: 6px 30px 6px 10px;
+    min-width: 150px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 20px;
+    border-left: 2px solid #A0A0A0;
+    background-color: #E0E0E0;
+}
+
+QGraphicsView {
+    background-color: #FFFFFF;
+    border: 2px solid #A0A0A0;
+}
+
+QFrame[frameShape=&quot;4&quot;] {
+    background-color: #A0A0A0;
+    max-height: 1px;
+    border: none;
+}
+
+QStatusBar QLabel {
+	font-family: &quot;Helvetica&quot;;
+    color: #FF0000;
+}
+
+*:focus {
+    border: 2px solid #0078d7;
+    outline: none;
+    }
+
+QGraphicsView:focus {
+    border: 2px solid #A0A0A0;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton_crop">
+    <property name="geometry">
+     <rect>
+      <x>1740</x>
+      <y>0</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-size: 24px;
+}</string>
+    </property>
+    <property name="text">
+     <string>CROP ✂️</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_material">
+    <property name="geometry">
+     <rect>
+      <x>1530</x>
+      <y>0</y>
+      <width>201</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <item>
+     <property name="text">
+      <string>ХОЛСТ</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>БАННЕР</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>ХЛОПОК</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>МАТОВЫЙ</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView_main">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>70</y>
+      <width>741</width>
+      <height>921</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView_preview">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>70</y>
+      <width>741</width>
+      <height>921</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>371</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pushButton_30_45">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 45</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButton_30_40">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 40</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="pushButton_30_55">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 55</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pushButton_40_70">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 70</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="pushButton_50_60">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 60</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButton_45_60">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>45 × 60</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="pushButton_50_70">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 70</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QPushButton" name="pushButton_60_80">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>60 × 80</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QPushButton" name="pushButton_60_90">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>60 × 90</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton_40_60">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 60</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_20_30">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>20 × 30</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QPushButton" name="pushButton_90_120">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>90 × 120</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_rotate">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>0</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-size: 35px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>⭮</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line_1">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>30</y>
+      <width>321</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>371</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>990</y>
+      <width>371</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_autor">
+    <property name="geometry">
+     <rect>
+      <x>1740</x>
+      <y>1000</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>MADE BY DAVID_AG</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>321</y>
+      <width>371</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pushButton_35_35">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>35 × 35</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="pushButton_70_70">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>70 × 70</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="pushButton_50_50">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 50</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="pushButton_60_60">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>60 × 60</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QPushButton" name="pushButton_90_90">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>90 × 90</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QPushButton" name="pushButton_80_80">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>80 × 80</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_20_20">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>20 × 20</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="pushButton_30_30">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 30</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_40_40">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 40</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="pushButton_100_100">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>100 × 100</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QPushButton" name="pushButton_110_110">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>110 × 110</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="Line" name="line_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>371</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="Line" name="line_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>540</y>
+      <width>371</width>
+      <height>1</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>550</y>
+      <width>371</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="1" column="0">
+      <widget class="QPushButton" name="pushButton_30_50">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 50</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="pushButton_30_60">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>30 × 60</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QPushButton" name="pushButton_40_50">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 50</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pushButton_40_80">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 80</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QPushButton" name="pushButton_50_55">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 55</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QPushButton" name="pushButton_40_90">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>40 × 90</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="QPushButton" name="pushButton_50_80">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 80</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QPushButton" name="pushButton_50_75">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 75</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QPushButton" name="pushButton_50_90">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>50 × 90</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="pushButton_20_35">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>20 × 35</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QPushButton" name="pushButton_25_30">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>25 × 30</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="pushButton_20_40">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>20 × 40</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="pushButton_70_80">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>70 × 80</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QPushButton" name="pushButton_70_90">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>70 × 90</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QPushButton" name="pushButton_70_120">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>70 × 120</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QPushButton" name="pushButton_80_110">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>80 × 110</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QPushButton" name="pushButton_80_120">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>80 × 120</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QPushButton" name="pushButton_80_130">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>80 × 130</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QPushButton" name="pushButton_90_110">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>90 × 110</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QPushButton" name="pushButton_90_130">
+       <property name="font">
+        <font>
+         <family>Helvetica</family>
+         <pointsize>-1</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>90 × 130</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_swap">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>0</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-size: 35px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>⇋</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_full_screen">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>0</y>
+      <width>81</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Helvetica</family>
+      <pointsize>-1</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    font-size: 35px;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>⛶</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_width">
+    <property name="geometry">
+     <rect>
+      <x>990</x>
+      <y>0</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>ШИРИНА</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_height">
+    <property name="geometry">
+     <rect>
+      <x>1140</x>
+      <y>0</y>
+      <width>141</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>ВЫСОТА</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_number">
+    <property name="geometry">
+     <rect>
+      <x>1290</x>
+      <y>0</y>
+      <width>231</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>НОМЕР</string>
+    </property>
+   </widget>
+   <zorder>pushButton_crop</zorder>
+   <zorder>comboBox_material</zorder>
+   <zorder>graphicsView_preview</zorder>
+   <zorder>gridLayoutWidget</zorder>
+   <zorder>pushButton_rotate</zorder>
+   <zorder>line_1</zorder>
+   <zorder>line_3</zorder>
+   <zorder>line_4</zorder>
+   <zorder>label_autor</zorder>
+   <zorder>gridLayoutWidget_2</zorder>
+   <zorder>line_5</zorder>
+   <zorder>line_2</zorder>
+   <zorder>gridLayoutWidget_3</zorder>
+   <zorder>pushButton_swap</zorder>
+   <zorder>pushButton_full_screen</zorder>
+   <zorder>graphicsView_main</zorder>
+   <zorder>lineEdit_width</zorder>
+   <zorder>lineEdit_height</zorder>
+   <zorder>lineEdit_number</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1900</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_file">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="action_open"/>
+   </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>Помощь</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
+   <addaction name="menu_file"/>
+   <addaction name="menu_help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_open">
+   <property name="text">
+    <string>Открыть</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>lineEdit_width</tabstop>
+  <tabstop>lineEdit_height</tabstop>
+  <tabstop>lineEdit_number</tabstop>
+  <tabstop>comboBox_material</tabstop>
+  <tabstop>pushButton_crop</tabstop>
+  <tabstop>pushButton_rotate</tabstop>
+  <tabstop>pushButton_swap</tabstop>
+  <tabstop>pushButton_full_screen</tabstop>
+  <tabstop>pushButton_20_30</tabstop>
+  <tabstop>pushButton_30_40</tabstop>
+  <tabstop>pushButton_30_45</tabstop>
+  <tabstop>pushButton_30_55</tabstop>
+  <tabstop>pushButton_40_60</tabstop>
+  <tabstop>pushButton_40_70</tabstop>
+  <tabstop>pushButton_45_60</tabstop>
+  <tabstop>pushButton_50_60</tabstop>
+  <tabstop>pushButton_50_70</tabstop>
+  <tabstop>pushButton_60_80</tabstop>
+  <tabstop>pushButton_60_90</tabstop>
+  <tabstop>pushButton_90_120</tabstop>
+  <tabstop>pushButton_20_20</tabstop>
+  <tabstop>pushButton_30_30</tabstop>
+  <tabstop>pushButton_35_35</tabstop>
+  <tabstop>pushButton_40_40</tabstop>
+  <tabstop>pushButton_50_50</tabstop>
+  <tabstop>pushButton_60_60</tabstop>
+  <tabstop>pushButton_70_70</tabstop>
+  <tabstop>pushButton_80_80</tabstop>
+  <tabstop>pushButton_90_90</tabstop>
+  <tabstop>pushButton_100_100</tabstop>
+  <tabstop>pushButton_110_110</tabstop>
+  <tabstop>pushButton_20_35</tabstop>
+  <tabstop>pushButton_20_40</tabstop>
+  <tabstop>pushButton_25_30</tabstop>
+  <tabstop>pushButton_30_50</tabstop>
+  <tabstop>pushButton_30_60</tabstop>
+  <tabstop>pushButton_40_50</tabstop>
+  <tabstop>pushButton_40_80</tabstop>
+  <tabstop>pushButton_40_90</tabstop>
+  <tabstop>pushButton_50_55</tabstop>
+  <tabstop>pushButton_50_75</tabstop>
+  <tabstop>pushButton_50_80</tabstop>
+  <tabstop>pushButton_50_90</tabstop>
+  <tabstop>pushButton_70_80</tabstop>
+  <tabstop>pushButton_70_90</tabstop>
+  <tabstop>pushButton_70_120</tabstop>
+  <tabstop>pushButton_80_110</tabstop>
+  <tabstop>pushButton_80_120</tabstop>
+  <tabstop>pushButton_80_130</tabstop>
+  <tabstop>pushButton_90_110</tabstop>
+  <tabstop>pushButton_90_130</tabstop>
+  <tabstop>graphicsView_main</tabstop>
+  <tabstop>graphicsView_preview</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
