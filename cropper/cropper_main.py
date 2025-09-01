@@ -8,7 +8,7 @@ from PIL import Image
 import pillow_heif
 import io
 import logging
-from photo_processing import PhotoProc
+from photo_processing.photo_processing import PhotoProc
 
 # Логгирование
 logging.basicConfig(

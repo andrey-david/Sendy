@@ -19,7 +19,7 @@ from image_counter.image_counter import counter_outer
 from lexicon.lexicon import is_admin
 import asyncio
 from cropper.cropper_main import sendy_cropper
-from photo_processing import PhotoProc
+from photo_processing.photo_processing import PhotoProc
 import re
 from threading import Thread
 import pystray
