@@ -6,7 +6,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from keyboards.keyboards import *
-from data import data, save_to_data
+from data.data import data, save_to_data
 from io import BytesIO
 from PIL import Image, ImageOps
 import pillow_heif

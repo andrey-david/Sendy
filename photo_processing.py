@@ -1,7 +1,7 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
 import asyncio
-from data import data
+from data.data import data
 import logging
 from config import config
 from keyboards.keyboards import keyboard_inline_open_photo

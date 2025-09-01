@@ -18,14 +18,14 @@ data_default = {
 }
 def load_sendy_data():
     global data
-    if not os.path.exists('Sendy_data'):
+    if not os.path.exists('../Sendy_data'):
             data = data_default.copy()
-            with open('Sendy_data', 'wb') as f:
+            with open('../Sendy_data', 'wb') as f:
                 pickle.dump(data, f)
             return
 
     try:
-        with open('Sendy_data', 'rb') as f:
+        with open('../Sendy_data', 'rb') as f:
             data = pickle.load(f)
 
         updated = False
@@ -35,12 +35,12 @@ def load_sendy_data():
                 updated = True
 
         if updated:
-            with open("Sendy_data", "wb") as file:
+            with open("../Sendy_data", "wb") as file:
                 pickle.dump(data, file)
 
     except Exception as e:
         # Сохраняем настройки по умолчанию
-        with open("Sendy_data", "wb") as file:
+        with open("../Sendy_data", "wb") as file:
             pickle.dump(data_default, file)
 
 load_sendy_data()
@@ -48,7 +48,7 @@ load_sendy_data()
 async def save_to_data(key, value, message: Message):
     try:
         data[key] = value
-        with open('Sendy_data', 'wb') as f:
+        with open('../Sendy_data', 'wb') as f:
             pickle.dump(data, f)
     except Exception as e:
         await message.answer(f"💀 Ошибка при сохранении: {e}")
