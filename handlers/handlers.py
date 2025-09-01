@@ -92,7 +92,7 @@ async def process_button_shutdown_press(callback: CallbackQuery):
 def stop_sendy_from_tray():
     asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
 
-icon_path = Path(__file__).parent / "sendy.ico"
+icon_path = Path(__file__).parent.parent / "sendy.ico"
 sendy_tray = pystray.Icon('Sendy', Image.open(icon_path),
                           menu=pystray.Menu(pystray.MenuItem('Остановить', stop_sendy_from_tray)))
 
