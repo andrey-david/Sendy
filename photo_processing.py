@@ -4,7 +4,7 @@ import asyncio
 from data import data
 import logging
 from config import config
-from keyboards import keyboard_inline_open_photo
+from keyboards.keyboards import keyboard_inline_open_photo
 
 # Логгирование
 logging.basicConfig(

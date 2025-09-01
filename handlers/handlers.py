@@ -5,7 +5,7 @@ from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from keyboards import *
+from keyboards.keyboards import *
 from data import data, save_to_data
 from io import BytesIO
 from PIL import Image, ImageOps

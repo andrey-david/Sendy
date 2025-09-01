@@ -11,7 +11,7 @@ import aiohttp
 
 from config import config
 from handlers.handlers import sendy_tray, router, image_loader
-from keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
+from keyboards.keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
     easter_egg_days
 from lexicon import sendy_info
 
