@@ -15,16 +15,16 @@ import sys
 import winshell
 import time
 import pyautogui
-from Alex import Alex_podschot
+from image_counter.image_counter import counter_outer
 from lexicon import is_admin
 import asyncio
-from cropper_main import sendy_cropper
+from cropper.cropper_main import sendy_cropper
 from photo_processing import PhotoProc
 import re
 from threading import Thread
 import pystray
 from datetime import datetime
-import config
+from config.config import datatime_on_start, dp, bot, bot_loop, chat_id
 from watchfiles import awatch
 
 router = Router()
@@ -51,9 +51,9 @@ async def process_start_command(message: Message):
         f'\n'
         f'\n📌 В Sandy Cropper добавлен tab order. Выделенный элемент теперь подсвечивается синим.\n'
         f'\n📌 Обновлено лого.\n'
-        f'\n📌 Произведён рефакторинг updater, улучшен визуал.\n'
-        f'\n📌 Символ ! добавляет к номеру " !!"\n',
-        reply_markup=main_keyboard, parse_mode='HTML'
+        f'\n📌 Произведён полный рефакторинг updater, улучшен визуал.\n'
+        f'\n📌 % = ✂️ = /cropper; команда /cropper добавлена в меню.\n',
+        reply_markup=main_keyboard
     )
 
 
@@ -75,13 +75,13 @@ async def stop_command(message: Message):
 
 async def stop_sendy():
     sendy_tray.stop()
-    await config.dp.stop_polling()
-    await config.bot.session.close()
+    await dp.stop_polling()
+    await bot.session.close()
 
 
 @router.callback_query(F.data == 'button_shutdown')  # кнопка /stop нажата
 async def process_button_shutdown_press(callback: CallbackQuery):
-    time = datetime.now() - config.datatime_on_start
+    time = datetime.now() - datatime_on_start
     time = str(time).split('.')[0]
     await callback.message.edit_text(text='🪦 Сенди\n'
                                           '\n'
@@ -90,19 +90,20 @@ async def process_button_shutdown_press(callback: CallbackQuery):
 
 
 def stop_sendy_from_tray():
-    asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
+    asyncio.run_coroutine_threadsafe(stop_sendy(), bot_loop)
 
-
-sendy_tray = pystray.Icon('Sendy', Image.open("sendy.ico"),
+icon_path = Path(__file__).parent / "sendy.ico"
+sendy_tray = pystray.Icon('Sendy', Image.open(icon_path),
                           menu=pystray.Menu(pystray.MenuItem('Остановить', stop_sendy_from_tray)))
 
 
 async def image_load_handler():
+    file_path = '`Путь не найден`'
     try:
         for file in os.listdir(data['path']):
-            if file != 'Uploaded':
+            if file != 'Uploaded' and (file.endswith('.jpg') or file.endswith('.png') or file.endswith('.heic')):
                 file_path = data['path'] + '\\' + file
-                await config.bot.send_document(chat_id=chat_id, document=FSInputFile(file_path))
+                await bot.send_document(chat_id=chat_id, document=FSInputFile(file_path))
                 if 'Uploaded' in os.listdir(data['path']):
                     os.replace(file_path, data['path'] + '\\Uploaded\\' + file)
                 else:
@@ -110,20 +111,20 @@ async def image_load_handler():
                     os.replace(file_path, data['path'] + '\\Uploaded\\' + file)
     except:
         try:
-            await config.bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: невозможно отправить файл.</b>'
-                                                                f'\n'
-                                                                f'\nПуть к файлу:'
-                                                                f'\n<code>{file_path}</code>'
-                                                                f'\n'
-                                                                f'\n• Проверьте папку выгрузки на отсутвие в ней постороних файлов или папок.'
-                                                                f'\n• Проверьте/смените путь /settings',
-                                          reply_markup=keyboard_inline_open_folder, parse_mode='HTML')
+            await bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: невозможно отправить файл.</b>'
+                                                         f'\n'
+                                                         f'\nПуть к файлу:'
+                                                         f'\n<code>{file_path}</code>'
+                                                         f'\n'
+                                                         f'\n• Проверьте папку выгрузки на отсутвие в ней постороних файлов или папок.'
+                                                         f'\n• Проверьте/смените путь /settings',
+                                          reply_markup=keyboard_inline_open_folder)
             await asyncio.sleep(60)
         except:
-            await config.bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: путь указан неверно.</b>'
+            await bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: путь указан неверно.</b>'
                                                                 f'\n'
                                                                 f'\n• Проверьте/смените путь /settings',
-                                          parse_mode='HTML')
+                                          )
             await asyncio.sleep(60)
 
 
@@ -135,22 +136,22 @@ async def image_loader():
             await image_load_handler()
     except Exception as e:
         print(f"[image_loader] Ошибка: {e}")  # Сделать через логирование
-        await config.bot.send_message(chat_id=config.chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
-                                                                   f"\n\n Проверьте путь /settings", parse_mode='HTML')
+        await bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
+                                                                   f"\n\n Проверьте путь /settings")
 
 
 @router.message(F.text.lower() == '🧮')
 async def Alex_plus_button_pressed(message: Message):
     if await is_admin(message.from_user.id, message):
         try:
-            await Alex_podschot(data['Alex_path'], message)
+            await counter_outer(data['Alex_path'], message)
         except Exception as e:
             await message.answer(text=f'💀 <b>Произошла ошибка: {e}</b>'
                                       f'\n'
                                       f'\nПуть Алекс+:'
                                       f'\n<code>{data['Alex_path']}</code>'
                                       f'\n'
-                                      f'\n• Смените путь Алекс+ в /settings', parse_mode='HTML')
+                                      f'\n• Смените путь Алекс+ в /settings')
 
 
 @router.message(F.text.lower() == '📸')
@@ -168,7 +169,7 @@ async def button_pressed(message: Message):
         if await is_admin(message.from_user.id, message):
             await message.answer_document(document=FSInputFile(filename),
                                           caption=f"✅ <b>Скриншот сохранен</b>\n\n🏷 <code>{filename}</code>",
-                                          parse_mode='HTML')
+                                          )
     except Exception as e:
         await message.bot.send_message(chat_id=chat_id, text=f"Ошибка при создании скриншота: {e}")
 
@@ -177,36 +178,39 @@ async def button_pressed(message: Message):
 @router.message(Command("settings"))  # настройки
 async def settings_command(message: Message):
     if await is_admin(message.from_user.id, message):
-        await message.answer(text=get_settings_main_text(data), reply_markup=keyboard_inline_settings_main,
-                             parse_mode='HTML')
+        await message.answer(text=get_settings_main_text(data), reply_markup=keyboard_inline_settings_main
+                             )
 
 
 @router.message(F.text == "⚙️")  # настройки
 async def settings_command(message: Message):
     if await is_admin(message.from_user.id, message):
-        await message.answer(text=get_settings_main_text(data), reply_markup=keyboard_inline_settings_main,
-                             parse_mode='HTML')
+        await message.answer(text=get_settings_main_text(data), reply_markup=keyboard_inline_settings_main
+                             )
 
 
 # НАСТРОЙКИ ЗАГРУЗКА
 @router.callback_query(F.data == 'settings_photo_loader')
 async def settings_photo_loader(callback: CallbackQuery):
     await callback.message.edit_text(text=get_settings_photo_loader_text(data),
-                                     reply_markup=keyboard_inline_settings_photo_loader, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_photo_loader
+                                     )
     await callback.answer()
 
 
 @router.callback_query(F.data == 'button_clean_folder_uploaded')
 async def button_clean_folder_uploaded_pressed(callback: CallbackQuery):
     await callback.message.edit_text(text='🔥 <b>Очистить папку Uploaded?</b>',
-                                     reply_markup=keyboard_inline_clean_folder, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_clean_folder
+                                     )
     await callback.answer()
 
 
 @router.callback_query(F.data == 'button_back_to_settings_photo_loader')
 async def settings_photo_loader(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=get_settings_photo_loader_text(data),
-                                     reply_markup=keyboard_inline_settings_photo_loader, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_photo_loader
+                                     )
     await state.clear()
     await callback.answer()
 
@@ -215,7 +219,8 @@ async def settings_photo_loader(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == 'button_settings_path')
 async def button_settings_path(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text='Введите новый путь к папке:',
-                                     reply_markup=keyboard_inline_back_to_settings_photo_loader, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_back_to_settings_photo_loader
+                                     )
     await state.set_state(SettingsStates.path)
     await state.update_data(msg_id=callback.message.message_id)
     await callback.answer()
@@ -226,7 +231,8 @@ async def receive_alex_path(message: Message, state: FSMContext):
     data['path'] = message.text
     await save_to_data(key='path', value=message.text, message=message)
     await message.answer(f'✅ <b>Путь был успешно изменён</b>\n\n📁 <code>{data["path"]}</code>',
-                         reply_markup=keyboard_inline_back_to_settings_photo_loader, parse_mode='HTML')
+                         reply_markup=keyboard_inline_back_to_settings_photo_loader
+                         )
     _ = asyncio.create_task(image_loader())
     await state.clear()
 
@@ -235,7 +241,8 @@ async def receive_alex_path(message: Message, state: FSMContext):
 @router.callback_query(F.data == 'settings_photo_processing')  # кнопка Настройки обработчика фото
 async def button_photo_processing_settings(callback: CallbackQuery):
     await callback.message.edit_text(text=get_settings_photo_processing_text(data),
-                                     reply_markup=keyboard_inline_settings_photo_processing, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_photo_processing
+                                     )
 
 
 # НАСТРОЙКИ ОБРАБОТКА путь
@@ -254,7 +261,8 @@ async def receive_photo_processing_settings_path(message: Message, state: FSMCon
     await save_to_data(key='photo_processing_path', value=message.text, message=message)
     await state.clear()
     await message.answer(f'✅ <b>Путь успешно изменён</b>\n\n📁 <code>{data["photo_processing_path"]}</code>',
-                         reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+                         reply_markup=keyboard_inline_back_to_settings_photo_processing
+                         )
 
 
 # НАСТРОЙКИ ОБРАБОТКА заворот
@@ -274,10 +282,10 @@ async def receive_photo_processing_settings_zav(message: Message, state: FSMCont
         await save_to_data(key='photo_processing_zav', value=message.text, message=message)
         await state.clear()
         await message.answer(
-            f'✅ <b>Заворот был успешно изменён</b>\n\n📃 <code>{data['photo_processing_zav']} см</code>',
-            reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+            text=f'✅ <b>Заворот был успешно изменён</b>\n\n📃 <code>{data['photo_processing_zav']} см</code>',
+            reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА белая рамка
@@ -298,9 +306,9 @@ async def receive_photo_processing_settings_white(message: Message, state: FSMCo
         await state.clear()
         await message.answer(
             f'✅ <b>Размеры белой рамки были успешно изменёны</b>\n\n🔳 <code>{data['photo_processing_white']} см</code>',
-            reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+            reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА дипиай
@@ -320,9 +328,9 @@ async def receive_photo_processing_settings_dpi(message: Message, state: FSMCont
         await save_to_data(key='photo_processing_dpi', value=message.text, message=message)
         await state.clear()
         await message.answer(f'✅ <b>DPI был успешно изменён</b>\n\n◼️ <code>{data['photo_processing_dpi']}</code>',
-                             reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+                             reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА чёрная рамка
@@ -343,9 +351,9 @@ async def receive_photo_processing_settings_black(message: Message, state: FSMCo
         await state.clear()
         await message.answer(
             f'✅ <b>Размеры чёрной рамки были успешно изменёны</b>\n\n🔲 <code>{data['photo_processing_black']} px</code>',
-            reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+            reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА шрифт
@@ -366,9 +374,9 @@ async def receive_photo_processing_settings_fontsize(message: Message, state: FS
         await state.clear()
         await message.answer(
             f'✅ <b>Размеры шрифта были успешно изменёны</b>\n\n🔠 <code>{data['photo_processing_fontsize']} px</code>',
-            reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+            reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА обрезание
@@ -389,36 +397,36 @@ async def receive_photo_processing_settings_crop(message: Message, state: FSMCon
         await state.clear()
         await message.answer(
             f'✅ <b>Обрезка края фото была успешно изменёна</b>\n\n✂️ <code>{data['photo_processing_crop']} px</code>',
-            reply_markup=keyboard_inline_back_to_settings_photo_processing, parse_mode='HTML')
+            reply_markup=keyboard_inline_back_to_settings_photo_processing)
     except:
-        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>', parse_mode='HTML')
+        await message.answer(f'💀 <b>Что-то хуйня какая-то, введи ещё раз нормально</b>')
 
 
 # НАСТРОЙКИ ОБРАБОТКА назад к основным настройкам
 @router.callback_query(F.data == 'button_back_to_settings_main')
 async def button_back_to_settings(callback: CallbackQuery):
-    await callback.message.edit_text(text=get_settings_main_text(data), reply_markup=keyboard_inline_settings_main,
-                                     parse_mode='HTML')
+    await callback.message.edit_text(text=get_settings_main_text(data),
+                                     reply_markup=keyboard_inline_settings_main)
 
 
 @router.callback_query(F.data == 'button_back_to_settings_photo_processing')
 async def button_back_to_settings_photo_processing(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     await callback.message.edit_text(text=get_settings_photo_processing_text(data),
-                                     reply_markup=keyboard_inline_settings_photo_processing, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_photo_processing)
 
 
 # НАСТРОЙКИ ПОДСЧЁТ
 @router.callback_query(F.data == 'settings_print_counter')
 async def settings_print_counter(callback: CallbackQuery):
     await callback.message.edit_text(text=get_settings_print_counter_text(data),
-                                     reply_markup=keyboard_inline_settings_print_counter, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_print_counter)
 
 
 @router.callback_query(F.data == 'button_back_to_settings_print_counter')
 async def button_back_to_settings_print_counter(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text=get_settings_print_counter_text(data),
-                                     reply_markup=keyboard_inline_settings_print_counter, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_print_counter)
     await state.clear()
 
 
@@ -436,8 +444,7 @@ async def button_Alex_path(callback: CallbackQuery, state: FSMContext):
 async def receive_alex_path(message: Message, state: FSMContext):
     data['Alex_path'] = message.text
     await save_to_data(key='Alex_path', value=message.text, message=message)
-    await message.answer(f'✅ <b>Путь к Alex+ был успешно изменён</b>\n\n📁 <code>{data["Alex_path"]}</code>',
-                         parse_mode='HTML')
+    await message.answer(f'✅ <b>Путь к Alex+ был успешно изменён</b>\n\n📁 <code>{data["Alex_path"]}</code>')
     await state.clear()
 
 
@@ -448,7 +455,7 @@ async def process_button_settings_Alex_exceptions_press(callback: CallbackQuery,
     await callback.message.edit_text(text=f'Текущий список: <code>{exceptions}</code>'
                                           f'\n'
                                           f'\nВведите исключения для Alex+ через запятую, для удаления используйте символ "-" перед словом (напр. -Алекс), регистр имеет значение:',
-                                     reply_markup=keyboard_inline_settings_cancel, parse_mode='HTML')
+                                     reply_markup=keyboard_inline_settings_cancel)
     await state.set_state(SettingsStates.Alex_exceptions)
     await state.update_data(msg_id=callback.message.message_id)
     await callback.answer()
@@ -471,17 +478,14 @@ async def receive_alex_path(message: Message, state: FSMContext):
             try:
                 exceptions.remove(word[1:])  # удаляем "-"
             except TypeError:
-                await message.answer(f'💀 Нет такого исключения: <code>{word[1:]}</code>', parse_mode='HTML')
+                await message.answer(f'💀 Нет такого исключения: <code>{word[1:]}</code>')
         else:
             exceptions.append(word)  # добавляем новое
 
     data['Alex_exceptions'] = exceptions
     await save_to_data(key='Alex_exceptions', value=exceptions, message=message)
     exceptions = ', '.join(data['Alex_exceptions'])
-    await message.answer(
-        f'✅ <b>Исключения для Alex+ успешно обновлены</b>\n\n🖋 <code>{exceptions}</code>',
-        parse_mode='HTML'
-    )
+    await message.answer(f'✅ <b>Исключения для Alex+ успешно обновлены</b>\n\n🖋 <code>{exceptions}</code>')
     await state.clear()
 
 
@@ -498,15 +502,13 @@ async def button_processed_update(callback: CallbackQuery):
 # НАСТРОЙКИ ПРОЧЕЕ
 @router.callback_query(F.data == 'settings_other')
 async def process_settings_photo_loader(callback: CallbackQuery):
-    await callback.message.edit_text(text=get_settings_other_text(data), reply_markup=keyboard_inline_settings_other,
-                                     parse_mode='HTML')
+    await callback.message.edit_text(text=get_settings_other_text(data), reply_markup=keyboard_inline_settings_other)
     await callback.answer()
 
 
 @router.callback_query(F.data == 'button_back_to_settings_other')
 async def button_back_to_settings_other(callback: CallbackQuery, state: FSMContext):
-    await callback.message.edit_text(text=get_settings_other_text(data), reply_markup=keyboard_inline_settings_other,
-                                     parse_mode='HTML')
+    await callback.message.edit_text(text=get_settings_other_text(data), reply_markup=keyboard_inline_settings_other)
     await state.clear()
     await callback.answer()
 
@@ -579,7 +581,8 @@ async def process_button_settings_startup_press(callback: CallbackQuery):
                                               '\n• [WIN]+[R]'
                                               '\n• shell:startup'
                                               '\n• Создать ярлык указывающий на Сенди в папке автозагрузки',
-                                         reply_markup=keyboard_inline_startup_open_folder, parse_mode="HTML")
+                                         reply_markup=keyboard_inline_startup_open_folder
+                                         )
 
 
 @router.callback_query(F.data.startswith('open_photo:'))
@@ -613,23 +616,15 @@ async def process_button_open_photo(callback: CallbackQuery):
     try:
         os.remove(filepath)
         await callback.answer("УДАЛЕНО", show_alert=False)
-        await callback.message.edit_text(
-            f"<b>🔥 Изображение удалёно</b>\n\n🏷 <s>{filepath.split('\\')[-1]}</s>",
-            parse_mode="HTML"
-        )
+        await callback.message.edit_text(f"<b>🔥 Изображение удалёно</b>\n\n🏷 <s>{filepath.split('\\')[-1]}</s>")
     except:
         await callback.answer("Файл не найден или кнопка устарела", show_alert=False)
     await callback.answer()
 
-
-@router.message(F.text.lower() == '✂️')
+@router.message(Command(commands=["cropper"]))
+@router.message(F.text.lower().in_(['✂️', '%']))
 async def button_pressed(message: Message):
     Thread(target=sendy_cropper, kwargs={
-        # 'image': None,
-        'number': '',
-        'material': 0,
-        # 'width': '',
-        # 'height': '',
         'message': message,
     }).start()
 
@@ -640,8 +635,7 @@ async def send(message: Message, bot):
     file_size = message.document.file_size if message.document else message.photo[-1].file_size
 
     if file_size > 20 * 1024 * 1024:  # 20 Mb
-        await message.reply("💀 <b>Ошибка:</b> Файл слишком большой! Максимум 20 МБ. Воспользуйтесь Sandy Cropper ✂️",
-                            parse_mode='HTML')
+        await message.reply("💀 <b>Ошибка:</b> Файл слишком большой! Максимум 20 МБ. Воспользуйтесь /cropper")
         return
 
     file_id = (message.photo[-1] if message.photo else message.document).file_id

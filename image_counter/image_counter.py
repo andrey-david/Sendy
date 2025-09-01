@@ -4,11 +4,11 @@ from data import data
 import os
 from aiogram.types import Message
 
-async def Alex_podschot(folder, message: Message): #функция подсчёта
+async def counter_outer(folder, message: Message): #функция подсчёта
     exceptions = data['Alex_exceptions']
     all_text_to_message = []
 
-    async def Alex_podschot_in(folder_in):
+    async def counter_inner(folder_in):
         text = ''
         holst = []
         banner = []
@@ -31,7 +31,7 @@ async def Alex_podschot(folder, message: Message): #функция подсчё�
                     elif 'хлопок' in name_of_file.lower():
                         hlopok.append(a)
             elif os.path.isdir(folder_in + '\\' + file) and (file not in exceptions):
-                await Alex_podschot_in(folder_in + '\\' + file)
+                await counter_inner(folder_in + '\\' + file)
 
         # считает элементы в списке присваивая им ключи в виде размеров и значения в виде количества размеров в списке (прим: Counter({'50×50': 9}) )
         banner_summ = Counter(banner)
@@ -69,7 +69,7 @@ async def Alex_podschot(folder, message: Message): #функция подсчё�
     for element in os.listdir(folder):
         folder_in = folder + '\\' + element
         if os.path.isdir(folder_in) and (element not in exceptions): # проверка является ли folder_in папкой и нет ли её в списке исключений
-            await Alex_podschot_in(folder_in)
+            await counter_inner(folder_in)
 
     for i in all_text_to_message[::-1]: #переворачивает список и выводит его в виде сообщений
         await message.answer(text=i, parse_mode="HTML")

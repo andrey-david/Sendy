@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphics
     QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget
 from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage
 from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QBuffer
-from cropper_ui import Ui_Cropper
+from cropper.cropper_ui import Ui_Cropper
 from PIL import Image
 import pillow_heif
 import io
@@ -230,7 +230,7 @@ class SendyCropper(QMainWindow):
         image_height = self.image_item.pixmap().height()
         if image_width > 0 and image_height > 0:
             scale = min((view_width / image_width), (
-                        view_height / image_height)) - 0.005  # 0.005 - похволяет уменьшить изобр так, чтобы убрать scroll
+                    view_height / image_height)) - 0.005  # 0.005 - похволяет уменьшить изобр так, чтобы убрать scroll
             self.ui.graphicsView_main.resetTransform()
             self.ui.graphicsView_main.scale(scale, scale)
 
@@ -244,7 +244,7 @@ class SendyCropper(QMainWindow):
         cropped_image_width = self.cropped_image.width()
         cropped_image_height = self.cropped_image.height()
         scale = min((view_width / cropped_image_width), (
-                    view_height / cropped_image_height)) - 0.05  # 0.05 - похволяет уменьшить изобр так, чтобы убрать scroll
+                view_height / cropped_image_height)) - 0.05  # 0.05 - похволяет уменьшить изобр так, чтобы убрать scroll
         self.ui.graphicsView_preview.resetTransform()
         self.ui.graphicsView_preview.scale(scale, scale)
 
@@ -435,7 +435,7 @@ class SendyCropper(QMainWindow):
                                                    self.crop_width,
                                                    self.crop_height)  # +1 это пиксель красной рамки заходящий за край
         self.frame_coordinates = (
-        int(crop_frame_XY.x()) + 1, int(crop_frame_XY.y()) + 1, self.crop_width, self.crop_height)
+            int(crop_frame_XY.x()) + 1, int(crop_frame_XY.y()) + 1, self.crop_width, self.crop_height)
         self.scene_preview = QGraphicsScene()
         self.scene_preview.addPixmap(self.cropped_image)
         self.ui.graphicsView_preview.setScene(self.scene_preview)
@@ -446,8 +446,9 @@ class SendyCropper(QMainWindow):
             material_dict = {0: 'Холст', 1: 'Баннер', 2: 'Хлопок', 3: 'Матовый холст'}
             n = self.ui.comboBox_material.currentIndex()
             coordinates = (
-            self.frame_coordinates[0], self.frame_coordinates[1], self.frame_coordinates[0] + self.frame_coordinates[2],
-            self.frame_coordinates[1] + self.frame_coordinates[3])
+                self.frame_coordinates[0], self.frame_coordinates[1],
+                self.frame_coordinates[0] + self.frame_coordinates[2],
+                self.frame_coordinates[1] + self.frame_coordinates[3])
             processing = PhotoProc()
             img = self.original_image
             img = img.rotate(self.rotation_angle, expand=True)

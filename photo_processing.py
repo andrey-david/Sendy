@@ -228,8 +228,7 @@ class PhotoProc:
     async def send_via_bot(self):
         try:
             await self.message.answer(f"✅ <b>Изображение сохранено</b>\n\n🏷 <code>{self.filename}</code>",
-                                    parse_mode='HTML', reply_markup=keyboard_inline_open_photo(self.filepath), reply_to_message_id=self.message.message_id)
+                                    reply_markup=keyboard_inline_open_photo(self.filepath), reply_to_message_id=self.message.message_id)
         except Exception as e:
             await self.message.answer(f"💀 Ошибка: {str(e)}"
-                                 f"\n\n✅ <b>Изображение успешно сохранено по этому пути:</b>\n<code>{self.filepath}</code>",
-                                 parse_mode='HTML')
+                                 f"\n\n✅ <b>Изображение успешно сохранено по этому пути:</b>\n<code>{self.filepath}</code>")

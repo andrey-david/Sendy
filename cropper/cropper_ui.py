@@ -16,7 +16,7 @@ class Ui_Cropper(object):
         Cropper.setObjectName("Cropper")
         Cropper.resize(1900, 1045)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("sendy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../sendy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Cropper.setWindowIcon(icon)
         Cropper.setStyleSheet("QMainWindow {\n"
 "    background-color: #F0F0F0;\n"
