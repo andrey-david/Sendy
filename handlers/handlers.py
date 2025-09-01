@@ -16,7 +16,7 @@ import winshell
 import time
 import pyautogui
 from image_counter.image_counter import counter_outer
-from lexicon import is_admin
+from lexicon.lexicon import is_admin
 import asyncio
 from cropper.cropper_main import sendy_cropper
 from photo_processing import PhotoProc

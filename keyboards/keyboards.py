@@ -1,6 +1,6 @@
 from aiogram.types import KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
-from lexicon import *
+from lexicon.lexicon import *
 import uuid
 
 # Главная панель кнопок
