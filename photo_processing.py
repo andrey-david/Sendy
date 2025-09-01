@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import asyncio
 from data import data
 import logging
-import config
+from config import config
 from keyboards import keyboard_inline_open_photo
 
 # Логгирование

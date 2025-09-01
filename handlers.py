@@ -24,7 +24,7 @@ import re
 from threading import Thread
 import pystray
 from datetime import datetime
-from config.config import datatime_on_start, dp, bot, bot_loop, chat_id
+from config import config
 from watchfiles import awatch
 
 router = Router()
@@ -75,13 +75,13 @@ async def stop_command(message: Message):
 
 async def stop_sendy():
     sendy_tray.stop()
-    await dp.stop_polling()
-    await bot.session.close()
+    await config.dp.stop_polling()
+    await config.bot.session.close()
 
 
 @router.callback_query(F.data == 'button_shutdown')  # кнопка /stop нажата
 async def process_button_shutdown_press(callback: CallbackQuery):
-    time = datetime.now() - datatime_on_start
+    time = datetime.now() - config.datatime_on_start
     time = str(time).split('.')[0]
     await callback.message.edit_text(text='🪦 Сенди\n'
                                           '\n'
@@ -90,7 +90,7 @@ async def process_button_shutdown_press(callback: CallbackQuery):
 
 
 def stop_sendy_from_tray():
-    asyncio.run_coroutine_threadsafe(stop_sendy(), bot_loop)
+    asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
 
 icon_path = Path(__file__).parent / "sendy.ico"
 sendy_tray = pystray.Icon('Sendy', Image.open(icon_path),
@@ -103,7 +103,7 @@ async def image_load_handler():
         for file in os.listdir(data['path']):
             if file != 'Uploaded' and (file.endswith('.jpg') or file.endswith('.png') or file.endswith('.heic')):
                 file_path = data['path'] + '\\' + file
-                await bot.send_document(chat_id=chat_id, document=FSInputFile(file_path))
+                await config.bot.send_document(chat_id=chat_id, document=FSInputFile(file_path))
                 if 'Uploaded' in os.listdir(data['path']):
                     os.replace(file_path, data['path'] + '\\Uploaded\\' + file)
                 else:
@@ -111,7 +111,7 @@ async def image_load_handler():
                     os.replace(file_path, data['path'] + '\\Uploaded\\' + file)
     except:
         try:
-            await bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: невозможно отправить файл.</b>'
+            await config.bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: невозможно отправить файл.</b>'
                                                          f'\n'
                                                          f'\nПуть к файлу:'
                                                          f'\n<code>{file_path}</code>'
@@ -121,7 +121,7 @@ async def image_load_handler():
                                           reply_markup=keyboard_inline_open_folder)
             await asyncio.sleep(60)
         except:
-            await bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: путь указан неверно.</b>'
+            await config.bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: путь указан неверно.</b>'
                                                                 f'\n'
                                                                 f'\n• Проверьте/смените путь /settings',
                                           )
@@ -136,7 +136,7 @@ async def image_loader():
             await image_load_handler()
     except Exception as e:
         print(f"[image_loader] Ошибка: {e}")  # Сделать через логирование
-        await bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
+        await config.bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
                                                                    f"\n\n Проверьте путь /settings")
 
 

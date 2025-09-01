@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 import aiohttp
 
-from config.config import BOT_TOKEN, datatime_on_start, chat_id
+from config import config
 from handlers import sendy_tray, router, image_loader
 from keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
     easter_egg_days
@@ -29,7 +29,7 @@ async def updater(bot: Bot) -> None:
                     text = await response.text()
                     latest_version, update_link = text.split('|')
                     if latest_version != sendy_info[0]:
-                        await bot.send_message(chat_id=chat_id,
+                        await bot.send_message(chat_id=config.chat_id,
                                                text=f'<b><i>🆕 Доступно обновление до Sendy {latest_version}</i></b>',
                                                reply_markup=keyboard_inline_update)
                 except Exception as e:
@@ -47,7 +47,7 @@ async def set_main_menu(bot: Bot):
 
 
 # Отправить сообщение при запуске
-async def welcome_message(bot: Bot) -> None:
+async def welcome_message(bot: Bot, datatime_on_start, chat_id) -> None:
     if ((datatime_on_start.day in [24, 25, 26, 27, 28, 29, 30, 31] and datatime_on_start.month == 12) or
             (datatime_on_start.day in [1, 2, 3, 4, 5, 6, 7] and datatime_on_start.month == 1)):
         await bot.send_message(chat_id=chat_id, text=random.choice(hello_emoji_new_year))
@@ -71,21 +71,18 @@ async def tray():
 
 
 async def main():
-    from config.config import bot, dp as config_bot
-    from config.config import dp as config_dp
-    from config.config import bot_loop
-    bot = Bot(token=BOT_TOKEN,
+    bot = Bot(token=config.BOT_TOKEN,
               default=DefaultBotProperties(parse_mode=ParseMode.HTML)
               )
-    config_bot = bot
+    config.bot = bot
     dp = Dispatcher()
-    config_dp = dp
+    config.dp = dp
     dp.include_router(router)
     dp.startup.register(set_main_menu)
     _ = asyncio.create_task(image_loader())
     try:
-        bot_loop = asyncio.get_running_loop()
-        await asyncio.gather(welcome_message(bot), updater(bot), dp.start_polling(bot, skip_updates=True), tray())
+        config.bot_loop = asyncio.get_running_loop()
+        await asyncio.gather(welcome_message(bot, config.datatime_on_start, config.chat_id), updater(bot), dp.start_polling(bot, skip_updates=True), tray())
     except (KeyboardInterrupt, SystemExit):
         print("Bot stopped by user")
     except asyncio.CancelledError:
