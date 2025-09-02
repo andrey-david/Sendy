@@ -1,0 +1,9 @@
+/.venv/
+/build/
+/dist/
+/legacy/
+/testfiles/
+/screenshots/
+desktop.ini
+Sendy.spec
+Sendy_data
