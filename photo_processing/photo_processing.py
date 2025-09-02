@@ -2,16 +2,8 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import asyncio
 from data.data import data
-import logging
 from config import config
 from keyboards.keyboards import keyboard_inline_open_photo
-
-# Логгирование
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
 
 
 class PhotoProc:

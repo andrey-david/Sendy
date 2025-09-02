@@ -2,6 +2,7 @@ import asyncio
 import threading
 import random
 import os
+import logging
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -14,6 +15,13 @@ from handlers.handlers import sendy_tray, router, image_loader
 from keyboards.keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
     easter_egg_days
 from lexicon.lexicon import sendy_info
+
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 
 # Проверка на обновления, если обновление есть, то выводит сообщение с кнопкой для обновления
