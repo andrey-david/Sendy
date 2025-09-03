@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 from aiogram.types import CallbackQuery, Message, FSInputFile
@@ -28,6 +29,7 @@ from config import config
 from watchfiles import awatch
 
 router = Router()
+logger = logging.getLogger(__name__)
 
 
 class SettingsStates(StatesGroup):
@@ -77,6 +79,7 @@ async def stop_sendy():
     sendy_tray.stop()
     await config.dp.stop_polling()
     await config.bot.session.close()
+    logger.info('БОТ ОСТАНОВЛЕН ПОЛЬЗОВАТЕЛЕМ')
 
 
 @router.callback_query(F.data == 'button_shutdown')  # кнопка /stop нажата
@@ -92,9 +95,13 @@ async def process_button_shutdown_press(callback: CallbackQuery):
 def stop_sendy_from_tray():
     asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
 
+
 icon_path = Path(__file__).parent.parent / "sendy.ico"
-sendy_tray = pystray.Icon('Sendy', Image.open(icon_path),
-                          menu=pystray.Menu(pystray.MenuItem('Остановить', stop_sendy_from_tray)))
+
+menu = pystray.Menu(pystray.MenuItem('Stop', stop_sendy_from_tray),
+                           pystray.MenuItem('Cropper', lambda: Thread(target=sendy_cropper).start()))
+
+sendy_tray = pystray.Icon(name='Sendy', icon=Image.open(icon_path), menu=menu)
 
 
 async def image_load_handler():
@@ -112,12 +119,12 @@ async def image_load_handler():
     except:
         try:
             await config.bot.send_message(chat_id=chat_id, text=f'💀 <b>Произошла ошибка: невозможно отправить файл.</b>'
-                                                         f'\n'
-                                                         f'\nПуть к файлу:'
-                                                         f'\n<code>{file_path}</code>'
-                                                         f'\n'
-                                                         f'\n• Проверьте папку выгрузки на отсутвие в ней постороних файлов или папок.'
-                                                         f'\n• Проверьте/смените путь /settings',
+                                                                f'\n'
+                                                                f'\nПуть к файлу:'
+                                                                f'\n<code>{file_path}</code>'
+                                                                f'\n'
+                                                                f'\n• Проверьте папку выгрузки на отсутвие в ней постороних файлов или папок.'
+                                                                f'\n• Проверьте/смените путь /settings',
                                           reply_markup=keyboard_inline_open_folder)
             await asyncio.sleep(60)
         except:
@@ -137,7 +144,7 @@ async def image_loader():
     except Exception as e:
         print(f"[image_loader] Ошибка: {e}")  # Сделать через логирование
         await config.bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
-                                                                   f"\n\n Проверьте путь /settings")
+                                                            f"\n\n Проверьте путь /settings")
 
 
 @router.message(F.text.lower() == '🧮')
@@ -620,6 +627,7 @@ async def process_button_open_photo(callback: CallbackQuery):
     except:
         await callback.answer("Файл не найден или кнопка устарела", show_alert=False)
     await callback.answer()
+
 
 @router.message(Command(commands=["cropper"]))
 @router.message(F.text.lower().in_(['✂️', '%']))

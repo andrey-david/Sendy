@@ -1,20 +1,17 @@
 import sys
+import logging
+
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QShortcut, \
     QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget
 from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage
-from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QBuffer
+from PyQt5.QtCore import QRectF, QObject, QEvent, Qt
 from cropper.cropper_ui import Ui_Cropper
 from PIL import Image
 import pillow_heif
 import io
-import logging
+
 from photo_processing.photo_processing import PhotoProc
 
-# Логгирование
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
 logger = logging.getLogger(__name__)
 
 

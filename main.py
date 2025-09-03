@@ -17,13 +17,6 @@ from keyboards.keyboards import MENU_COMMANDS, keyboard_inline_update, hello, he
 from lexicon.lexicon import sendy_info
 
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO
-)
-logger = logging.getLogger(__name__)
-
-
 # Проверка на обновления, если обновление есть, то выводит сообщение с кнопкой для обновления
 async def updater(bot: Bot) -> None:
     if 'updater_new.exe' in os.listdir() and 'updater.exe' in os.listdir():
@@ -79,22 +72,32 @@ async def tray():
 
 
 async def main():
+    logging.basicConfig(
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=logging.INFO
+    )
+    logger = logging.getLogger(__name__)
+
     bot = Bot(token=config.BOT_TOKEN,
               default=DefaultBotProperties(parse_mode=ParseMode.HTML)
               )
     config.bot = bot
+
     dp = Dispatcher()
     config.dp = dp
+
     dp.include_router(router)
     dp.startup.register(set_main_menu)
     _ = asyncio.create_task(image_loader())
+
     try:
         config.bot_loop = asyncio.get_running_loop()
-        await asyncio.gather(welcome_message(bot, config.datatime_on_start, config.chat_id), updater(bot), dp.start_polling(bot, skip_updates=True), tray())
+        await asyncio.gather(welcome_message(bot, config.datatime_on_start, config.chat_id), updater(bot),
+                             dp.start_polling(bot, skip_updates=True), tray())
     except (KeyboardInterrupt, SystemExit):
-        print("Bot stopped by user")
+        logger.info("Bot stopped by user")
     except asyncio.CancelledError:
-        print("Tasks were cancelled")
+        logger.info("Tasks were cancelled")
     finally:
         try:
             await dp.stop_polling()
@@ -102,6 +105,7 @@ async def main():
             if "Polling is not started" not in str(e):
                 raise
         await bot.session.close()
+        logger.info('БОТ ОСТАНОВЛЕН')
 
 
 if __name__ == '__main__':
