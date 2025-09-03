@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>sendy.ico</normaloff>sendy.ico</iconset>
+    <normaloff>../sendy.ico</normaloff>../sendy.ico</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">QMainWindow {
