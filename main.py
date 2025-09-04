@@ -11,7 +11,8 @@ logging.basicConfig(
     level=logging.INFO,
     format='[{asctime}] #{levelname:8} {filename}:{lineno} - {name} - {message}',
     style='{',
-    handlers=[logging_handler, logging_console]
+    handlers=[logging_handler, logging_console],
+    encoding='utf-8'
 )
 
 from aiogram import Bot, Dispatcher
@@ -101,7 +102,7 @@ async def main():
         await asyncio.gather(welcome_message(bot, config.datatime_on_start, config.chat_id), updater(bot),
                              dp.start_polling(bot, skip_updates=True), tray())
     except (KeyboardInterrupt, SystemExit):
-        logger.info("Bot stopped by user")
+        logger.info('Stopped by console interrupt')
     except asyncio.CancelledError:
         logger.info("Tasks were cancelled")
     finally:

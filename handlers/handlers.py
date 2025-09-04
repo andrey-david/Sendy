@@ -80,7 +80,7 @@ async def stop_sendy():
     sendy_tray.stop()
     await config.dp.stop_polling()
     await config.bot.session.close()
-    logger.info('БОТ ОСТАНОВЛЕН ПОЛЬЗОВАТЕЛЕМ')
+    logger.info('STOPPED BY USER')
 
 
 @router.callback_query(F.data == 'button_shutdown')  # кнопка /stop нажата
