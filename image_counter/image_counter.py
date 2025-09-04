@@ -3,6 +3,9 @@ import re
 from data import data
 import os
 from aiogram.types import Message
+import logging
+
+logger = logging.getLogger(__name__)
 
 async def counter_outer(folder, message: Message): #функция подсчёта
     exceptions = data['Alex_exceptions']

@@ -54,7 +54,8 @@ async def process_start_command(message: Message):
         f'\n📌 В Sandy Cropper добавлен tab order. Выделенный элемент теперь подсвечивается синим.\n'
         f'\n📌 Обновлено лого.\n'
         f'\n📌 Произведён полный рефакторинг updater, улучшен визуал.\n'
-        f'\n📌 % = ✂️ = /cropper; команда /cropper добавлена в меню.\n',
+        f'\n📌 % = ✂️ = /cropper; команда /cropper добавлена в меню. Также вызов Cropper доступен из трея.\n'
+        f'\n📌 Логи теперь сохраняются в файл sendy.log. В случае ошибки файл с логами можно отправить нажав на кнопку в [Настройки] → [Прочее] → [Отправить логи]\n',
         reply_markup=main_keyboard
     )
 
@@ -99,7 +100,7 @@ def stop_sendy_from_tray():
 icon_path = Path(__file__).parent.parent / "sendy.ico"
 
 menu = pystray.Menu(pystray.MenuItem('Stop', stop_sendy_from_tray),
-                           pystray.MenuItem('Cropper', lambda: Thread(target=sendy_cropper).start()))
+                    pystray.MenuItem('Cropper', lambda: Thread(target=sendy_cropper).start()))
 
 sendy_tray = pystray.Icon(name='Sendy', icon=Image.open(icon_path), menu=menu)
 
@@ -525,6 +526,18 @@ async def button_back_to_settings_other(callback: CallbackQuery, state: FSMConte
 async def process_button_settings_startup_press(callback: CallbackQuery):
     await callback.message.edit_text(text='Добавить Сенди в автозагрузку?',
                                      reply_markup=keyboard_inline_settings_other_startup)
+
+
+@router.callback_query(F.data == 'button_send_logs')  # кнопка /settings автозагрузка нажата
+async def process_button_settings_send_logs(callback: CallbackQuery):
+    log_path = 'sendy.log'
+    if os.path.exists(log_path):
+        await config.bot.send_document(chat_id='445925989', document=FSInputFile(log_path))
+        await callback.message.edit_text(text='<b>🗃 Файл с логами был отправлен @Andrey_David.</b>',
+                                         reply_markup=keyboard_inline_back_to_settings_other)
+    else:
+        await callback.message.edit_text(text='<b>💀 Файл с логами не найден.</b>',
+                                         reply_markup=keyboard_inline_back_to_settings_other)
 
 
 @router.callback_query(F.data == 'button_startup_open_folder')  # кнопка открыть папку автозагрузки нажата

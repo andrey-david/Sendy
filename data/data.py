@@ -1,6 +1,9 @@
 import pickle
 from aiogram.types import Message
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 data = {}
 

@@ -1,9 +1,12 @@
 import os
+import logging
 from PIL import Image, ImageDraw, ImageFont
 import asyncio
 from data.data import data
 from config import config
 from keyboards.keyboards import keyboard_inline_open_photo
+
+logger = logging.getLogger(__name__)
 
 
 class PhotoProc:
@@ -30,7 +33,8 @@ class PhotoProc:
     def add_image(self, img):
         self.img = img
 
-    def set_presets(self, number='', width_cm=0, height_cm=0, material=0, message=None, flag=True, coordinates=(0, 0, 0, 0)):
+    def set_presets(self, number='', width_cm=0, height_cm=0, material=0, message=None, flag=True,
+                    coordinates=(0, 0, 0, 0)):
         self.number = number
         self.width_cm = width_cm
         self.height_cm = height_cm
@@ -220,7 +224,8 @@ class PhotoProc:
     async def send_via_bot(self):
         try:
             await self.message.answer(f"✅ <b>Изображение сохранено</b>\n\n🏷 <code>{self.filename}</code>",
-                                    reply_markup=keyboard_inline_open_photo(self.filepath), reply_to_message_id=self.message.message_id)
+                                      reply_markup=keyboard_inline_open_photo(self.filepath),
+                                      reply_to_message_id=self.message.message_id)
         except Exception as e:
             await self.message.answer(f"💀 Ошибка: {str(e)}"
-                                 f"\n\n✅ <b>Изображение успешно сохранено по этому пути:</b>\n<code>{self.filepath}</code>")
+                                      f"\n\n✅ <b>Изображение успешно сохранено по этому пути:</b>\n<code>{self.filepath}</code>")

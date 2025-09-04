@@ -1,4 +1,7 @@
 from config.config import chat_id, ADMINS
+import logging
+
+logger = logging.getLogger(__name__)
 
 sendy_info = ['v1.7', '20.08.25']
 
@@ -7,8 +10,10 @@ async def is_admin(id, message):
     if id in ADMINS:
         return True
     await message.bot.send_message(chat_id=id, text='🚫 <i><b>ОТКАЗАНО В ДОСТУПЕ</b></i>')
-    await message.bot.send_message(chat_id=chat_id, text=f' ⚠️ <i><b>КТО-ТО ЧТО-ТО НАЖАЛ!!</b></i> \n\nID: <code>{id}</code>\nUSERNAME: <code>{message.from_user.username}</code> \n\n<a href="tg://user?id={id}">ПОСМОТРЕТЬ ПРОФИЛЬ</a>')
+    await message.bot.send_message(chat_id=chat_id,
+                                   text=f' ⚠️ <i><b>КТО-ТО ЧТО-ТО НАЖАЛ!!</b></i> \n\nID: <code>{id}</code>\nUSERNAME: <code>{message.from_user.username}</code> \n\n<a href="tg://user?id={id}">ПОСМОТРЕТЬ ПРОФИЛЬ</a>')
     return False
+
 
 hello = ["Привет, мой шоколад!",
          "Ты вернулся! Или это глюк матрицы?",
@@ -151,9 +156,9 @@ def get_settings_main_text(data: dict) -> str:
 
 def get_settings_photo_loader_text(data: dict) -> str:
     settings_photo_loader_text = (f'⚙️ <b>ЗАГРУЗКА ФОТО</b>'
-                      f'\n'
-                      f'\n<b>Путь к папке:</b>'
-                      f'\n📁 <code>{data["path"]}</code>')
+                                  f'\n'
+                                  f'\n<b>Путь к папке:</b>'
+                                  f'\n📁 <code>{data["path"]}</code>')
     return settings_photo_loader_text
 
 
@@ -187,7 +192,7 @@ def get_settings_photo_processing_text(data: dict) -> str:
 def get_settings_print_counter_text(data: dict) -> str:
     exceptions = ', '.join(data['Alex_exceptions'])
     settings_print_counter_text = (f'⚙️ <b>ПОДСЧЁТ ПЕЧАТИ</b>'
-                                   f'\n'                      
+                                   f'\n'
                                    f'\n<b>Путь к папке:</b>'
                                    f'\n📁 <code>{data["Alex_path"]}</code>'
                                    f'\n'
@@ -211,11 +216,9 @@ settings_main: dict[str, str] = {
     'button_no': '❌ Закрыть'
 }
 
-
 clean_folder: dict[str, str] = {
     'button_yes_clean_folder': '✅',
     'button_back_to_settings_photo_loader': '⬅️ Загрузка фото'}
-
 
 settings_photo_loader: dict[str, str] = {
     'button_settings_path': 'Путь к папке',
@@ -242,6 +245,7 @@ settings_print_counter: dict[str, str] = {
 
 settings_other: dict[str, str] = {
     'button_startup': 'Автозагрузка',
+    'button_send_logs': 'Отправить логи',
     'button_back_to_settings_main': '⬅️ Настройки',
 }
 

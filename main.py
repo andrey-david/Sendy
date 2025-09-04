@@ -4,6 +4,16 @@ import random
 import os
 import logging
 
+logger = logging.getLogger()
+logging_handler = logging.FileHandler('sendy.log')
+logging_console = logging.StreamHandler()
+logging.basicConfig(
+    level=logging.INFO,
+    format='[{asctime}] #{levelname:8} {filename}:{lineno} - {name} - {message}',
+    style='{',
+    handlers=[logging_handler, logging_console]
+)
+
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -72,11 +82,7 @@ async def tray():
 
 
 async def main():
-    logging.basicConfig(
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        level=logging.INFO
-    )
-    logger = logging.getLogger(__name__)
+    logger.info('BOT JUST STARTED')
 
     bot = Bot(token=config.BOT_TOKEN,
               default=DefaultBotProperties(parse_mode=ParseMode.HTML)
@@ -105,7 +111,7 @@ async def main():
             if "Polling is not started" not in str(e):
                 raise
         await bot.session.close()
-        logger.info('БОТ ОСТАНОВЛЕН')
+        logger.info('BOT STOPPED')
 
 
 if __name__ == '__main__':

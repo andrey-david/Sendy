@@ -2,6 +2,9 @@ from aiogram.types import KeyboardButton, InlineKeyboardButton, InlineKeyboardMa
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 from lexicon.lexicon import *
 import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Главная панель кнопок
 kb_builder = ReplyKeyboardBuilder()
