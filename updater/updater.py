@@ -81,9 +81,9 @@ if __name__ == '__main__':
         waiting_for_app_to_close(application)
         download_update_file(url_get_update, file)
         unzip_update_file(file, directory)
-        subprocess.Popen(application)
     except Exception as e:
         print(f'{colorama.Back.RED}{colorama.Fore.WHITE}\n[!] ОБНОВЛЕНИЕ ЗАВЕРШЕНО С ОШИБКОЙ\n'
               f'[ERROR] {e}{colorama.Back.RESET}{colorama.Fore.RESET}')
     print('\n\n\n            ', end='')
-    input(f'{colorama.Back.CYAN}{colorama.Fore.YELLOW}ENTER{colorama.Fore.WHITE} ЧТОБЫ ЗАВЕРШИТЬ')
+    input(f'{colorama.Back.CYAN}{colorama.Fore.YELLOW}ENTER{colorama.Fore.WHITE} ЧТОБЫ ЗАВЕРШИТЬ И ЗАПУСТИТЬ SENDY')
+    subprocess.Popen(application)
