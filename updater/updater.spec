@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['D:/MyPY/Sendy/updater.py'],
+    ['D:/MyPY/Sendy/updater/updater.py'],
     pathex=[],
     binaries=[],
     datas=[],
