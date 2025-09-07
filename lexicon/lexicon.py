@@ -3,7 +3,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-sendy_info = ['v1.7', '20.08.25']
+sendy_info = ['v1.8fix', '05.09.25']
 
 
 async def is_admin(id, message):
