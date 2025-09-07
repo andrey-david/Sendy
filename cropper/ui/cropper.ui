@@ -7,124 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>1900</width>
-    <height>1045</height>
+    <height>1038</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sendy Cropper</string>
   </property>
-  <property name="windowIcon">
-   <iconset>
-    <normaloff>../sendy.ico</normaloff>../sendy.ico</iconset>
-  </property>
   <property name="styleSheet">
-   <string notr="true">QMainWindow {
-    background-color: #F0F0F0;
-}
-
-QWidget {
-    background-color: #F0F0F0;
-    color: #000000;
-    font-family: &quot;Helvetica&quot;;
-    font-size: 15px;
-}
-
-QMenuBar {
-    background-color: #F0F0F0;
-    color: #000000;
-}
-
-QMenuBar::item:selected {
-    background-color: #D0D0D0;
-}
-
-QMenu {
-    background-color: #FFFFFF;
-    color: #000000;
-}
-
-QMenu::item:selected {
-    background-color: #D0D0D0;
-    color: #000000;
-}
-
-QStatusBar {
-    background-color: #F0F0F0;
-    color: #FF0000;
-}
-
-QPushButton {
-    background-color: #E0E0E0;
-    color: #000000;
-    border: 2px solid #A0A0A0;
-    border-radius: 5px;
-    padding: 12px 10px;
-    font-family: &quot;Helvetica&quot;;
-    font-size: 16px;
-    font-weight: normal;
-}
-
-QPushButton:hover {
-    background-color: #D0D0D0;
-}
-
-QPushButton:pressed {
-    background-color: #C0C0C0;
-}
-
-QLineEdit {
-    background-color: #FFFFFF;
-    color: #000000;
-    border: 2px solid #A0A0A0;
-    border-radius: 5px;
-    padding: 10px;
-    font-family: &quot;Helvetica&quot;;
-    font-size: 22px;
-}
-
-QComboBox {
-    font: 18pt &quot;Helvetica&quot;;
-    color: #000000;
-    background-color: #FFFFFF;
-    border: 2px solid #A0A0A0;
-    border-radius: 6px;
-    padding: 6px 30px 6px 10px;
-    min-width: 150px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 20px;
-    border-left: 2px solid #A0A0A0;
-    background-color: #E0E0E0;
-}
-
-QGraphicsView {
-    background-color: #FFFFFF;
-    border: 2px solid #A0A0A0;
-}
-
-QFrame[frameShape=&quot;4&quot;] {
-    background-color: #A0A0A0;
-    max-height: 1px;
-    border: none;
-}
-
-QStatusBar QLabel {
-	font-family: &quot;Helvetica&quot;;
-    color: #FF0000;
-}
-
-*:focus {
-    border: 2px solid #0078d7;
-    outline: none;
-    }
-
-QGraphicsView:focus {
-    border: 2px solid #A0A0A0;
-}
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton_crop">
@@ -138,10 +28,7 @@ QGraphicsView:focus {
     </property>
     <property name="font">
      <font>
-      <family>Helvetica</family>
       <pointsize>-1</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
      </font>
     </property>
     <property name="cursor">
@@ -230,7 +117,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -248,7 +134,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -266,7 +151,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -284,7 +168,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -302,7 +185,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -320,7 +202,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -338,7 +219,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -356,7 +236,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -374,7 +253,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -392,7 +270,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -410,7 +287,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -428,7 +304,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -454,10 +329,7 @@ QGraphicsView:focus {
     </property>
     <property name="font">
      <font>
-      <family>Helvetica</family>
       <pointsize>-1</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -537,7 +409,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -555,7 +426,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -573,7 +443,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -591,7 +460,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -609,7 +477,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -627,7 +494,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -645,7 +511,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -663,7 +528,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -681,7 +545,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -699,7 +562,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -717,7 +579,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -773,7 +634,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -791,7 +651,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -809,7 +668,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -827,7 +685,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -845,7 +702,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -863,7 +719,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -881,7 +736,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -899,7 +753,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -917,7 +770,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -935,7 +787,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -953,7 +804,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -971,7 +821,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -989,7 +838,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1007,7 +855,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1025,7 +872,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1043,7 +889,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1061,7 +906,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1079,7 +923,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1097,7 +940,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1115,7 +957,6 @@ QGraphicsView:focus {
        <property name="font">
         <font>
          <family>Helvetica</family>
-         <pointsize>-1</pointsize>
          <weight>50</weight>
          <bold>false</bold>
         </font>
@@ -1141,10 +982,7 @@ QGraphicsView:focus {
     </property>
     <property name="font">
      <font>
-      <family>Helvetica</family>
       <pointsize>-1</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1168,10 +1006,7 @@ QGraphicsView:focus {
     </property>
     <property name="font">
      <font>
-      <family>Helvetica</family>
       <pointsize>-1</pointsize>
-      <weight>50</weight>
-      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -1249,7 +1084,7 @@ QGraphicsView:focus {
      <x>0</x>
      <y>0</y>
      <width>1900</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_file">

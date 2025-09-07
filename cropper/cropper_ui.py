@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'cropper/Sendy_cropper.ui'
+# Form implementation generated from reading ui file 'cropper/ui/cropper.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -14,126 +14,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Cropper(object):
     def setupUi(self, Cropper):
         Cropper.setObjectName("Cropper")
-        Cropper.resize(1900, 1045)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("cropper\\../sendy.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Cropper.setWindowIcon(icon)
-        Cropper.setStyleSheet("QMainWindow {\n"
-"    background-color: #F0F0F0;\n"
-"}\n"
-"\n"
-"QWidget {\n"
-"    background-color: #F0F0F0;\n"
-"    color: #000000;\n"
-"    font-family: \"Helvetica\";\n"
-"    font-size: 15px;\n"
-"}\n"
-"\n"
-"QMenuBar {\n"
-"    background-color: #F0F0F0;\n"
-"    color: #000000;\n"
-"}\n"
-"\n"
-"QMenuBar::item:selected {\n"
-"    background-color: #D0D0D0;\n"
-"}\n"
-"\n"
-"QMenu {\n"
-"    background-color: #FFFFFF;\n"
-"    color: #000000;\n"
-"}\n"
-"\n"
-"QMenu::item:selected {\n"
-"    background-color: #D0D0D0;\n"
-"    color: #000000;\n"
-"}\n"
-"\n"
-"QStatusBar {\n"
-"    background-color: #F0F0F0;\n"
-"    color: #FF0000;\n"
-"}\n"
-"\n"
-"QPushButton {\n"
-"    background-color: #E0E0E0;\n"
-"    color: #000000;\n"
-"    border: 2px solid #A0A0A0;\n"
-"    border-radius: 5px;\n"
-"    padding: 12px 10px;\n"
-"    font-family: \"Helvetica\";\n"
-"    font-size: 16px;\n"
-"    font-weight: normal;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #D0D0D0;\n"
-"}\n"
-"\n"
-"QPushButton:pressed {\n"
-"    background-color: #C0C0C0;\n"
-"}\n"
-"\n"
-"QLineEdit {\n"
-"    background-color: #FFFFFF;\n"
-"    color: #000000;\n"
-"    border: 2px solid #A0A0A0;\n"
-"    border-radius: 5px;\n"
-"    padding: 10px;\n"
-"    font-family: \"Helvetica\";\n"
-"    font-size: 22px;\n"
-"}\n"
-"\n"
-"QComboBox {\n"
-"    font: 18pt \"Helvetica\";\n"
-"    color: #000000;\n"
-"    background-color: #FFFFFF;\n"
-"    border: 2px solid #A0A0A0;\n"
-"    border-radius: 6px;\n"
-"    padding: 6px 30px 6px 10px;\n"
-"    min-width: 150px;\n"
-"}\n"
-"\n"
-"QComboBox::drop-down {\n"
-"    subcontrol-origin: padding;\n"
-"    subcontrol-position: top right;\n"
-"    width: 20px;\n"
-"    border-left: 2px solid #A0A0A0;\n"
-"    background-color: #E0E0E0;\n"
-"}\n"
-"\n"
-"QGraphicsView {\n"
-"    background-color: #FFFFFF;\n"
-"    border: 2px solid #A0A0A0;\n"
-"}\n"
-"\n"
-"QFrame[frameShape=\"4\"] {\n"
-"    background-color: #A0A0A0;\n"
-"    max-height: 1px;\n"
-"    border: none;\n"
-"}\n"
-"\n"
-"QStatusBar QLabel {\n"
-"    font-family: \"Helvetica\";\n"
-"    color: #FF0000;\n"
-"}\n"
-"\n"
-"*:focus {\n"
-"    border: 2px solid #0078d7;\n"
-"    outline: none;\n"
-"    }\n"
-"\n"
-"QGraphicsView:focus {\n"
-"    border: 2px solid #A0A0A0;\n"
-"}\n"
-"")
+        Cropper.resize(1900, 1038)
+        Cropper.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(Cropper)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton_crop = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_crop.setGeometry(QtCore.QRect(1740, 0, 141, 61))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
         font.setPointSize(-1)
-        font.setBold(False)
-        font.setWeight(50)
         self.pushButton_crop.setFont(font)
         self.pushButton_crop.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.pushButton_crop.setStyleSheet("QPushButton {\n"
@@ -165,7 +53,6 @@ class Ui_Cropper(object):
         self.pushButton_30_45 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_45.setFont(font)
@@ -175,7 +62,6 @@ class Ui_Cropper(object):
         self.pushButton_30_40 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_40.setFont(font)
@@ -185,7 +71,6 @@ class Ui_Cropper(object):
         self.pushButton_30_55 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_55.setFont(font)
@@ -195,7 +80,6 @@ class Ui_Cropper(object):
         self.pushButton_40_70 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_70.setFont(font)
@@ -205,7 +89,6 @@ class Ui_Cropper(object):
         self.pushButton_50_60 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_60.setFont(font)
@@ -215,7 +98,6 @@ class Ui_Cropper(object):
         self.pushButton_45_60 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_45_60.setFont(font)
@@ -225,7 +107,6 @@ class Ui_Cropper(object):
         self.pushButton_50_70 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_70.setFont(font)
@@ -235,7 +116,6 @@ class Ui_Cropper(object):
         self.pushButton_60_80 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_60_80.setFont(font)
@@ -245,7 +125,6 @@ class Ui_Cropper(object):
         self.pushButton_60_90 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_60_90.setFont(font)
@@ -255,7 +134,6 @@ class Ui_Cropper(object):
         self.pushButton_40_60 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_60.setFont(font)
@@ -265,7 +143,6 @@ class Ui_Cropper(object):
         self.pushButton_20_30 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_20_30.setFont(font)
@@ -275,7 +152,6 @@ class Ui_Cropper(object):
         self.pushButton_90_120 = QtWidgets.QPushButton(self.gridLayoutWidget)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_90_120.setFont(font)
@@ -285,10 +161,7 @@ class Ui_Cropper(object):
         self.pushButton_rotate = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_rotate.setGeometry(QtCore.QRect(390, 0, 81, 61))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
         font.setPointSize(-1)
-        font.setBold(False)
-        font.setWeight(50)
         self.pushButton_rotate.setFont(font)
         self.pushButton_rotate.setStyleSheet("QPushButton {\n"
 "    font-size: 35px;\n"
@@ -322,7 +195,6 @@ class Ui_Cropper(object):
         self.pushButton_35_35 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_35_35.setFont(font)
@@ -332,7 +204,6 @@ class Ui_Cropper(object):
         self.pushButton_70_70 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_70_70.setFont(font)
@@ -342,7 +213,6 @@ class Ui_Cropper(object):
         self.pushButton_50_50 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_50.setFont(font)
@@ -352,7 +222,6 @@ class Ui_Cropper(object):
         self.pushButton_60_60 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_60_60.setFont(font)
@@ -362,7 +231,6 @@ class Ui_Cropper(object):
         self.pushButton_90_90 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_90_90.setFont(font)
@@ -372,7 +240,6 @@ class Ui_Cropper(object):
         self.pushButton_80_80 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_80_80.setFont(font)
@@ -382,7 +249,6 @@ class Ui_Cropper(object):
         self.pushButton_20_20 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_20_20.setFont(font)
@@ -392,7 +258,6 @@ class Ui_Cropper(object):
         self.pushButton_30_30 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_30.setFont(font)
@@ -402,7 +267,6 @@ class Ui_Cropper(object):
         self.pushButton_40_40 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_40.setFont(font)
@@ -412,7 +276,6 @@ class Ui_Cropper(object):
         self.pushButton_100_100 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_100_100.setFont(font)
@@ -422,7 +285,6 @@ class Ui_Cropper(object):
         self.pushButton_110_110 = QtWidgets.QPushButton(self.gridLayoutWidget_2)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_110_110.setFont(font)
@@ -448,7 +310,6 @@ class Ui_Cropper(object):
         self.pushButton_30_50 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_50.setFont(font)
@@ -458,7 +319,6 @@ class Ui_Cropper(object):
         self.pushButton_30_60 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_30_60.setFont(font)
@@ -468,7 +328,6 @@ class Ui_Cropper(object):
         self.pushButton_40_50 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_50.setFont(font)
@@ -478,7 +337,6 @@ class Ui_Cropper(object):
         self.pushButton_40_80 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_80.setFont(font)
@@ -488,7 +346,6 @@ class Ui_Cropper(object):
         self.pushButton_50_55 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_55.setFont(font)
@@ -498,7 +355,6 @@ class Ui_Cropper(object):
         self.pushButton_40_90 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_40_90.setFont(font)
@@ -508,7 +364,6 @@ class Ui_Cropper(object):
         self.pushButton_50_80 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_80.setFont(font)
@@ -518,7 +373,6 @@ class Ui_Cropper(object):
         self.pushButton_50_75 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_75.setFont(font)
@@ -528,7 +382,6 @@ class Ui_Cropper(object):
         self.pushButton_50_90 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_50_90.setFont(font)
@@ -538,7 +391,6 @@ class Ui_Cropper(object):
         self.pushButton_20_35 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_20_35.setFont(font)
@@ -548,7 +400,6 @@ class Ui_Cropper(object):
         self.pushButton_25_30 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_25_30.setFont(font)
@@ -558,7 +409,6 @@ class Ui_Cropper(object):
         self.pushButton_20_40 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_20_40.setFont(font)
@@ -568,7 +418,6 @@ class Ui_Cropper(object):
         self.pushButton_70_80 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_70_80.setFont(font)
@@ -578,7 +427,6 @@ class Ui_Cropper(object):
         self.pushButton_70_90 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_70_90.setFont(font)
@@ -588,7 +436,6 @@ class Ui_Cropper(object):
         self.pushButton_70_120 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_70_120.setFont(font)
@@ -598,7 +445,6 @@ class Ui_Cropper(object):
         self.pushButton_80_110 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_80_110.setFont(font)
@@ -608,7 +454,6 @@ class Ui_Cropper(object):
         self.pushButton_80_120 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_80_120.setFont(font)
@@ -618,7 +463,6 @@ class Ui_Cropper(object):
         self.pushButton_80_130 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_80_130.setFont(font)
@@ -628,7 +472,6 @@ class Ui_Cropper(object):
         self.pushButton_90_110 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_90_110.setFont(font)
@@ -638,7 +481,6 @@ class Ui_Cropper(object):
         self.pushButton_90_130 = QtWidgets.QPushButton(self.gridLayoutWidget_3)
         font = QtGui.QFont()
         font.setFamily("Helvetica")
-        font.setPointSize(-1)
         font.setBold(False)
         font.setWeight(50)
         self.pushButton_90_130.setFont(font)
@@ -648,10 +490,7 @@ class Ui_Cropper(object):
         self.pushButton_swap = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_swap.setGeometry(QtCore.QRect(480, 0, 81, 61))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
         font.setPointSize(-1)
-        font.setBold(False)
-        font.setWeight(50)
         self.pushButton_swap.setFont(font)
         self.pushButton_swap.setStyleSheet("QPushButton {\n"
 "    font-size: 35px;\n"
@@ -661,10 +500,7 @@ class Ui_Cropper(object):
         self.pushButton_full_screen = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_full_screen.setGeometry(QtCore.QRect(570, 0, 81, 61))
         font = QtGui.QFont()
-        font.setFamily("Helvetica")
         font.setPointSize(-1)
-        font.setBold(False)
-        font.setWeight(50)
         self.pushButton_full_screen.setFont(font)
         self.pushButton_full_screen.setStyleSheet("QPushButton {\n"
 "    font-size: 35px;\n"
@@ -701,7 +537,7 @@ class Ui_Cropper(object):
         self.lineEdit_number.raise_()
         Cropper.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Cropper)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1900, 24))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1900, 21))
         self.menubar.setObjectName("menubar")
         self.menu_file = QtWidgets.QMenu(self.menubar)
         self.menu_file.setObjectName("menu_file")

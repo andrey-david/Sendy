@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="cropper.css">cropper/ui/styles/cropper_bright.css</file>
+        <file alias="sendy.ico">sendy.ico</file>
+    </qresource>
+</RCC>

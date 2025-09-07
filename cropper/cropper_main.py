@@ -3,14 +3,15 @@ import logging
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QShortcut, \
     QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget
-from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage
-from PyQt5.QtCore import QRectF, QObject, QEvent, Qt
+from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage, QIcon
+from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QFile, QTextStream
 from cropper.cropper_ui import Ui_Cropper
 from PIL import Image
 import pillow_heif
 import io
 
 from photo_processing.photo_processing import PhotoProc
+import resources_rc
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +113,12 @@ class SendyCropper(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_Cropper()
+        self.ui.setupUi(self)
+
+        self.set_CSS()
+
+        self.setWindowIcon(self.load_icon())
+
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.ui.setupUi(self)
         self.pixmap_main = None
@@ -158,6 +165,38 @@ class SendyCropper(QMainWindow):
             button = getattr(self.ui, f"pushButton_{w}_{h}")
             if button:
                 button.clicked.connect(self.set_width_height_from_button)
+
+    def set_CSS(self):
+        try:
+            css_file = QFile(":/cropper.css")
+            if not css_file.exists():
+                logger.error('No CSS file in resources')
+                return
+
+            if css_file.open(QFile.ReadOnly | QFile.Text):
+                stream = QTextStream(css_file)
+                css = stream.readAll()
+                css_file.close()
+                logger.debug('CSS is loaded')
+                QApplication.instance().setStyleSheet(css)
+            else:
+                logger.error('Cannot open CSS file')
+                return
+
+        except Exception as e:
+            logger.error(f'Cannot load CSS: {e}')
+            return
+
+    def load_icon(self):
+        try:
+            if QFile.exists(":/sendy.ico"):
+                return QIcon(":/sendy.ico")
+            else:
+                logger.error('No icon in resources')
+                return QIcon()
+        except Exception as e:
+            logger.error(f'Icon loading: {e}')
+            return QIcon()
 
     def load_image(self, image):
         self.original_image = image
