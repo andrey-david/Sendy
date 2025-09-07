@@ -55,7 +55,8 @@ async def process_start_command(message: Message):
         f'\n📌 Обновлено лого.\n'
         f'\n📌 Произведён полный рефакторинг updater, улучшен визуал.\n'
         f'\n📌 % = ✂️ = /cropper; команда /cropper добавлена в меню. Также вызов Cropper доступен из трея.\n'
-        f'\n📌 Логи теперь сохраняются в файл sendy.log. В случае ошибки файл с логами можно отправить нажав на кнопку в [Настройки] → [Прочее] → [Отправить логи]\n',
+        f'\n📌 Логи теперь сохраняются в файл sendy.log. В случае ошибки файл с логами можно отправить нажав на кнопку в [Настройки] → [Прочее] → [Отправить логи]\n'
+        f'\n📌 FIX Исправлена проблема с сохранением настроек\n',
         reply_markup=main_keyboard
     )
 
@@ -97,10 +98,11 @@ def stop_sendy_from_tray():
     asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
 
 
-icon_path = Path(__file__).parent.parent / "sendy.ico"
+# icon_path = Path(__file__).parent.parent / "sendy.ico"
+icon_path = "sendy.ico"
 
-menu = pystray.Menu(pystray.MenuItem('Stop', stop_sendy_from_tray),
-                    pystray.MenuItem('Cropper', lambda: Thread(target=sendy_cropper).start()))
+menu = pystray.Menu(pystray.MenuItem('Cropper', lambda: Thread(target=sendy_cropper).start()),
+                    pystray.MenuItem('Stop', stop_sendy_from_tray))
 
 sendy_tray = pystray.Icon(name='Sendy', icon=Image.open(icon_path), menu=menu)
 
@@ -143,7 +145,7 @@ async def image_loader():
         async for _ in awatch(data['path']):
             await image_load_handler()
     except Exception as e:
-        print(f"[image_loader] Ошибка: {e}")  # Сделать через логирование
+        logger.error(f"[image_loader] Ошибка: {e}")
         await config.bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
                                                             f"\n\n Проверьте путь /settings")
 
@@ -528,11 +530,12 @@ async def process_button_settings_startup_press(callback: CallbackQuery):
                                      reply_markup=keyboard_inline_settings_other_startup)
 
 
-@router.callback_query(F.data == 'button_send_logs')  # кнопка /settings автозагрузка нажата
+@router.callback_query(F.data == 'button_send_logs')
 async def process_button_settings_send_logs(callback: CallbackQuery):
     log_path = 'sendy.log'
+    recipient = '445925989'
     if os.path.exists(log_path):
-        await config.bot.send_document(chat_id='445925989', document=FSInputFile(log_path))
+        await config.bot.send_document(chat_id=recipient, document=FSInputFile(log_path))
         await callback.message.edit_text(text='<b>🗃 Файл с логами был отправлен @Andrey_David.</b>',
                                          reply_markup=keyboard_inline_back_to_settings_other)
     else:
