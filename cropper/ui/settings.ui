@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SendySettings</class>
+ <widget class="QDialog" name="SendySettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>778</width>
+    <height>921</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sendy Cropper - Settings</string>
+  </property>
+  <widget class="QPushButton" name="pushButton_settings_apply">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>850</y>
+     <width>201</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Применить</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>781</width>
+     <height>841</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Обработка фото</string>
+    </attribute>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_crop">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>710</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>680</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Обрезка края фото, px:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_white">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>280</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>570</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Размер шрифта, px:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>250</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Белая рамка, см:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_black">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>390</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>360</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Чёрная рамка, px:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>470</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>DPI:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_dpi">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>500</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>140</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Заворот края фото, см:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_zav">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>170</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_fontsize">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>600</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Путь для сохранения файлов:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_photo_processing_path">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>60</y>
+       <width>411</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_set_photo_processing_path">
+     <property name="geometry">
+      <rect>
+       <x>550</x>
+       <y>60</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Обзор</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>300</x>
+       <y>390</y>
+       <width>171</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ТУТ ПОКА НИЧЕГО НЕТ</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
