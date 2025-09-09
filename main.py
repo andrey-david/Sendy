@@ -5,7 +5,7 @@ import os
 import logging
 
 logger = logging.getLogger()
-logging_handler = logging.FileHandler('sendy.log')
+logging_handler = logging.FileHandler(filename='sendy.log',  encoding='utf-8')
 logging_console = logging.StreamHandler()
 logging.basicConfig(
     level=logging.INFO,
@@ -26,6 +26,7 @@ from handlers.handlers import sendy_tray, router, image_loader
 from keyboards.keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
     easter_egg_days
 from lexicon.lexicon import sendy_info
+import resources_rc
 
 
 # Проверка на обновления, если обновление есть, то выводит сообщение с кнопкой для обновления
@@ -84,18 +85,20 @@ async def tray():
 
 async def main():
     logger.info('BOT JUST STARTED')
+    try:
+        bot = Bot(token=config.BOT_TOKEN,
+                  default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+                  )
+        config.bot = bot
 
-    bot = Bot(token=config.BOT_TOKEN,
-              default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-              )
-    config.bot = bot
+        dp = Dispatcher()
+        config.dp = dp
 
-    dp = Dispatcher()
-    config.dp = dp
-
-    dp.include_router(router)
-    dp.startup.register(set_main_menu)
-    _ = asyncio.create_task(image_loader())
+        dp.include_router(router)
+        dp.startup.register(set_main_menu)
+        _ = asyncio.create_task(image_loader())
+    except Exception as e:
+        logger.exception(f'Cannot run BOT: {e}')
 
     try:
         config.bot_loop = asyncio.get_running_loop()
