@@ -1,17 +1,18 @@
 import sys
 import logging
+from threading import Thread
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QShortcut, \
-    QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget
+    QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget, QMdiSubWindow
 from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage, QIcon
 from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QFile, QTextStream
-from cropper.cropper_ui import Ui_Cropper
 from PIL import Image
 import pillow_heif
 import io
 
 from photo_processing.photo_processing import PhotoProc
-import resources_rc
+from cropper.cropper_ui import Ui_Cropper
+from cropper.cropper_settings import SendySettings
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +144,8 @@ class SendyCropper(QMainWindow):
         self.crop_height = 0
         self.cropped_result_image = None
         self.ui.action_open.triggered.connect(self.open_file)
+        self.ui.action_settings.triggered.connect(self.open_settings)
+        self.settings_window = None
         self.frame_scale = 1.2
         self.setFocusPolicy(Qt.StrongFocus)
         self.message = None
@@ -239,6 +242,15 @@ class SendyCropper(QMainWindow):
                 return
             self.load_image(image)
             self.ui.graphicsView_main.setStyleSheet('')
+
+    def open_settings(self):
+        try:
+            if self.settings_window is None:
+                self.settings_window = SendySettings(self)
+            self.settings_window.show()
+            self.settings_window.raise_()
+        except Exception as e:
+            logger.exception(f'open_settings: {e}')
 
     def set_number(self, number):
         self.ui.lineEdit_number.setText(str(number))
@@ -509,6 +521,8 @@ class SendyCropper(QMainWindow):
 def sendy_cropper(image=None, number='', material=0, width=None, height=None, message=None):
     app = QApplication(sys.argv)
     window = SendyCropper()
+    window.raise_()
+    window.activateWindow()
     window.load_image(image)
     window.set_number(number)
     window.set_width_and_height(width, height)
