@@ -1,78 +1,84 @@
+"""
+Image counter
+--------------------
+This script is used to count, categorize, and send all the images that have already been processed by user.
+It helps the user keep track of statistics.
+
+It performs the following steps:
+    1. The `counter_outer` function receives a folder path where all `.jpg` files should be counted.
+       The function looks specifically for `.jpg` files containing the Cyrillic letter 'х' in their names.
+       It also processes nested subfolders recursively.
+    2. It then builds a `list_of_all_sizes`.
+    3. Finally, all elements from this list are sent to the user’s chat via aiogram.
+
+Usage:
+    Set the folder path in Sendy settings and press the 🧮 button.
+"""
+
 from collections import Counter
 import re
-from data import data
 import os
-from aiogram.types import Message
 import logging
+
+from aiogram.types import Message
+
+from data.data import data
 
 logger = logging.getLogger(__name__)
 
-async def counter_outer(folder, message: Message): #функция подсчёта
+
+async def count_images_in_folder(folder, message: Message):
     exceptions = data['Alex_exceptions']
-    all_text_to_message = []
+    all_sizes_sorted = []
 
-    async def counter_inner(folder_in):
-        text = ''
-        holst = []
-        banner = []
-        hlopok = []
-        matovi = []
-        # считает и добавляет данные в соответствующие списки холст/баннер/хлопок
-        for file in os.listdir(folder_in):
-            if file.lower().endswith('.jpg') and 'х' in file:  # кириллица
-                name_of_file = file
-                file = re.search(r"(\d+)х(\d+)", file.lower())
-                if file:
-                    width, height = file.groups()
-                    a = width + '×' + height
-                    if 'матовый' in name_of_file.lower():
-                        matovi.append(a)
-                    elif 'холст' in name_of_file.lower():
-                        holst.append(a)
-                    elif 'баннер' in name_of_file.lower():
-                        banner.append(a)
-                    elif 'хлопок' in name_of_file.lower():
-                        hlopok.append(a)
-            elif os.path.isdir(folder_in + '\\' + file) and (file not in exceptions):
-                await counter_inner(folder_in + '\\' + file)
+    def process_subfolder(subfolder):
+        materials: dict[str, list[str]] = {'ХОЛСТ': [], 'БАННЕР': [], 'ХЛОПОК': [], 'МАТОВЫЙ': []}
 
-        # считает элементы в списке присваивая им ключи в виде размеров и значения в виде количества размеров в списке (прим: Counter({'50×50': 9}) )
-        banner_summ = Counter(banner)
-        holst_summ = Counter(holst)
-        hlopok_summ = Counter(hlopok)
-        matovi_summ = Counter(matovi)
+        # считает и добавляет данные в соответствующие списки холст/баннер/хлопок/матовый
+        for file in os.listdir(subfolder):
+            file = file.upper()
+            if file.endswith('.JPG') and 'Х' in file:  # кириллица
+                have_width_height = re.search(r"(\d+)Х(\d+)", file)
+                if have_width_height:
+                    width, height = have_width_height.groups()
+                    width_height = f'{width}×{height}'
+                    for material in materials:
+                        if material in file:
+                            materials[material].append(width_height)
+                            break
 
-        # если длина списка отлична от нуля, то добавляет ключ и значение от counter в переменную text
-        if len(banner) > 0:
-            text += '\n<b>БАННЕР</b> ' + str(len(banner)) + 'шт.\n'
-            for i in range(len(banner_summ)):
-                text += str(list(banner_summ.keys())[i]) + ' = ' + str(list(banner_summ.values())[i]) + 'шт.\n'
+            elif os.path.isdir(os.path.join(subfolder, file)) and (file not in exceptions):
+                process_subfolder(os.path.join(subfolder, file))
 
-        if len(holst) > 0:
-            text += '\n<b>ХОЛСТ</b> ' + str(len(holst)) + 'шт.\n'
-            for i in range(len(holst_summ)):
-                text += str(list(holst_summ.keys())[i]) + ' = ' + str(list(holst_summ.values())[i]) + 'шт.\n'
+        # если длина списка отлична от нуля, то добавляет ключ и значение от counter в строковую переменную
+        def add_to_counter(name: str, counter: Counter[str]) -> str:
+            list_of_sizes = ''
+            if sum(counter.values()):
+                list_of_sizes += f'\n<b>{name} {sum(counter.values())} шт.</b>\n'
+                for key, value in counter.items():
+                    list_of_sizes += f' {key} = {value} шт.\n'
+            return list_of_sizes
 
-        if len(hlopok) > 0:
-            text += '\n<b>ХЛОПОК</b> ' + str(len(hlopok)) + 'шт.\n'
-            for i in range(len(hlopok_summ)):
-                text += str(list(hlopok_summ.keys())[i]) + ' = ' + str(list(hlopok_summ.values())[i]) + 'шт.\n'
-
-        if len(matovi) > 0:
-            text += '\n<b>МАТОВЫЙ</b> ' + str(len(matovi)) + 'шт.\n'
-            for i in range(len(matovi_summ)):
-                text += str(list(matovi_summ.keys())[i]) + ' = ' + str(list(matovi_summ.values())[i]) + 'шт.\n'
+        all_sizes = ''
+        for material in materials:
+            all_sizes += add_to_counter(material, Counter(materials[material]))
 
         # считает итого в папке, выводит текст в начало строки
-        text = '📁 ' + folder_in.split('\\')[-2] + '\n └─ <b>' + folder_in.split('\\')[-1] + '</b>: ' + str(
-            len(holst) + len(banner) + len(hlopok) + len(matovi)) + 'шт.\n' + text
+        num_of_files_in_folder = sum(len(i) for i in materials.values())
+        current_folder = os.path.basename(subfolder)
+        try:
+            parent_folder = os.path.basename(os.path.dirname(subfolder))
+            current_folder_sizes = f'📁 {parent_folder}\n └─ <b>{current_folder}: {num_of_files_in_folder} шт.</b>\n{all_sizes}'
+        except IndexError:
+            logger.exception(f'There is no parent folder {subfolder}')
+            current_folder_sizes = f'📁 <b>{current_folder}\n: {num_of_files_in_folder} шт.</b>\n{all_sizes}'
 
-        all_text_to_message.append(text) #собирает весь вывод в один список
+        all_sizes_sorted.append(current_folder_sizes)  # собирает все списки с размерами в один список
 
     for element in os.listdir(folder):
-        folder_in = folder + '\\' + element
-        if os.path.isdir(folder_in) and (element not in exceptions): # проверка является ли folder_in папкой и нет ли её в списке исключений
-            await counter_inner(folder_in)
+        folder_in = os.path.join(folder, element)
+        if os.path.isdir(folder_in) and (element not in exceptions):  # folder_inner папка и не в исключениях
+            process_subfolder(folder_in)
 
-    for i in all_text_to_message[::-1]: #переворачивает список и выводит его в виде сообщений
-        await message.answer(text=i, parse_mode="HTML")
+    for msg in all_sizes_sorted[::-1]:  # переворачивает список и выводит его в виде сообщений
+        await message.answer(text=msg)
