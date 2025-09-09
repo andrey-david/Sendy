@@ -1,5 +1,8 @@
 import logging
 import os
+import io
+import re
+
 import subprocess
 from aiogram.types import CallbackQuery, Message, FSInputFile
 from aiogram import F, Router
@@ -16,12 +19,11 @@ import sys
 import winshell
 import time
 import pyautogui
-from image_counter.image_counter import counter_outer
+from image_counter.image_counter import count_images_in_folder
 from lexicon.lexicon import is_admin
 import asyncio
 from cropper.cropper_main import sendy_cropper
 from photo_processing.photo_processing import PhotoProc
-import re
 from threading import Thread
 import pystray
 from datetime import datetime
@@ -51,12 +53,9 @@ async def process_start_command(message: Message):
     await message.answer(
         f'<b>{message.from_user.username} подключился. <i>Sendy {sendy_info[0]}</i> приветствует вас.</b>'
         f'\n'
-        f'\n📌 В Sandy Cropper добавлен tab order. Выделенный элемент теперь подсвечивается синим.\n'
-        f'\n📌 Обновлено лого.\n'
-        f'\n📌 Произведён полный рефакторинг updater, улучшен визуал.\n'
-        f'\n📌 % = ✂️ = /cropper; команда /cropper добавлена в меню. Также вызов Cropper доступен из трея.\n'
-        f'\n📌 Логи теперь сохраняются в файл sendy.log. В случае ошибки файл с логами можно отправить нажав на кнопку в [Настройки] → [Прочее] → [Отправить логи]\n'
-        f'\n📌 FIX Исправлена проблема с сохранением настроек\n',
+        f'\n📌 Исправлена ошибка модуля подсчёта изображений.\n'
+        f'\n📌 Улучшено логгирование.\n'
+        f'\n📌 Добавлены настройки в Cropper, но они пока не работают.\n',
         reply_markup=main_keyboard
     )
 
@@ -140,28 +139,24 @@ async def image_load_handler():
 
 # Запустить проверку папки и отправить картинки, если они там есть
 async def image_loader():
-    await asyncio.sleep(5)
+    await asyncio.sleep(5)  # waiting for data to read
     try:
         async for _ in awatch(data['path']):
             await image_load_handler()
     except Exception as e:
-        logger.error(f"[image_loader] Ошибка: {e}")
-        await config.bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e} "
-                                                            f"\n\n Проверьте путь /settings")
+        logger.exception(f"[image_loader] Ошибка: {e}")
+        await config.bot.send_message(chat_id=chat_id, text=f"💀 <b>Произошла ошибка загрузки фото:</b> {e}"
+                                                            f"\n\n Проверьте путь в /settings")
 
 
 @router.message(F.text.lower() == '🧮')
 async def Alex_plus_button_pressed(message: Message):
     if await is_admin(message.from_user.id, message):
         try:
-            await counter_outer(data['Alex_path'], message)
+            await count_images_in_folder(data['Alex_path'], message)
         except Exception as e:
-            await message.answer(text=f'💀 <b>Произошла ошибка: {e}</b>'
-                                      f'\n'
-                                      f'\nПуть Алекс+:'
-                                      f'\n<code>{data['Alex_path']}</code>'
-                                      f'\n'
-                                      f'\n• Смените путь Алекс+ в /settings')
+            logger.exception(f'Photo_counter: {e}')
+            await message.answer(text=f'💀 <b>Произошла ошибка: {e}</b>')
 
 
 @router.message(F.text.lower() == '📸')
@@ -464,7 +459,9 @@ async def process_button_settings_Alex_exceptions_press(callback: CallbackQuery,
     exceptions = ', '.join(data['Alex_exceptions'])
     await callback.message.edit_text(text=f'Текущий список: <code>{exceptions}</code>'
                                           f'\n'
-                                          f'\nВведите исключения для Alex+ через запятую, для удаления используйте символ "-" перед словом (напр. -Алекс), регистр имеет значение:',
+                                          f'\n🔹Введите исключения для Подсчёта изображений через запятую\n'
+                                          f'\n🔹Для удаления используйте символ "-" перед словом/фразой (напр. -Алекс, -Sendy Cropper)\n'
+                                          f'\n🔹Регистр имеет значение\n',
                                      reply_markup=keyboard_inline_settings_cancel)
     await state.set_state(SettingsStates.Alex_exceptions)
     await state.update_data(msg_id=callback.message.message_id)
