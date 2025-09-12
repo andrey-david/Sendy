@@ -10,9 +10,12 @@ from PIL import Image
 import pillow_heif
 import io
 
+from cropper.cropper_help import SendyHelp
 from photo_processing.photo_processing import PhotoProc
 from cropper.cropper_ui import Ui_Cropper
 from cropper.cropper_settings import SendySettings
+from cropper.cropper_save import SendySave
+from data.data import Data
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +69,10 @@ class CropFrame(QGraphicsRectItem):
         self.setCursor(Qt.OpenHandCursor)
         super().mouseReleaseEvent(event)
 
+    def color(self, clr=QColor("#FF0000")):
+        self.pen = QPen(clr, 2)
+        self.setPen(self.pen)
+
 
 class DarkOverlay(QGraphicsItem):
     def __init__(self, scene_rect, crop_frame):
@@ -75,26 +82,27 @@ class DarkOverlay(QGraphicsItem):
         self.crop_frame = crop_frame
         self.setOpacity(0.5)
         self.setAcceptedMouseButtons(Qt.NoButton)
+        self.overlay_color = QColor("#000000")
 
     def boundingRect(self):
         return self.scene_rect
 
     def paint(self, painter, option, widget=None):
         # Общая область
-        painter.setBrush(QBrush(QColor(0, 0, 0)))
+        painter.setBrush(QBrush(self.overlay_color))
         painter.setPen(Qt.NoPen)
 
-        # Общая тёмная область
         full = QPainterPath()
         full.addRect(self.scene_rect)
 
-        # Прямоугольник кадрирования – вырезаем из общей области
         hole = QPainterPath()
-        hole.addRect(self.crop_frame.sceneBoundingRect())  # учти, sceneRect!
+        hole.addRect(self.crop_frame.sceneBoundingRect())
 
-        # Итоговая маска: всё, кроме рамки
         final_path = full.subtracted(hole)
         painter.drawPath(final_path)
+
+    def color(self, clr=QColor("#000000")):
+        self.overlay_color = clr
 
 
 class WheelFilter(QObject):
@@ -121,13 +129,16 @@ class SendyCropper(QMainWindow):
         self.setWindowIcon(self.load_icon())
 
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.ui.setupUi(self)
         self.pixmap_main = None
         self.ui.pushButton_rotate.clicked.connect(self.rotate_image)
+        self.ui.pushButton_contrast.clicked.connect(self.contrast)
         self.ui.pushButton_swap.clicked.connect(self.swap_wight_and_height)
         self.ui.pushButton_full_screen.clicked.connect(self.full_screen)
         QShortcut(QKeySequence("Ctrl+R"), self).activated.connect(self.rotate_image)
         QShortcut(QKeySequence("Ctrl+F"), self).activated.connect(self.full_screen)
+        QShortcut(QKeySequence("Ctrl+S"), self).activated.connect(self.swap_wight_and_height)
+        QShortcut(QKeySequence("Ctrl+C"), self).activated.connect(self.contrast)
+        QShortcut(QKeySequence("F3"), self).activated.connect(self.save)
         self.ui.pushButton_crop.clicked.connect(self.crop_and_close)
         self.ui.lineEdit_width.textChanged.connect(self.lineedit_width_or_height_changed)
         self.ui.lineEdit_height.textChanged.connect(self.lineedit_width_or_height_changed)
@@ -145,12 +156,18 @@ class SendyCropper(QMainWindow):
         self.cropped_result_image = None
         self.ui.action_open.triggered.connect(self.open_file)
         self.ui.action_settings.triggered.connect(self.open_settings)
+        self.ui.action_save.triggered.connect(self.save)
+        self.ui.action_about.triggered.connect(self.help)
         self.settings_window = None
+        self.save_window = None
+        self.help_window = None
         self.frame_scale = 1.2
         self.setFocusPolicy(Qt.StrongFocus)
         self.message = None
         self.original_image = None
         self.rotation_angle = 0
+        self.crop_frame_color = QColor("#FF0000")
+        self.overlay_color = QColor("#000000")
 
         for w, h in [(20, 30), (30, 40), (30, 45), (30, 55),
                      (40, 60), (45, 60), (40, 70), (50, 60),
@@ -171,7 +188,7 @@ class SendyCropper(QMainWindow):
 
     def set_CSS(self):
         try:
-            css_file = QFile(":/cropper.css")
+            css_file = QFile(Data.cropper_css)
             if not css_file.exists():
                 logger.error('No CSS file in resources')
                 return
@@ -186,8 +203,8 @@ class SendyCropper(QMainWindow):
                 logger.error('Cannot open CSS file')
                 return
 
-        except Exception as e:
-            logger.error(f'Cannot load CSS: {e}')
+        except Exception:
+            logger.exception(f'Cannot load CSS')
             return
 
     def load_icon(self):
@@ -197,8 +214,8 @@ class SendyCropper(QMainWindow):
             else:
                 logger.error('No icon in resources')
                 return QIcon()
-        except Exception as e:
-            logger.error(f'Icon loading: {e}')
+        except Exception:
+            logger.exception(f'Icon loading')
             return QIcon()
 
     def load_image(self, image):
@@ -247,10 +264,27 @@ class SendyCropper(QMainWindow):
         try:
             if self.settings_window is None:
                 self.settings_window = SendySettings(self)
-            self.settings_window.show()
-            self.settings_window.raise_()
+            self.settings_window.exec_()
         except Exception as e:
             logger.exception(f'open_settings: {e}')
+
+    def save(self):
+        try:
+            if self.save_window is None:
+                self.save_window = SendySave(self)
+            self.save_window.show()
+            self.save_window.raise_()
+        except Exception:
+            logger.exception(f'save_window')
+
+    def help(self):
+        try:
+            if self.help_window is None:
+                self.help_window = SendyHelp(self)
+            self.help_window.show()
+            self.help_window.raise_()
+        except Exception:
+            logger.exception(f'help_window')
 
     def set_number(self, number):
         self.ui.lineEdit_number.setText(str(number))
@@ -268,7 +302,7 @@ class SendyCropper(QMainWindow):
 
     def rescale_main(self):
         if self.pixmap_main is None:
-            logging.info('Нет изображения для рескейла мейна')
+            logging.debug('Нет изображения для рескейла мейна')
             self.statusBar().showMessage("Нет изображения.", 3000)
             return
 
@@ -299,7 +333,6 @@ class SendyCropper(QMainWindow):
     def rotate_image(self):
         error_image_css = """
                               QGraphicsView {
-                                  background-color: #FFEBEE;
                                   border: 2px solid #FF6B6B;
                               }
                           """
@@ -369,7 +402,6 @@ class SendyCropper(QMainWindow):
 
         error_image_css = """
                               QGraphicsView {
-                                  background-color: #FFEBEE;
                                   border: 2px solid #FF6B6B;
                               }
                           """
@@ -413,12 +445,39 @@ class SendyCropper(QMainWindow):
         image_rect = self.image_item.boundingRect()
         self.crop_frame = CropFrame(QRectF(0, 0, self.crop_width, self.crop_height), bounding_rect=image_rect,
                                     on_move_callback=self.update_preview)
+        self.crop_frame.color(clr=self.crop_frame_color)
         self.scene.addItem(self.crop_frame)
 
         self.overlay = DarkOverlay(image_rect, self.crop_frame)
+        self.overlay.color(clr=self.overlay_color)
         self.scene.addItem(self.overlay)
 
         self.update_preview()
+
+    def contrast(self):
+        crop_frame_standard = '#FF0000'
+        crop_frame_contrast = '#0000FF'
+        overlay_standard = '#000000'
+        overlay_contrast = '#FF00FF'
+        if self.crop_frame:
+            if self.ui.pushButton_contrast.text() == '◐':
+                self.crop_frame.color(clr=QColor(crop_frame_contrast))
+                self.overlay.color(clr=QColor(overlay_contrast))
+                self.crop_frame_color = QColor(crop_frame_contrast)
+                self.overlay_color = QColor(overlay_contrast)
+                self.scene.removeItem(self.overlay)
+                self.scene.addItem(self.overlay)
+                self.ui.pushButton_contrast.setText('◑')
+            else:
+                self.ui.pushButton_contrast.setText('◐')
+                self.crop_frame.color()
+                self.overlay.color()
+                self.crop_frame_color = QColor(crop_frame_standard)
+                self.overlay_color = QColor(overlay_standard)
+                self.scene.removeItem(self.overlay)
+                self.scene.addItem(self.overlay)
+        else:
+            logger.info('No frame for Contrast')
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Control:
@@ -492,7 +551,7 @@ class SendyCropper(QMainWindow):
     def crop_and_close(self):
         try:
             material_dict = {0: 'Холст', 1: 'Баннер', 2: 'Хлопок', 3: 'Матовый холст'}
-            n = self.ui.comboBox_material.currentIndex()
+            material = self.ui.comboBox_material.currentIndex()
             coordinates = (
                 self.frame_coordinates[0], self.frame_coordinates[1],
                 self.frame_coordinates[0] + self.frame_coordinates[2],
@@ -505,7 +564,7 @@ class SendyCropper(QMainWindow):
                 number=self.ui.lineEdit_number.text(),
                 width_cm=int(self.ui.lineEdit_width.text()),
                 height_cm=int(self.ui.lineEdit_height.text()),
-                material=material_dict[n],
+                material=material_dict[material],
                 message=self.message,
                 flag=False,
                 coordinates=coordinates
