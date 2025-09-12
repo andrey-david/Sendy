@@ -1,7 +1,7 @@
 """
 Image counter
 --------------------
-This script is used to count, categorize, and send all the images that have already been processed by user.
+This script is used to count, categorize, and send list of all the images that have already been processed by user.
 It helps the user keep track of statistics.
 
 It performs the following steps:
@@ -36,14 +36,14 @@ async def count_images_in_folder(folder, message: Message):
 
         # считает и добавляет данные в соответствующие списки холст/баннер/хлопок/матовый
         for file in os.listdir(subfolder):
-            file = file.upper()
-            if file.endswith('.JPG') and 'Х' in file:  # кириллица
-                have_width_height = re.search(r"(\d+)Х(\d+)", file)
+            filename = file.upper()
+            if filename.endswith('.JPG') and 'Х' in filename:  # кириллица
+                have_width_height = re.search(r"(\d+)Х(\d+)", filename)
                 if have_width_height:
                     width, height = have_width_height.groups()
                     width_height = f'{width}×{height}'
                     for material in materials:
-                        if material in file:
+                        if material in filename:
                             materials[material].append(width_height)
                             break
 
