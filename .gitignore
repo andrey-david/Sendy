@@ -11,3 +11,4 @@ Sendy.spec
 sendy.data
 sendy.log
 resources_rc.py
+/.env
