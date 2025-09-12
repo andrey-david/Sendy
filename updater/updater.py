@@ -14,7 +14,7 @@ Usage:
     The update process will start automatically when executed (usually executed by inline button in Sendy bot).
 
 Notes:
-    - use pyinstaller command <pyinstaller --onefile --icon=updater.ico updater.py>
+    - use pyinstaller command <pyinstaller --onefile --icon=updater.ico updater/updater.py>
     - The script assumes the update is provided as a `.zip` archive.
 """
 
