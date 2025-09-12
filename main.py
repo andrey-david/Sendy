@@ -20,6 +20,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 import aiohttp
+import dotenv
 
 from config import config
 from handlers.handlers import sendy_tray, router, image_loader
@@ -85,8 +86,9 @@ async def tray():
 
 async def main():
     logger.info('BOT JUST STARTED')
+    dotenv.load_dotenv()
     try:
-        bot = Bot(token=config.BOT_TOKEN,
+        bot = Bot(token=os.getenv('BOT_TOKEN'),
                   default=DefaultBotProperties(parse_mode=ParseMode.HTML)
                   )
         config.bot = bot
