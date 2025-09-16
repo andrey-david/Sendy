@@ -106,7 +106,7 @@ QComboBox::drop-down {
     subcontrol-position: top right;
     width: 20px;
     border-left: 2px solid #FFFFFF;
-    background-color: #FFFFFF;
+    background-color: transparent;
 }
 
 QGraphicsView {
