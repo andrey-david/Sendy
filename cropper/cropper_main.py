@@ -1,11 +1,12 @@
 import sys
 import logging
+import time
 from threading import Thread
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QShortcut, \
     QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget, QMdiSubWindow
 from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage, QIcon
-from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QFile, QTextStream
+from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QFile, QTextStream, QTimer
 from PIL import Image
 import pillow_heif
 import io
@@ -302,7 +303,7 @@ class SendyCropper(QMainWindow):
 
     def rescale_main(self):
         if self.pixmap_main is None:
-            logging.debug('Нет изображения для рескейла мейна')
+            logging.debug('No image for rescale main')
             self.statusBar().showMessage("Нет изображения.", 3000)
             return
 
@@ -312,13 +313,13 @@ class SendyCropper(QMainWindow):
         image_height = self.image_item.pixmap().height()
         if image_width > 0 and image_height > 0:
             scale = min((view_width / image_width), (
-                    view_height / image_height)) - 0.005  # 0.005 - похволяет уменьшить изобр так, чтобы убрать scroll
+                    view_height / image_height)) - 0.005  # 0.005 - позволяет уменьшить изобр так, чтобы убрать scroll
             self.ui.graphicsView_main.resetTransform()
             self.ui.graphicsView_main.scale(scale, scale)
 
     def rescale_preview(self):
         if self.cropped_image is None:
-            logging.info('Нет изображения для рескейла превью')
+            logging.debug('No image for preview rescale')
             return
 
         view_width = self.ui.graphicsView_preview.width()
@@ -326,7 +327,7 @@ class SendyCropper(QMainWindow):
         cropped_image_width = self.cropped_image.width()
         cropped_image_height = self.cropped_image.height()
         scale = min((view_width / cropped_image_width), (
-                view_height / cropped_image_height)) - 0.05  # 0.05 - похволяет уменьшить изобр так, чтобы убрать scroll
+                view_height / cropped_image_height)) - 0.05  # 0.05 - позволяет уменьшить изобр так, чтобы убрать scroll
         self.ui.graphicsView_preview.resetTransform()
         self.ui.graphicsView_preview.scale(scale, scale)
 
@@ -338,8 +339,8 @@ class SendyCropper(QMainWindow):
                           """
 
         if self.pixmap_main is None:
-            logging.info('Нет изображения для поворота.')
-            self.statusBar().showMessage("Нет изображения для поворота.", 3000)
+            logging.debug('No image for rotation')
+            self.statusBar().showMessage("Нет изображения для поворота.", 2000)
             self.ui.graphicsView_main.setStyleSheet(error_image_css)
             return
 
@@ -362,22 +363,26 @@ class SendyCropper(QMainWindow):
         self.rotation_angle = angles[(current_angle_index + 1) % len(angles)]
 
     def swap_wight_and_height(self):
-        width = self.crop_width
-        height = self.crop_height
+        self.crop_width, self.crop_height = self.crop_height, self.crop_width
         lineEdit_width = self.ui.lineEdit_width.text()
         lineEdit_height = self.ui.lineEdit_height.text()
         self.ui.lineEdit_width.setText(lineEdit_height)
         self.ui.lineEdit_height.setText(lineEdit_width)
-        self.crop_height, self.crop_width = width, height
         self.create_crop_frame()
 
     def full_screen(self):
         if self.ui.pushButton_full_screen.text() == '⛶':
-            self.ui.graphicsView_main.setFixedWidth(1491)
+            self.ui.graphicsView_preview.hide()
             self.ui.pushButton_full_screen.setText('🗗')
         else:
             self.ui.pushButton_full_screen.setText('⛶')
-            self.ui.graphicsView_main.setFixedWidth(741)
+            self.ui.graphicsView_preview.show()
+            QTimer.singleShot(0, self.rescale_preview)
+        QTimer.singleShot(0, self.rescale_main)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.rescale_preview()
         self.rescale_main()
 
     def set_width_height_from_button(self):
@@ -407,12 +412,12 @@ class SendyCropper(QMainWindow):
                           """
 
         if self.pixmap_main is None:
-            logging.info('Нет изображения для lineedit_width_or_height_changed')
+            logging.debug('No image for lineedit_width_or_height_changed')
             self.statusBar().showMessage("Нет изображения.", 3000)
             self.ui.graphicsView_main.setStyleSheet(error_image_css)
             return
-
-        self.ui.graphicsView_main.setStyleSheet('')
+        else:
+            self.ui.graphicsView_main.setStyleSheet('')
 
         try:  # width
             self.crop_width = int(self.ui.lineEdit_width.text())
@@ -422,6 +427,7 @@ class SendyCropper(QMainWindow):
                 raise ValueError
         except ValueError:
             self.ui.lineEdit_width.setStyleSheet(error_css)
+            logger.debug('Width is wrong')
             return
 
         try:  # height
@@ -432,6 +438,7 @@ class SendyCropper(QMainWindow):
                 raise ValueError
         except ValueError:
             self.ui.lineEdit_height.setStyleSheet(error_css)
+            logger.debug('Height is wrong')
             return
 
         self.create_crop_frame()
@@ -441,18 +448,19 @@ class SendyCropper(QMainWindow):
             self.scene.removeItem(self.crop_frame)
         if self.overlay:
             self.scene.removeItem(self.overlay)
-
         image_rect = self.image_item.boundingRect()
-        self.crop_frame = CropFrame(QRectF(0, 0, self.crop_width, self.crop_height), bounding_rect=image_rect,
-                                    on_move_callback=self.update_preview)
-        self.crop_frame.color(clr=self.crop_frame_color)
-        self.scene.addItem(self.crop_frame)
+        if self.crop_width > 0 and self.crop_height > 0:
+            self.crop_frame = CropFrame(QRectF(0, 0, self.crop_width, self.crop_height), bounding_rect=image_rect,
+                                        on_move_callback=self.update_preview)
 
-        self.overlay = DarkOverlay(image_rect, self.crop_frame)
-        self.overlay.color(clr=self.overlay_color)
-        self.scene.addItem(self.overlay)
+            self.crop_frame.color(clr=self.crop_frame_color)
+            self.scene.addItem(self.crop_frame)
 
-        self.update_preview()
+            self.overlay = DarkOverlay(image_rect, self.crop_frame)
+            self.overlay.color(clr=self.overlay_color)
+            self.scene.addItem(self.overlay)
+
+            self.update_preview()
 
     def contrast(self):
         crop_frame_standard = '#FF0000'
@@ -477,18 +485,19 @@ class SendyCropper(QMainWindow):
                 self.scene.removeItem(self.overlay)
                 self.scene.addItem(self.overlay)
         else:
-            logger.info('No frame for Contrast')
+            self.statusBar().showMessage(f"Нет изображения.", 2000)
+            logger.debug('No frame for Contrast')
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.frame_scale = 1.005
-            self.statusBar().showMessage(f"Масштабирование {self.frame_scale * 100 - 100}%", 2000)
+            self.statusBar().showMessage(f"Масштабирование {self.frame_scale * 100}%", 2000)
         super().keyPressEvent(event)
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key_Control:
             self.frame_scale = 1.2
-            self.statusBar().showMessage(f"Масштабирование {self.frame_scale * 100 - 100}%", 2000)
+            self.statusBar().showMessage(f"Масштабирование {self.frame_scale * 100}%", 2000)
         super().keyReleaseEvent(event)
 
     def resize_frame_by_wheel(self, event):
@@ -534,7 +543,11 @@ class SendyCropper(QMainWindow):
 
     def update_preview(self):
         if self.pixmap_main is None:
-            logging.info("Нет изображения для update_preview")
+            logging.debug("No image for update_preview")
+            return
+
+        if self.crop_frame is None:
+            logging.debug("Crop frame for update_preview")
             return
 
         crop_frame_XY = self.crop_frame.sceneBoundingRect()
@@ -550,7 +563,11 @@ class SendyCropper(QMainWindow):
 
     def crop_and_close(self):
         try:
-            material_dict = {0: 'Холст', 1: 'Баннер', 2: 'Хлопок', 3: 'Матовый холст'}
+            material_dict = {0: 'Холст',
+                             1: 'Баннер',
+                             2: 'Хлопок',
+                             3: 'Матовый холст'
+                             }
             material = self.ui.comboBox_material.currentIndex()
             coordinates = (
                 self.frame_coordinates[0], self.frame_coordinates[1],
