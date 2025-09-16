@@ -7,8 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>633</height>
+    <height>630</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>700</width>
+    <height>630</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>700</width>
+    <height>630</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Sendy Cropper - Help</string>
@@ -65,28 +77,28 @@
     <item>
      <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>[Ctrl+ R] - Rotate -  Повернуть</string>
+       <string>[Ctrl + R] - Rotate -  Повернуть</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_6">
       <property name="text">
-       <string>[Ctrl+ C] - Contrast - Контраст</string>
+       <string>[Ctrl + C] - Contrast - Контраст</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="label_5">
       <property name="text">
-       <string>[Ctrl+ S] - Swap - Поменять стороны</string>
+       <string>[Ctrl + S] - Swap - Поменять стороны</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>[Ctrl+ F] - Full screan - Полный экран</string>
+       <string>[Ctrl + F] - Full screen - Полный экран</string>
       </property>
      </widget>
     </item>

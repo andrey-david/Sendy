@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>612</width>
-    <height>924</height>
+    <width>610</width>
+    <height>920</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>610</width>
+    <height>920</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>610</width>
+    <height>920</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Sendy Cropper - Settings</string>

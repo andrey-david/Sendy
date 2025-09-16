@@ -14,7 +14,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SendySettings(object):
     def setupUi(self, SendySettings):
         SendySettings.setObjectName("SendySettings")
-        SendySettings.resize(612, 924)
+        SendySettings.resize(610, 920)
+        SendySettings.setMinimumSize(QtCore.QSize(610, 920))
+        SendySettings.setMaximumSize(QtCore.QSize(610, 920))
         self.pushButton_settings_apply = QtWidgets.QPushButton(SendySettings)
         self.pushButton_settings_apply.setGeometry(QtCore.QRect(200, 840, 211, 61))
         self.pushButton_settings_apply.setObjectName("pushButton_settings_apply")

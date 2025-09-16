@@ -14,9 +14,16 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_CropperSave(object):
     def setupUi(self, CropperSave):
         CropperSave.setObjectName("CropperSave")
-        CropperSave.resize(552, 253)
+        CropperSave.resize(550, 250)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(CropperSave.sizePolicy().hasHeightForWidth())
+        CropperSave.setSizePolicy(sizePolicy)
+        CropperSave.setMinimumSize(QtCore.QSize(550, 250))
+        CropperSave.setMaximumSize(QtCore.QSize(550, 250))
         self.gridLayoutWidget = QtWidgets.QWidget(CropperSave)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 70, 531, 181))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 70, 531, 171))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
