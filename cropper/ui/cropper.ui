@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2518</width>
-    <height>1146</height>
+    <width>2099</width>
+    <height>1107</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1640,7 +1640,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2518</width>
+     <width>2099</width>
      <height>21</height>
     </rect>
    </property>
@@ -1686,9 +1686,13 @@
  </widget>
  <tabstops>
   <tabstop>lineEdit_width</tabstop>
+  <tabstop>lineEdit_height</tabstop>
   <tabstop>lineEdit_number</tabstop>
   <tabstop>comboBox_material</tabstop>
+  <tabstop>pushButton_crop</tabstop>
+  <tabstop>pushButton_rotate</tabstop>
   <tabstop>pushButton_swap</tabstop>
+  <tabstop>pushButton_full_screen</tabstop>
   <tabstop>pushButton_contrast</tabstop>
   <tabstop>pushButton_20_30</tabstop>
   <tabstop>pushButton_30_40</tabstop>
@@ -1734,6 +1738,7 @@
   <tabstop>pushButton_90_110</tabstop>
   <tabstop>pushButton_90_130</tabstop>
   <tabstop>graphicsView_main</tabstop>
+  <tabstop>graphicsView_preview</tabstop>
  </tabstops>
  <resources/>
  <connections/>

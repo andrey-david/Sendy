@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Cropper(object):
     def setupUi(self, Cropper):
         Cropper.setObjectName("Cropper")
-        Cropper.resize(2518, 1146)
+        Cropper.resize(2099, 1107)
         Cropper.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(Cropper)
         self.centralwidget.setObjectName("centralwidget")
@@ -809,7 +809,7 @@ class Ui_Cropper(object):
         self.gridLayout_4.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
         Cropper.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(Cropper)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 2518, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 2099, 21))
         self.menubar.setObjectName("menubar")
         self.menu_file = QtWidgets.QMenu(self.menubar)
         self.menu_file.setObjectName("menu_file")
@@ -837,10 +837,14 @@ class Ui_Cropper(object):
 
         self.retranslateUi(Cropper)
         QtCore.QMetaObject.connectSlotsByName(Cropper)
-        Cropper.setTabOrder(self.lineEdit_width, self.lineEdit_number)
+        Cropper.setTabOrder(self.lineEdit_width, self.lineEdit_height)
+        Cropper.setTabOrder(self.lineEdit_height, self.lineEdit_number)
         Cropper.setTabOrder(self.lineEdit_number, self.comboBox_material)
-        Cropper.setTabOrder(self.comboBox_material, self.pushButton_swap)
-        Cropper.setTabOrder(self.pushButton_swap, self.pushButton_contrast)
+        Cropper.setTabOrder(self.comboBox_material, self.pushButton_crop)
+        Cropper.setTabOrder(self.pushButton_crop, self.pushButton_rotate)
+        Cropper.setTabOrder(self.pushButton_rotate, self.pushButton_swap)
+        Cropper.setTabOrder(self.pushButton_swap, self.pushButton_full_screen)
+        Cropper.setTabOrder(self.pushButton_full_screen, self.pushButton_contrast)
         Cropper.setTabOrder(self.pushButton_contrast, self.pushButton_20_30)
         Cropper.setTabOrder(self.pushButton_20_30, self.pushButton_30_40)
         Cropper.setTabOrder(self.pushButton_30_40, self.pushButton_30_45)
@@ -885,6 +889,7 @@ class Ui_Cropper(object):
         Cropper.setTabOrder(self.pushButton_80_130, self.pushButton_90_110)
         Cropper.setTabOrder(self.pushButton_90_110, self.pushButton_90_130)
         Cropper.setTabOrder(self.pushButton_90_130, self.graphicsView_main)
+        Cropper.setTabOrder(self.graphicsView_main, self.graphicsView_preview)
 
     def retranslateUi(self, Cropper):
         _translate = QtCore.QCoreApplication.translate
