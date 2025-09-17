@@ -1,17 +1,52 @@
+"""
+Data - Storage for Sendy
+------------------------
+This class stores all user-editable configuration data for the Sendy application,
+such as paths, image processing parameters, and UI preferences.
+The configuration can be saved to disk and loaded back using pickle.
+
+data = Data.load() - is singleton instance
+
+Usage:
+    from data import data
+
+    data.photo_processing_wrap_cm = 5.0
+    data.save()  # If you need to save to a file via pickle
+
+Attributes:
+    image_loader_path (Path) - Path where images are loaded from, and then sent to the user's chat.
+
+    image_counter_path (Path): Path used for counting images.
+    image_counter_exceptions (list[str]): List of files or folders to exclude from counting.
+
+    photo_processing_path (Path): Path where processed photos are saved.
+    photo_processing_wrap_cm (float): Width of wrap in centimeters.
+    photo_processing_white_cm (float): Width of white border in centimeters.
+    photo_processing_black_px (int): Width of black border in pixels.
+    photo_processing_dpi (int): Output resolution in DPI.
+    photo_processing_crop_px (int): Cropping border of image in pixels.
+    photo_processing_font_size_px (int): Font size in pixels for nuber on image.
+
+    cropper_css (str): Path to the stylesheet used by the Cropper windows.
+
+Methods:
+    save(): Saves current configuration to `sendy.data`.
+    load(): Loads configuration from `sendy.data`. If the file does not exist, creates a new one with default values.
+"""
+
 import os
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
 import pickle
-from aiogram.types import Message
 
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class Data:
-    image_loader_path: Path = Path(r'D:\MyPY\Sendy\Новая папка\photos')
+    image_loader_path: Path = Path(r'D:\MyPY\Sendy\testfiles\photo_loader')
 
     image_counter_path: Path = Path(r'D:\MyPY\Sendy\Alextest')
     image_counter_exceptions: list[str] = field(default_factory=list)
@@ -20,56 +55,29 @@ class Data:
     photo_processing_wrap_cm: float = 4.5
     photo_processing_white_cm: float = 0.8
     photo_processing_black_px: int = 1
-    photo_processing_dpi: str = 300
-    photo_processing_crop_px: str = 8
+    photo_processing_dpi: int = 300
+    photo_processing_crop_px: int = 8
     photo_processing_font_size_px: int = 85
 
     cropper_css: str = ':/cropper_bright.css'
 
-test = Data
-data = {}
+    def save(self):
+        with open('sendy.data', 'wb') as file:
+            pickle.dump(asdict(self), file)
+
+    @classmethod
+    def load(cls):
+        if not os.path.exists('sendy.data'):
+            with open('sendy.data', 'wb') as file:
+                pickle.dump(asdict(cls()), file)
+            return cls()
+        try:
+            with open('sendy.data', 'rb') as file:
+                data_from_pickle = pickle.load(file)
+                return cls(**data_from_pickle)
+        except (EOFError, pickle.UnpicklingError):
+            logger.warning("Data corrupted. Resetting to defaults.")
+            return cls()
 
 
-def load_sendy_data():
-    global data
-    if not os.path.exists('sendy.data'):
-        # data = data_default.copy()
-        with open('sendy.data', 'wb') as f:
-            pickle.dump(data, f)
-        return
-
-    try:
-        with open('sendy.data', 'rb') as f:
-            data = pickle.load(f)
-
-        updated = False
-        # for key, value in data_default.items():
-        #     if key not in data:
-        #         data[key] = value
-        #         updated = True
-
-        if updated:
-            with open("sendy.data", "wb") as file:
-                pickle.dump(data, file)
-
-    except Exception:
-        logger.exception('Data error')
-        # with open("sendy.data", "wb") as file:
-        #     pickle.dump(data_default, file)
-
-
-load_sendy_data()
-
-
-async def save_to_data(key, value, message: Message):
-    try:
-        data[key] = value
-        with open('sendy.data', 'wb') as f:
-            pickle.dump(data, f)
-    except Exception as e:
-        logging.error(f"Ошибка при сохранении: {e}")
-        await message.answer(f"💀 Ошибка при сохранении: {e}")
-
-
-if __name__ == '__main__':
-    load_sendy_data()
+data = Data.load()

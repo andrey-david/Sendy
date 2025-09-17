@@ -16,7 +16,7 @@ from photo_processing.photo_processing import PhotoProc
 from cropper.cropper_ui import Ui_Cropper
 from cropper.cropper_settings import SendySettings
 from cropper.cropper_save import SendySave
-from data.data import Data
+from data import data
 
 logger = logging.getLogger(__name__)
 
@@ -189,7 +189,7 @@ class SendyCropper(QMainWindow):
 
     def set_CSS(self):
         try:
-            css_file = QFile(Data.cropper_css)
+            css_file = QFile(data.cropper_css)
             if not css_file.exists():
                 logger.error('No CSS file in resources')
                 return
@@ -209,15 +209,10 @@ class SendyCropper(QMainWindow):
             return
 
     def load_icon(self):
-        try:
-            if QFile.exists(":/sendy.ico"):
-                return QIcon(":/sendy.ico")
-            else:
-                logger.error('No icon in resources')
-                return QIcon()
-        except Exception:
-            logger.exception(f'Icon loading')
-            return QIcon()
+        if QFile.exists(":/sendy.ico"):
+            return QIcon(":/sendy.ico")
+        logger.error('No icon in resources')
+        return QIcon()
 
     def load_image(self, image):
         self.original_image = image

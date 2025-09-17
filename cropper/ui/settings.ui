@@ -48,7 +48,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
@@ -210,7 +210,7 @@
       <string>Заворот края фото, см</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_photo_processing_zav">
+    <widget class="QLineEdit" name="lineEdit_photo_processing_wrap">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -317,7 +317,7 @@
  <tabstops>
   <tabstop>lineEdit_photo_processing_path</tabstop>
   <tabstop>pushButton_set_photo_processing_path</tabstop>
-  <tabstop>lineEdit_photo_processing_zav</tabstop>
+  <tabstop>lineEdit_photo_processing_wrap</tabstop>
   <tabstop>lineEdit_photo_processing_white</tabstop>
   <tabstop>lineEdit_photo_processing_black</tabstop>
   <tabstop>lineEdit_photo_processing_dpi</tabstop>

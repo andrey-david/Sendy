@@ -1,6 +1,8 @@
 from config.config import chat_id, ADMINS
 import logging
 
+from data import data
+
 logger = logging.getLogger(__name__)
 
 sendy_info = ['v1.9', '09.09.25']
@@ -146,47 +148,43 @@ easter_egg_days = {(24, 4): '🎉 День рождения Андрея!',
                    (1, 4): 'С первым апреля! 😉',
                    }
 
-
-def get_settings_main_text(data: dict) -> str:
-    settings_main_text = (f'⚙️ <b>НАСТРОЙКИ</b>'
+settings_main_text = (f'⚙️ <b>НАСТРОЙКИ</b>'
                           f'\n'
-                          f'\n Что желаете настроить?')
-    return settings_main_text
+                          f'\n Что желаете настроить?'
+                          )
 
 
-def get_settings_photo_loader_text(data: dict) -> str:
-    settings_photo_loader_text = (f'⚙️ <b>ЗАГРУЗКА ФОТО</b>'
+settings_photo_loader_text = (f'⚙️ <b>ЗАГРУЗКА ФОТО</b>'
+                              f'\n'
+                              f'\n<b>Путь к папке:</b>'
+                              f'\n📁 <code>{data.image_loader_path}</code>'
+                              )
+
+
+
+settings_photo_processing_text = (f'⚙️ <b>ОБРАБОТКА ФОТО</b>'
                                   f'\n'
-                                  f'\n<b>Путь к папке:</b>'
-                                  f'\n📁 <code>{data["path"]}</code>')
-    return settings_photo_loader_text
-
-
-def get_settings_photo_processing_text(data: dict) -> str:
-    settings_photo_processing_text = (f'⚙️ <b>ОБРАБОТКА ФОТО</b>'
-                                      f'\n'
-                                      f'\n<b>Путь для сохранения файлов:</b>'
-                                      f'\n📁 <code>{data['photo_processing_path']}</code>'
-                                      f'\n'
-                                      f'\n<b>Заворот края фото:</b>'
-                                      f'\n📃 <code>{data['photo_processing_zav']} см</code>'
-                                      f'\n'
-                                      f'\n<b>Белая рамка:</b>'
-                                      f'\n🔳 <code>{data['photo_processing_white']} см</code>'
-                                      f'\n'
-                                      f'\n<b>Чёрная рамка:</b>'
-                                      f'\n🔲 <code>{data['photo_processing_black']} px</code>'
-                                      f'\n'
-                                      f'\n<b>DPI:</b>'
-                                      f'\n⚫ <code>{data['photo_processing_dpi']} </code>'
-                                      f'\n'
-                                      f'\n<b>Размер шрифта:</b>'
-                                      f'\n🔠 <code>{data['photo_processing_fontsize']} px</code>'
-                                      f'\n'
-                                      f'\n<b>Обрезка края фото:</b>'
-                                      f'\n✂️ <code>{data['photo_processing_crop']} px</code>'
-                                      )
-    return settings_photo_processing_text
+                                  f'\n<b>Путь для сохранения файлов:</b>'
+                                  f'\n📁 <code>{data.photo_processing_path}</code>'
+                                  f'\n'
+                                  f'\n<b>Заворот края фото:</b>'
+                                  f'\n📃 <code>{data.photo_processing_wrap_cm} см</code>'
+                                  f'\n'
+                                  f'\n<b>Белая рамка:</b>'
+                                  f'\n🔳 <code>{data.photo_processing_white_cm} см</code>'
+                                  f'\n'
+                                  f'\n<b>Чёрная рамка:</b>'
+                                  f'\n🔲 <code>{data.photo_processing_black_px} px</code>'
+                                  f'\n'
+                                  f'\n<b>DPI:</b>'
+                                  f'\n⚫ <code>{data.photo_processing_dpi} </code>'
+                                  f'\n'
+                                  f'\n<b>Размер шрифта:</b>'
+                                  f'\n🔠 <code>{data.photo_processing_font_size_px} px</code>'
+                                  f'\n'
+                                  f'\n<b>Обрезка края фото:</b>'
+                                  f'\n✂️ <code>{data.photo_processing_crop_px} px</code>'
+                                  )
 
 
 def get_settings_print_counter_text(data: dict) -> str:

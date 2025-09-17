@@ -22,13 +22,13 @@ import logging
 
 from aiogram.types import Message
 
-from data.data import data
+from data import data
 
 logger = logging.getLogger(__name__)
 
 
 async def count_images_in_folder(folder, message: Message):
-    exceptions = data['Alex_exceptions']
+    exceptions = data.image_counter_exceptions
     all_sizes_sorted = []
 
     def process_subfolder(subfolder):
