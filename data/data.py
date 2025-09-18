@@ -14,7 +14,7 @@ Usage:
     data.save()  # If you need to save to a file via pickle
 
 Attributes:
-    image_loader_path (Path) - Path where images are loaded from, and then sent to the user's chat.
+    image_loader_path (Path): Path where images are loaded from, and then sent to the user's chat.
 
     image_counter_path (Path): Path used for counting images.
     image_counter_exceptions (list[str]): List of files or folders to exclude from counting.
@@ -45,17 +45,17 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Data:
-    image_loader_path: Path = Path(r'D:\MyPY\Sendy\testfiles\photo_loader')
+    image_loader_path: Path = Path(r'C:\Users\PrinterPC\OneDrive\Pictures\CameraRoll')
 
-    image_counter_path: Path = Path(r'D:\MyPY\Sendy\Alextest')
-    image_counter_exceptions: list[str] = field(default_factory=list)
+    image_counter_path: Path = Path(r'D:\Печать\Фото')
+    image_counter_exceptions: list[str] = field(default_factory=lambda: ['Макеты', 'макеты', '_Макеты', '_макеты', 'BOT', 'отмены'])
 
-    photo_processing_path: Path = Path(r'D:\MyPY\Sendy\photo_processing')
-    photo_processing_wrap_cm: float = 4.5
-    photo_processing_white_cm: float = 0.8
-    photo_processing_black_px: int = 1
+    photo_processing_path: Path = Path(r'D:\Печать\Фото\BOT')
+    photo_processing_wrap_cm: float = 2.8
+    photo_processing_white_cm: float = 1.2
+    photo_processing_black_px: int = 4
     photo_processing_dpi: int = 300
-    photo_processing_crop_px: int = 8
+    photo_processing_crop_px: int = 9
     photo_processing_font_size_px: int = 85
 
     cropper_css: str = ':/cropper_bright.css'
