@@ -1,6 +1,6 @@
 """
 Image counter
---------------------
+-------------
 This script is used to count, categorize, and send list of all the images that have already been processed by user.
 It helps the user keep track of statistics.
 
