@@ -1,3 +1,18 @@
+"""
+Cropper Help
+------------
+This module provides a simple QDialog window that displays help information
+for using the Sendy Cropper tool.
+
+The dialog shows:
+    - Application name and logo
+    - Author information
+    - Keyboard shortcut combinations for cropper functionality
+
+You can open this window by clicking `Help (Помощь)` → `About the program (О программе)`
+in Sendy Cropper main window.
+"""
+
 import logging
 
 from PyQt5.QtWidgets import QDialog
