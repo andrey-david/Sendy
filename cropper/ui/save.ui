@@ -107,7 +107,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>В РАЗРАБОТКЕ</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

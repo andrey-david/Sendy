@@ -68,4 +68,4 @@ class Ui_CropperSave(object):
         self.pushButton_cotton.setText(_translate("CropperSave", "[3] ХЛОПОК"))
         self.pushButton_banner.setText(_translate("CropperSave", "[2] БАННЕР"))
         self.pushButton_matte.setText(_translate("CropperSave", "[4] МАТОВЫЙ"))
-        self.filename.setText(_translate("CropperSave", "TextLabel"))
+        self.filename.setText(_translate("CropperSave", "В РАЗРАБОТКЕ"))
