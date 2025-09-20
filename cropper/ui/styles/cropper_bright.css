@@ -133,3 +133,15 @@ QStatusBar QLabel {
 QGraphicsView:focus {
     border: 2px solid #A0A0A0;
 }
+
+QListWidget {
+    border-radius: 5px;
+    background: #E0E0E0;
+    border: 2px solid #A0A0A0;
+    font-size: 16px;
+}
+
+QListWidget::item {
+    color: #000000;
+    padding: 16px;
+}

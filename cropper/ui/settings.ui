@@ -47,10 +47,37 @@
      <height>821</height>
     </rect>
    </property>
-   <property name="currentIndex">
-    <number>1</number>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
-   <widget class="QWidget" name="tab_2">
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="tabShape">
+    <enum>QTabWidget::Rounded</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="elideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="documentMode">
+    <bool>false</bool>
+   </property>
+   <property name="tabsClosable">
+    <bool>false</bool>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="tabBarAutoHide">
+    <bool>false</bool>
+   </property>
+   <widget class="QWidget" name="tab_1">
     <attribute name="title">
      <string>Общие настройки</string>
     </attribute>
@@ -87,8 +114,104 @@
       <string>Цветовая схема приложения</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Управление логами</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>27</x>
+       <y>170</y>
+       <width>541</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_open_logs">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Открыть</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_send_logs">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Отправить</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_clear_logs">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Очистить</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QCheckBox" name="checkBox">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>280</y>
+       <width>541</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox:focus {
+	border: 2px solid transparent;
+    outline: none;
+    }</string>
+     </property>
+     <property name="text">
+      <string>Выключен</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>260</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Автозапуск</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tab_2">
     <attribute name="title">
      <string>Обработка фото</string>
     </attribute>
@@ -280,17 +403,110 @@
     <attribute name="title">
      <string>Подсчёт печати</string>
     </attribute>
-    <widget class="QLabel" name="label_8">
+    <widget class="QPushButton" name="pushButton_set_image_counter_path">
      <property name="geometry">
       <rect>
-       <x>160</x>
-       <y>320</y>
-       <width>271</width>
+       <x>450</x>
+       <y>60</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Обзор</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>361</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>ТУТ ПОКА НИЧЕГО НЕТ</string>
+      <string>Путь для посчёта печати</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_image_counter_path">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>411</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="listWidget_image_counter_exceptions">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>230</y>
+       <width>541</width>
+       <height>192</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QListWidget:focus {
+	border: 2px solid transparent;
+    outline: none;
+    }</string>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>361</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Список исключений</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_image_counter_exceptions_add_elem">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>170</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Добавить</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_image_counter_exceptions_add_elem">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>170</y>
+       <width>411</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="dragEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
@@ -298,17 +514,46 @@
     <attribute name="title">
      <string>Загрузка фото</string>
     </attribute>
-    <widget class="QLabel" name="label_9">
+    <widget class="QPushButton" name="pushButton_set_image_loader_path">
      <property name="geometry">
       <rect>
-       <x>290</x>
-       <y>170</y>
-       <width>261</width>
+       <x>450</x>
+       <y>60</y>
+       <width>121</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Обзор</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>361</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>ТУТ ПОКА НИЧЕГО НЕТ</string>
+      <string>Путь для загрузки фото</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lineEdit_image_loader_path">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>411</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
