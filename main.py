@@ -5,7 +5,7 @@ import os
 import logging
 
 logger = logging.getLogger()
-logging_handler = logging.FileHandler(filename='sendy.log',  encoding='utf-8')
+logging_handler = logging.FileHandler(filename='sendy.log', encoding='utf-8')
 logging_console = logging.StreamHandler()
 logging.basicConfig(
     level=logging.INFO,
@@ -20,13 +20,15 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 import aiohttp
-import dotenv
+# import dotenv
 
 from config import config
-from handlers.handlers import sendy_tray, router, image_loader
-from keyboards.keyboards import MENU_COMMANDS, keyboard_inline_update, hello, hello_new_year, hello_emoji_new_year, \
-    easter_egg_days
-from lexicon.lexicon import sendy_info
+from handlers.handlers import sendy_tray, handlers_router
+from image_loader.image_loader import image_loader, image_loader_router
+from handlers.menu import menu_router
+from handlers.settings_handlers import settings_router
+from keyboards.keyboards import keyboard_inline_update
+from lexicon.lexicon import sendy_info, hello, hello_new_year, hello_emoji_new_year, easter_egg_days, MENU_COMMANDS
 import resources_rc
 
 
@@ -42,12 +44,12 @@ async def updater(bot: Bot) -> None:
                 try:
                     text = await response.text()
                     latest_version, update_link = text.split('|')
-                    if latest_version != sendy_info[0]:
+                    if latest_version != sendy_info['version']:
                         await bot.send_message(chat_id=config.chat_id,
                                                text=f'<b><i>🆕 Доступно обновление до Sendy {latest_version}</i></b>',
                                                reply_markup=keyboard_inline_update)
-                except Exception as e:
-                    print(f"[updater] Ошибка: {e}")  # Сделать через логирование
+                except Exception:
+                    logger.exception('Update checker error')
 
 
 async def set_main_menu(bot: Bot):
@@ -86,9 +88,9 @@ async def tray():
 
 async def main():
     logger.info('BOT JUST STARTED')
-    dotenv.load_dotenv()
+    # dotenv.load_dotenv()
     try:
-        bot = Bot(token=os.getenv('BOT_TOKEN'),
+        bot = Bot(token=config.BOT_TOKEN,
                   default=DefaultBotProperties(parse_mode=ParseMode.HTML)
                   )
         config.bot = bot
@@ -96,7 +98,10 @@ async def main():
         dp = Dispatcher()
         config.dp = dp
 
-        dp.include_router(router)
+        dp.include_router(handlers_router)
+        dp.include_router(settings_router)
+        dp.include_router(menu_router)
+        dp.include_router(image_loader_router)
         dp.startup.register(set_main_menu)
         _ = asyncio.create_task(image_loader())
     except Exception as e:
