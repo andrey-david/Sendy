@@ -4,7 +4,7 @@ import time
 from threading import Thread
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsPixmapItem, QShortcut, \
-    QGraphicsRectItem, QGraphicsItem, QFileDialog, QDesktopWidget, QMdiSubWindow
+    QGraphicsRectItem, QGraphicsItem, QFileDialog
 from PyQt5.QtGui import QPixmap, QTransform, QKeySequence, QPen, QColor, QPainterPath, QBrush, QImage, QIcon
 from PyQt5.QtCore import QRectF, QObject, QEvent, Qt, QFile, QTextStream, QTimer
 from PIL import Image
@@ -124,11 +124,8 @@ class SendyCropper(QMainWindow):
         super().__init__()
         self.ui = Ui_Cropper()
         self.ui.setupUi(self)
-
         self.set_CSS()
-
         self.setWindowIcon(self.load_icon())
-
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.pixmap_main = None
         self.ui.pushButton_rotate.clicked.connect(self.rotate_image)
@@ -268,10 +265,9 @@ class SendyCropper(QMainWindow):
         try:
             if self.save_window is None:
                 self.save_window = SendySave(self)
-            self.save_window.show()
-            self.save_window.raise_()
+            self.save_window.exec_()
         except Exception:
-            logger.exception(f'save_window')
+            logger.exception('save_window')
 
     def help(self):
         try:
@@ -299,7 +295,6 @@ class SendyCropper(QMainWindow):
     def rescale_main(self):
         if self.pixmap_main is None:
             logging.debug('No image for rescale main')
-            self.statusBar().showMessage("Нет изображения.", 3000)
             return
 
         view_width = self.ui.graphicsView_main.width()
@@ -583,8 +578,8 @@ class SendyCropper(QMainWindow):
             )
             processing.process_image()
 
-        except Exception as e:
-            logging.info(f"Ошибка обработки: {e}")
+        except Exception:
+            logging.exception('Cropper error')
         finally:
             self.close()
 
@@ -592,16 +587,10 @@ class SendyCropper(QMainWindow):
 def sendy_cropper(image=None, number='', material=0, width=None, height=None, message=None):
     app = QApplication(sys.argv)
     window = SendyCropper()
-    window.raise_()
-    window.activateWindow()
+    window.showMaximized()
     window.load_image(image)
     window.set_number(number)
     window.set_width_and_height(width, height)
     window.set_bot(message)
     window.set_material(material)
-    frame = window.frameGeometry()
-    screen_center = QDesktopWidget().availableGeometry().center()
-    frame.moveCenter(screen_center)
-    window.move(frame.topLeft())
-    window.show()
     sys.exit(app.exec_())
