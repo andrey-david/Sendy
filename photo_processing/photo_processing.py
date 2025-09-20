@@ -1,8 +1,10 @@
 import os
 import logging
-from PIL import Image, ImageDraw, ImageFont
 import asyncio
-from data.data import data
+
+from PIL import Image, ImageDraw, ImageFont
+
+from data import data
 from config import config
 from keyboards.keyboards import keyboard_inline_open_photo
 
@@ -12,23 +14,23 @@ logger = logging.getLogger(__name__)
 class PhotoProc:
     def __init__(self):
         self.img = None
-        self.FONT_PATH = "arial.ttf"
-        self.CM_TO_INCH = 2.54
-        self.CM_TO_PX = lambda cm: int((cm * int(data['photo_processing_dpi'])) / self.CM_TO_INCH)
-        self.number = ''
-        self.width_cm = 0
-        self.height_cm = 0
-        self.ZAV_CM = float(data['photo_processing_zav'])
-        self.WHITE_CM = float(data['photo_processing_white'])
-        self.black_px = int(data['photo_processing_black'])
-        self.text_px = int(data['photo_processing_fontsize'])
-        self.DPI = int(data['photo_processing_dpi'])
-        self.material = 'ХОЛСТ'
+        self.FONT_PATH: str = "arial.ttf"
+        self.number: str = ''
+        self.width_cm: float = 0
+        self.height_cm: float = 0
+        self.material: str = 'ХОЛСТ'
+        self.message = None
+        self.flag: bool = True
+        self.coordinates: tuple[int, int, int, int] = (0, 0, 0, 0)
+        self.WRAP_CM: float = data.photo_processing_wrap_cm
+        self.WHITE_CM: float = data.photo_processing_white_cm
+        self.black_px: int = data.photo_processing_black_px
+        self.text_px: int = data.photo_processing_font_size_px
+        self.DPI: int = data.photo_processing_dpi
+        self.CM_TO_INCH: float = 2.54
+        self.CM_TO_PX = lambda cm: int((cm * self.DPI) / self.CM_TO_INCH)
         self.filepath = ''
         self.filename = ''
-        self.message = None
-        self.flag = True
-        self.coordinates = (0, 0, 0, 0)
 
     def add_image(self, img):
         self.img = img
@@ -45,7 +47,7 @@ class PhotoProc:
 
     def stretch_edges(self):
         w, h = self.img.size
-        zav_px = self.CM_TO_PX(self.ZAV_CM)
+        zav_px = self.CM_TO_PX(self.WRAP_CM)
         source_px = 20
 
         def get_stretched_strip(crop_box, final_size):
@@ -95,7 +97,7 @@ class PhotoProc:
         self.img = new_img
 
     def photo_proc(self):
-        ZAV_CM = self.ZAV_CM
+        WRAP_CM = self.WRAP_CM
         WHITE_CM = self.WHITE_CM
         white_px = self.CM_TO_PX(WHITE_CM)
         black_px = self.black_px
@@ -107,8 +109,8 @@ class PhotoProc:
 
         # Желаемый финальный размер:
 
-        target_w = round((self.width_cm + 2 * ZAV_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
-        target_h = round((self.height_cm + 2 * ZAV_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
+        target_w = round((self.width_cm + 2 * WRAP_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
+        target_h = round((self.height_cm + 2 * WRAP_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
 
         # Коррекция white_px
         actual_w = w + 2 * white_px
@@ -167,8 +169,8 @@ class PhotoProc:
             width=black_px)
 
         # Сохранение
-        os.makedirs(data['photo_processing_path'], exist_ok=True)
-        product_dir = os.path.join(data['photo_processing_path'], self.material)
+        os.makedirs(data.photo_processing_path, exist_ok=True)
+        product_dir = os.path.join(data.photo_processing_path, self.material)
         os.makedirs(product_dir, exist_ok=True)
 
         filename = f"{self.width_cm}х{self.height_cm}"
@@ -180,7 +182,6 @@ class PhotoProc:
         if self.number:
             filename += f" {self.number}"
         filename += f" {self.material}"
-        # filename += f" [{canvas.width * self.CM_TO_INCH / DPI:.1f}x{canvas.height * self.CM_TO_INCH / DPI:.1f}]"
         filename += ".jpg"
 
         def unique_filename(directory, base_filename):
@@ -206,7 +207,7 @@ class PhotoProc:
 
     def process_image(self):
         if self.img:
-            crop_px = int(data['photo_processing_crop'])
+            crop_px = data.photo_processing_crop_px
             w, h = self.img.size
 
             if self.flag:  # обработка БЕЗ sendy_cropper
@@ -228,4 +229,4 @@ class PhotoProc:
                                       reply_to_message_id=self.message.message_id)
         except Exception as e:
             await self.message.answer(f"💀 Ошибка: {str(e)}"
-                                      f"\n\n✅ <b>Изображение успешно сохранено по этому пути:</b>\n<code>{self.filepath}</code>")
+                                      f"\n\n✅ <b>Изображение успешно сохранено: </b>\n<code>{self.filepath}</code>")
