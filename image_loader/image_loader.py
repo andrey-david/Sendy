@@ -8,7 +8,7 @@ from aiogram import F, Router
 
 from data import data
 from config import config
-from keyboards.keyboards import keyboard_inline_open_folder
+from keyboards import back_to_image_loader_inline_kb
 
 logger = logging.getLogger(__name__)
 image_loader_router = Router(name='image_loader_router')
@@ -48,7 +48,7 @@ async def image_load_handler():
                                                f'\n'
                                                f'\n• Проверьте папку выгрузки на отсутвие в ней постороних файлов или папок.'
                                                f'\n• Проверьте/смените путь /settings',
-                                          reply_markup=keyboard_inline_open_folder)
+                                          reply_markup=back_to_image_loader_inline_kb)
             await asyncio.sleep(60)
         except:
             await config.bot.send_message(chat_id=config.chat_id,
@@ -57,22 +57,3 @@ async def image_load_handler():
                                                f'\n• Проверьте/смените путь /settings',
                                           )
             await asyncio.sleep(60)
-
-
-@image_loader_router.callback_query(F.data == 'button_open_folder')  # кнопка открыть папку нажата
-async def button_open_folder(callback: CallbackQuery):
-    os.system(f"explorer.exe {data.image_loader_path}")
-    await callback.answer()
-
-
-@image_loader_router.callback_query(F.data == 'button_yes_clean_folder')  # кнопка Да для очистки папки uploaded нажата
-async def button_yes_clean_folder(callback: CallbackQuery):
-    files_size = 0
-    uploaded_path = os.path.join(data.image_loader_path, 'Uploaded')
-    for file in os.listdir(uploaded_path):
-        file_path = os.path.join(data.image_loader_path, 'Uploaded', file)
-        files_size += os.path.getsize(file_path)
-        os.remove(file_path)
-    files_size_mb = files_size / (1024 * 1024)
-    await callback.message.edit_text(text=f'✅ Папка Uploaded была успешно очищена [{files_size_mb:.2f} МБ]',
-                                     reply_markup=keyboard_inline_open_folder)
