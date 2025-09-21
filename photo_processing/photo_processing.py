@@ -1,12 +1,13 @@
 import os
 import logging
 import asyncio
+from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 from data import data
 from config import config
-from keyboards.keyboards import keyboard_inline_open_photo
+from keyboards import manage_photo_inline_kb
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class PhotoProc:
         self.DPI: int = data.photo_processing_dpi
         self.CM_TO_INCH: float = 2.54
         self.CM_TO_PX = lambda cm: int((cm * self.DPI) / self.CM_TO_INCH)
-        self.filepath = ''
+        self.filepath = None
         self.filename = ''
 
     def add_image(self, img):
@@ -225,7 +226,7 @@ class PhotoProc:
     async def send_via_bot(self):
         try:
             await self.message.answer(f"✅ <b>Изображение сохранено</b>\n\n🏷 <code>{self.filename}</code>",
-                                      reply_markup=keyboard_inline_open_photo(self.filepath),
+                                      reply_markup=manage_photo_inline_kb(Path(self.filepath)),
                                       reply_to_message_id=self.message.message_id)
         except Exception as e:
             await self.message.answer(f"💀 Ошибка: {str(e)}"
