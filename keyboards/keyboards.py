@@ -23,14 +23,14 @@ from lexicon import (LEXICON,
                      settings_main_btns,
                      settings_image_loader_btns,
                      image_loader_clean_folder_btns,
-                     image_loader_open_folder_btns,
+                     back_to_image_loader_btn,
                      settings_photo_processing_btns,
                      back_to_settings_photo_processing_btn,
                      settings_image_counter_btn,
                      settings_other_btns,
                      back_to_settings_other_btn,
                      shutdown_btns,
-                     update_btns)
+                     update_btn)
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ kb_builder = ReplyKeyboardBuilder()
 for btn in MAIN_BUTTONS:
     kb_builder.add(KeyboardButton(text=btn))
 kb_builder.adjust(4)
-main_keyboard = kb_builder.as_markup(resize_keyboard=True)
+main_kb = kb_builder.as_markup(resize_keyboard=True)
 
 
 def create_inline_kb(width: int,
@@ -76,7 +76,7 @@ settings_main_inline_kb = create_inline_kb(1, **settings_main_btns)
 # image loader
 settings_image_loader_inline_kb = create_inline_kb(1, **settings_image_loader_btns)
 image_loader_clean_folder_inline_kb = create_inline_kb(2, **image_loader_clean_folder_btns)
-image_loader_open_folder_inline_kb = create_inline_kb(1, **image_loader_open_folder_btns)
+back_to_image_loader_inline_kb = create_inline_kb(1, **back_to_image_loader_btn)
 
 # photo processing
 settings_photo_processing_inline_kb = create_inline_kb(2, **settings_photo_processing_btns)
@@ -91,7 +91,7 @@ back_to_settings_other_inline_kb = create_inline_kb(1, **back_to_settings_other_
 
 # other keyboards
 shutdown_inline_kb = create_inline_kb(2, **shutdown_btns)
-update_inline_kb = create_inline_kb(1, **update_btns)
+update_inline_kb = create_inline_kb(1, **update_btn)
 
 photo_paths: dict[str, Path] = {}
 def manage_photo_inline_kb(filepath: Path) -> InlineKeyboardMarkup:
