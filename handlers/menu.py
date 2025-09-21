@@ -16,13 +16,15 @@ from threading import Thread
 import os
 import logging
 import time
+from datetime import datetime
 
 from aiogram import F, Router
 from aiogram.filters import Command
-from aiogram.types import Message, FSInputFile
+from aiogram.types import Message, FSInputFile, CallbackQuery
 import pyautogui
 
 from lexicon import is_admin, settings_main_text
+from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
 from cropper.cropper_main import sendy_cropper
 from lexicon.lexicon import menu_commands
@@ -89,3 +91,19 @@ async def stop_command(message: Message):
     if await is_admin(message.from_user.id, message):
         await message.answer(text=menu_commands['/stop'],
                              reply_markup=shutdown_inline_kb)
+
+
+async def stop_sendy():
+    await config.dp.stop_polling()
+    await config.bot.session.close()
+    logger.info('STOPPED BY USER')
+
+
+@menu_router.callback_query(F.data == 'stop_sendy')
+async def process_button_shutdown_press(callback: CallbackQuery):
+    time = datetime.now() - config.datatime_on_start
+    time = str(time).split('.')[0]
+    await callback.message.edit_text(text='🪦 Сенди\n'
+                                          '\n'
+                                          f'😭 Он прожил всего {time}')
+    await stop_sendy()
