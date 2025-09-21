@@ -30,8 +30,8 @@ import gdown
 from tqdm import tqdm
 import colorama
 
-application = "Sendy.exe"
-file = 'update.zip'
+application: str = "Sendy.exe"
+file: str = 'update.zip'
 directory = os.getcwd()
 url_get_update = 'https://drive.usercontent.google.com/u/0/uc?id=1vjf8McN-gm7pc3Gfl4sYyOpOcXph5nXz&export=download'
 
