@@ -1,0 +1,1 @@
+from .tray import sendy_tray
