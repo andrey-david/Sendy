@@ -1,7 +1,6 @@
 import asyncio
 import threading
 import random
-import os
 import logging
 
 logger = logging.getLogger()
@@ -19,38 +18,17 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
-import aiohttp
-# import dotenv
 
 from config import config
-from handlers.handlers import sendy_tray, handlers_router
+from handlers.handlers import handlers_router
+from tray import sendy_tray
 from image_loader.image_loader import image_loader, image_loader_router
 from handlers.menu import menu_router
 from handlers.settings_handlers import settings_router
-from keyboards.keyboards import keyboard_inline_update
-from lexicon.lexicon import sendy_info, hello, hello_new_year, hello_emoji_new_year, easter_egg_days, MENU_COMMANDS
+from lexicon import sendy_info
+from lexicon.lexicon import hello, hello_new_year, hello_emoji_new_year, easter_egg_days, MENU_COMMANDS
+from updater import check_for_updates
 import resources_rc
-
-
-# Проверка на обновления, если обновление есть, то выводит сообщение с кнопкой для обновления
-async def updater(bot: Bot) -> None:
-    if 'updater_new.exe' in os.listdir() and 'updater.exe' in os.listdir():
-        os.replace('updater_new.exe', 'updater.exe')
-
-    url = "https://drive.usercontent.google.com/u/0/uc?id=1vjf8McN-gm7pc3Gfl4sYyOpOcXph5nXz&export=download"
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            if response.status == 200:
-                try:
-                    text = await response.text()
-                    latest_version, update_link = text.split('|')
-                    if latest_version != sendy_info['version']:
-                        await bot.send_message(chat_id=config.chat_id,
-                                               text=f'<b><i>🆕 Доступно обновление до Sendy {latest_version}</i></b>',
-                                               reply_markup=keyboard_inline_update)
-                except Exception:
-                    logger.exception('Update checker error')
-
 
 async def set_main_menu(bot: Bot):
     main_menu_commands = [
@@ -87,7 +65,7 @@ async def tray():
 
 
 async def main():
-    logger.info('BOT JUST STARTED')
+    logger.info(f'BOT {sendy_info['version']} JUST STARTED')
     # dotenv.load_dotenv()
     try:
         bot = Bot(token=config.BOT_TOKEN,
@@ -109,8 +87,12 @@ async def main():
 
     try:
         config.bot_loop = asyncio.get_running_loop()
-        await asyncio.gather(welcome_message(bot, config.datatime_on_start, config.chat_id), updater(bot),
-                             dp.start_polling(bot, skip_updates=True), tray())
+        await asyncio.gather(
+            welcome_message(bot, config.datatime_on_start, config.chat_id),
+            check_for_updates(bot),
+            dp.start_polling(bot, skip_updates=True),
+            tray()
+        )
     except (KeyboardInterrupt, SystemExit):
         logger.info('Stopped by console interrupt')
     except asyncio.CancelledError:
