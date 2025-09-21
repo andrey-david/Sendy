@@ -204,12 +204,12 @@ QCheckBox {
 }
 
 QCheckBox::indicator:checked {
-    background: #272727;
-    border: 2px solid #272727;
+    background: #656565;
+    border: 2px solid #656565;
     image: url(:/sendy.ico);
 }
 
 QCheckBox::indicator:unchecked {
-    background: #656565;
-    border: 2px solid #656565;
+    background: #272727;
+    border: 2px solid #272727;
 }
