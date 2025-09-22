@@ -1,3 +1,17 @@
+"""
+Settings Lexicon
+----------------
+
+Provides all texts, prompts, and button labels for the settings section of the Sendy bot.
+
+Contents:
+    • `settings_lexicon`: Texts for user prompts, confirmations, and error messages.
+    • `settings_main_btns`, `settings_image_loader_btns`, etc.: Button labels for inline keyboards.
+
+Usage:
+    Import this module and use dict's to display text or btn's to create keyboards.
+"""
+
 import logging
 
 from data import data
@@ -5,23 +19,25 @@ from data import data
 logger = logging.getLogger(__name__)
 
 settings_lexicon: dict[str, str] = {
-    'clean_uploaded': '🚮 <b>Очистить папку Uploaded?</b>',
-    'value_error': '💀 <b>Введи ещё раз нормально</b>',
+    'settings_main_text': '⚙️ <b>НАСТРОЙКИ</b>\n',
+
     'photo_processing_wrap_cm': 'Введите заворот для фото в сантиметрах:',
     'photo_processing_white_cm': 'Введите размеры белой рамки в сантиметрах:',
     'photo_processing_black_px': 'Введите размеры чёрной рамки в пикселях:',
     'photo_processing_dpi': 'Введите новое значение DPI:',
     'photo_processing_font_size_px': 'Введите размеры шрифта в пикселях:',
     'photo_processing_crop_px': 'Введите на сколько пикселей подрезать изображение:',
-    'setting_value_success': '✅ Значение успешно изменено!'
+    'value_error': '💀 <b>Введи ещё раз нормально</b>',
+    'setting_value_success': '✅ Значение успешно изменено!',
+
+    'settings_other_text': '⚙️ <b>ПРОЧЕЕ</b>\n',
+    'clean_uploaded': '🚮 <b>Очистить папку Uploaded?</b>',
+    'was_cleaned': '✅ Папка Uploaded была успешно очищена',
+    'logs_send': '<b>🗃 Файл с логами был отправлен @Andrey_David.</b>',
+    'logs_error': '<b>💀 Файл с логами не найден.</b>'
 }
 
 # settings main
-settings_main_text: str = (f'⚙️ <b>НАСТРОЙКИ</b>'
-                           f'\n'
-                           f'\n Что желаете настроить?'
-                           )
-
 settings_main_btns: dict[str, str] = {
     'settings_image_loader': '📤 Загрузка фото',
     'settings_photo_processing': '🌄 Обработка фото',
@@ -115,10 +131,6 @@ settings_image_counter_btn: dict[str, str] = {
 }
 
 # settings other
-settings_other_text: str = (f'⚙️ <b>ПРОЧЕЕ</b>'
-                            f'\n'
-                            )
-
 settings_other_btns: dict[str, str] = {
     'send_logs': 'Отправить логи',
     'back_to_settings_main': '⬅️ Настройки'
