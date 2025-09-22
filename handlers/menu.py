@@ -23,7 +23,7 @@ from aiogram.filters import Command
 from aiogram.types import Message, FSInputFile, CallbackQuery
 import pyautogui
 
-from lexicon import is_admin, settings_main_text
+from lexicon import is_admin, settings_lexicon
 from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
 from cropper.cropper_main import sendy_cropper
@@ -44,7 +44,7 @@ async def start_command(message: Message):
 @menu_router.message(F.text == "⚙️")
 async def settings_command(message: Message):
     if await is_admin(message.from_user.id, message):
-        await message.answer(text=settings_main_text, reply_markup=settings_main_inline_kb)
+        await message.answer(text=settings_lexicon['settings_main_text'], reply_markup=settings_main_inline_kb)
 
 
 @menu_router.message(Command(commands=["cropper"]))
