@@ -32,7 +32,12 @@ async def count_images_in_folder(folder, message: Message):
     all_sizes_sorted = []
 
     def process_subfolder(subfolder):
-        materials: dict[str, list[str]] = {'ХОЛСТ': [], 'БАННЕР': [], 'ХЛОПОК': [], 'МАТОВЫЙ': []}
+        materials: dict[str, list[str]] = {
+            'ХОЛСТ': [],
+            'БАННЕР': [],
+            'ХЛОПОК': [],
+            'МАТОВЫЙ': []
+        }
 
         # считает и добавляет данные в соответствующие списки холст/баннер/хлопок/матовый
         for file in os.listdir(subfolder):
