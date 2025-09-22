@@ -23,11 +23,10 @@ from aiogram.filters import Command
 from aiogram.types import Message, FSInputFile, CallbackQuery
 import pyautogui
 
-from lexicon import is_admin, settings_lexicon
+from lexicon import is_admin, settings_lexicon, menu
 from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
 from cropper.cropper_main import sendy_cropper
-from lexicon.lexicon import menu_commands
 from data import data
 from image_counter.image_counter import count_images_in_folder
 
@@ -37,7 +36,7 @@ menu_router = Router(name='menu_router')
 
 @menu_router.message(Command(commands=["start"]))
 async def start_command(message: Message):
-    await message.answer(text=menu_commands['/start'], reply_markup=main_kb)
+    await message.answer(text=menu['/start'], reply_markup=main_kb)
 
 
 @menu_router.message(Command("settings"))
@@ -57,10 +56,7 @@ async def open_cropper(message: Message):
 @menu_router.message(F.text.lower() == '🧮')
 async def image_counter_start_counting(message: Message):
     if await is_admin(message.from_user.id, message):
-        try:
-            await count_images_in_folder(data.image_counter_path, message)
-        except Exception:
-            logger.exception('image_counter')
+        await count_images_in_folder(data.image_counter_path, message)
 
 
 @menu_router.message(Command(commands=["screenshoot"]))
@@ -75,21 +71,21 @@ async def take_screenshoot(message: Message):
         screenshot.save(filename)
         if await is_admin(message.from_user.id, message):
             await message.answer_document(document=FSInputFile(filename),
-                                          caption=f"{menu_commands['/screenshoot']}\n\n🏷 <code>{filename}</code>",
+                                          caption=f"{menu['/screenshoot']}\n\n🏷 <code>{filename}</code>",
                                           )
-    except Exception:
-        logger.exception('Error while making screenshoot')
+    except FileNotFoundError:
+        logger.exception('Path Error')
 
 
 @menu_router.message(Command(commands=["info", "help"]))
 async def help_command(message: Message):
-    await message.answer(menu_commands['/info'])
+    await message.answer(menu['/info'])
 
 
 @menu_router.message(Command(commands=["stop"]))
 async def stop_command(message: Message):
     if await is_admin(message.from_user.id, message):
-        await message.answer(text=menu_commands['/stop'],
+        await message.answer(text=menu['/stop'],
                              reply_markup=shutdown_inline_kb)
 
 
@@ -103,7 +99,5 @@ async def stop_sendy():
 async def process_button_shutdown_press(callback: CallbackQuery):
     time = datetime.now() - config.datatime_on_start
     time = str(time).split('.')[0]
-    await callback.message.edit_text(text='🪦 Сенди\n'
-                                          '\n'
-                                          f'😭 Он прожил всего {time}')
+    await callback.message.edit_text(text=f'{menu['stop_sendy']} {time}')
     await stop_sendy()
