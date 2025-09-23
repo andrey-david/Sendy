@@ -1,6 +1,4 @@
-"""
-Settings Handlers
------------------
+"""Settings Handlers
 
 This module handles commands and callback queries related to Sendy bot settings.
 

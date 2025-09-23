@@ -1,6 +1,5 @@
-"""
-Data - Storage for Sendy
-------------------------
+"""Data - Storage for Sendy
+
 This class stores all user-editable configuration data for the Sendy application,
 such as paths, image processing parameters, and UI preferences.
 The configuration can be saved to disk and loaded back using pickle.
