@@ -17,4 +17,5 @@ from .lexicon import (LEXICON,
                       shutdown_btns,
                       update_btn,
                       is_admin,
-                      sendy_info)
+                      sendy_info,
+                      menu)
