@@ -8,6 +8,7 @@ text management to simplify localization and updates.
 import logging
 
 from config.config import chat_id, ADMINS
+from data import data
 
 logger = logging.getLogger(__name__)
 
@@ -199,3 +200,6 @@ update_btn: dict[str, str] = {
 }
 
 update_text: str = '🆕 Доступно обновление до Sendy'
+
+def image_loader_error_text() -> str:
+    return f'💀 <b>Неверно указан путь для Загрузки фото</b>\n\n 📁 <code>{data.image_loader_path}</code>'

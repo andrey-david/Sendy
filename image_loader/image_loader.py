@@ -13,12 +13,13 @@ Usage:
     from image_loader import image_loader
     await image_loader()
 """
-
+import asyncio
 import os
 import logging
 
 from watchfiles import awatch
 from aiogram.types import FSInputFile
+from aiogram.exceptions import TelegramBadRequest
 from aiogram import Router
 
 from data import data
@@ -31,17 +32,24 @@ image_loader_router = Router(name='image_loader_router')
 
 async def image_loader() -> None:
     path = data.image_loader_path
-    path_dir = os.listdir(path)
     uploaded_path = os.path.join(path, 'Uploaded')
-    os.makedirs(uploaded_path, exist_ok=True)
 
     if os.path.exists(path):
+        os.makedirs(uploaded_path, exist_ok=True)
         async for _ in awatch(path):
-            for file_name in path_dir:
+            for file_name in os.listdir(path):
                 if file_name.lower().endswith((".jpg", ".png", ".heic")):
                     file_path = os.path.join(path, file_name)
-                    await config.bot.send_document(chat_id=config.chat_id, document=FSInputFile(file_path))
-                    os.replace(file_path, os.path.join(uploaded_path, file_name))
+
+                    try:
+                        if os.path.exists(file_path):
+                            await config.bot.send_document(chat_id=config.chat_id, document=FSInputFile(file_path))
+                            os.replace(file_path, os.path.join(uploaded_path, file_name))
+                    except TelegramBadRequest:
+                        logger.exception('Corrupted file or Wrong chat ID')
+
+                    await asyncio.sleep(1)
+
     else:
         await config.bot.send_message(chat_id=config.chat_id, text=image_loader_error_text())
         logger.error('Invalid Image loader path')
