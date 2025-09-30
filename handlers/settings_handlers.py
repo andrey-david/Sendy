@@ -115,8 +115,7 @@ async def clean_folder_uploaded(callback: CallbackQuery):
                                      )
 
 
-@settings_router.callback_query(
-    F.data == 'clean_folder_uploaded_confirm')  # кнопка Да для очистки папки uploaded нажата
+@settings_router.callback_query(F.data == 'clean_folder_uploaded_confirm')
 async def clean_folder_uploaded_confirm(callback: CallbackQuery):
     files_size = 0
     uploaded_dir = os.path.join(data.image_loader_path, 'Uploaded')
