@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2099</width>
-    <height>1107</height>
+    <width>2080</width>
+    <height>1346</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1330,6 +1330,38 @@
          </layout>
         </item>
         <item>
+         <spacer name="verticalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QListWidget" name="listWidget_queue">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QListWidget:focus {
+	border: 2px solid transparent;
+    outline: none;
+    }</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer_3">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -1360,18 +1392,17 @@
              </size>
             </property>
             <property name="font">
-             <font>
-              <pointsize>-1</pointsize>
-             </font>
+             <font/>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    font-size: 35px;
+	qproperty-icon: url(:/rotate);
+    qproperty-iconSize: 32px;
 }
 </string>
             </property>
             <property name="text">
-             <string>⭮</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -1384,18 +1415,17 @@
              </size>
             </property>
             <property name="font">
-             <font>
-              <pointsize>-1</pointsize>
-             </font>
+             <font/>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    font-size: 35px;
+	qproperty-icon: url(:/swap);
+    qproperty-iconSize: 32px;
 }
 </string>
             </property>
             <property name="text">
-             <string>⇋</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -1414,13 +1444,12 @@
              </size>
             </property>
             <property name="font">
-             <font>
-              <pointsize>-1</pointsize>
-             </font>
+             <font/>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    font-size: 35px;
+
+    qproperty-iconSize: 32px;
 }
 </string>
             </property>
@@ -1438,13 +1467,15 @@
              </size>
             </property>
             <property name="font">
-             <font>
-              <pointsize>-1</pointsize>
-             </font>
+             <font/>
+            </property>
+            <property name="toolTip">
+             <string>Контраст</string>
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    font-size: 35px;
+
+    qproperty-iconSize: 32px;
 }
 </string>
             </property>
@@ -1640,7 +1671,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2099</width>
+     <width>2080</width>
      <height>21</height>
     </rect>
    </property>
