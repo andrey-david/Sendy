@@ -10,5 +10,6 @@ from .keyboards import (shutdown_inline_kb,
                         back_to_image_loader_inline_kb,
                         settings_image_counter_inline_kb,
                         settings_other_inline_kb,
-                        back_to_settings_other_inline_kb
+                        back_to_settings_other_inline_kb,
+                        photo_paths
                         )

@@ -1,1 +1,1 @@
-from .tray import sendy_tray
+from .tray import tray

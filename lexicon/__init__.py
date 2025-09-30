@@ -18,4 +18,6 @@ from .lexicon import (LEXICON,
                       update_btn,
                       is_admin,
                       sendy_info,
-                      menu)
+                      menu,
+                      handlers_lex,
+                      image_loader_error_text)
