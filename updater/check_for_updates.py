@@ -18,7 +18,7 @@ from aiogram import Bot
 
 from keyboards import update_inline_kb
 from config import config
-from lexicon import sendy_info, update_text
+from lexicon import sendy_info, handlers_lex
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ async def check_for_updates(bot: Bot) -> None:
                         logger.error('Wrong update data')
                     if latest_version != sendy_info['version']:
                         await bot.send_message(chat_id=config.chat_id,
-                                               text=f'<b><i>{update_text} {latest_version}</i></b>',
+                                               text=f'<b><i>{handlers_lex['update_available']} {latest_version}</i></b>',
                                                reply_markup=update_inline_kb)
     else:
         logger.warning('`updater.exe` not found')
