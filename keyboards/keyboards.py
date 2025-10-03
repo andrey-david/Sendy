@@ -94,6 +94,8 @@ shutdown_inline_kb = create_inline_kb(2, **shutdown_btns)
 update_inline_kb = create_inline_kb(1, **update_btn)
 
 photo_paths: dict[str, Path] = {}
+
+
 def manage_photo_inline_kb(filepath: Path) -> InlineKeyboardMarkup:
     """
     Creates an inline keyboard for interacting with a photo made by `photo processing`.
