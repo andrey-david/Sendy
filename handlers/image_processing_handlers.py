@@ -31,8 +31,8 @@ logger = logging.getLogger(__name__)
 user_choice_size_futures: dict[int, asyncio.Future] = {}
 user_message_text_futures: dict[int, asyncio.Future] = {}
 image_queue = {}
-image_queue_processing: dict[int, bool] = {}
-image_queue_tasks: dict[int, asyncio.Task] = {}
+locks: dict[int, asyncio.Lock] = {}
+image_queue_tasks: dict[int, asyncio.Task[None]] = {}
 
 
 def parser(text: str) -> dict[str, list[str] | str | bool]:
@@ -45,13 +45,12 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
             dict[str, list[str] | str | bool]: A dictionary with parsed data:
                 - "WхH" (list[str]): List of sizes in the format "(Width)х(Height)", if found (empty list if not).
                 - "number" (str | None): Number of order.
-                - "material" (str): Material type
-                  ("Canvas", "Matte Canvas", "Cotton", "Banner").
+                - "material" (str): Material type ("Canvas", "Matte Canvas", "Cotton", "Banner").
                 - "cropper" (bool): True if cropping indicators are present (%, ✂️, cropper).
                 - "urgent" (bool): True if urgency markers are detected (!, ‼️, 🚨).
         """
     parser_WxH = []
-    parser_width_height = re.finditer(r'[^_]?(\d{2,})[xх*ч/\\:.-](\d{2,})', text.lower())
+    parser_width_height = re.finditer(r'[^_]?(\d{2,})[xх*ч/\\:.,-](\d{2,})', text.lower())
     for w_h in parser_width_height:
         parser_WxH.append(f'{w_h.group(1)}х{w_h.group(2)}')
 
@@ -122,9 +121,8 @@ async def processed_photo_btns_handler(callback: CallbackQuery) -> None:
 
 
 @image_processing_router.message(F.photo | (F.document & F.document.mime_type.startswith("image/")))
-async def process_image(message: Message, bot: Bot) -> None:
+async def add_image_to_queue(message: Message, bot: Bot) -> None:
     """Handles images from user:
-
         - Rejects files larger than 20 MB (Telegram limitation).
         - Puts valid messages into the image processing queue.
         - Starts a new queue worker for the user if none is running.
@@ -143,9 +141,13 @@ async def process_image(message: Message, bot: Bot) -> None:
 
     await image_queue[user_id].put(message)
 
-    task = image_queue_tasks.get(user_id)
-    if task is None or task.done():
-        image_queue_tasks[user_id] = asyncio.create_task(_image_queue_worker(user_id, bot))
+    if user_id not in locks:
+        locks[user_id] = asyncio.Lock()
+
+    async with locks[user_id]:
+        task = image_queue_tasks.get(user_id)
+        if not task or task.done():
+            image_queue_tasks[user_id] = asyncio.create_task(_image_queue_worker(user_id, bot))
 
 
 async def _image_queue_worker(user_id: int, bot: Bot) -> None:
@@ -155,20 +157,19 @@ async def _image_queue_worker(user_id: int, bot: Bot) -> None:
         - Removes the worker task from the global registry when finished.
         """
     try:
-        await handle_image_queue(user_id, bot)
+        await process_image_queue(user_id, bot)
     except Exception:
         logger.exception("Error processing image queue for user %s", user_id)
     finally:
         _ = image_queue_tasks.pop(user_id, None)
 
 
-async def handle_image_queue(user_id: int, bot: Bot):
-    queue = image_queue[user_id]
-    width_cm, height_cm = 0, 0
-    img_data = BytesIO()
+async def process_image_queue(user_id: int, bot: Bot):
+    while not image_queue[user_id].empty():
+        width_cm, height_cm = 0, 0
+        img_data = BytesIO()
 
-    while not queue.empty():
-        user_message = await queue.get()
+        user_message = await image_queue[user_id].get()
 
         reply_message = await user_message.reply(handlers_lex['processing_downloading'])
         file_id = (user_message.photo[-1] if user_message.photo else user_message.document).file_id
@@ -179,8 +180,8 @@ async def handle_image_queue(user_id: int, bot: Bot):
 
         pillow_heif.register_heif_opener()
         img_data.seek(0)
-        img = Image.open(img_data).convert("RGB")
-        img = ImageOps.exif_transpose(img)
+        image = Image.open(img_data).convert("RGB")
+        image = ImageOps.exif_transpose(image)
 
         if user_message.caption:
             caption = user_message.caption
@@ -241,18 +242,17 @@ async def handle_image_queue(user_id: int, bot: Bot):
 
         if cropper:
             await reply_message.edit_text(handlers_lex['processing_opening_cropper'])
-
-            q = Queue()
+            cropper_queue = Queue()
 
             def wrapper():
                 result = sendy_cropper(
-                    image=img,
+                    image=image,
                     number=number,
                     width=width_cm,
                     height=height_cm,
                     material=material
                 )
-                q.put(result)
+                cropper_queue.put(result)
 
             Thread(target=wrapper, daemon=True).start()
             await reply_message.edit_text(handlers_lex['processing_waiting_for_cropper'])
@@ -260,8 +260,8 @@ async def handle_image_queue(user_id: int, bot: Bot):
             result = True
             while result:
                 try:
-                    result = q.get_nowait()
-                    processing.set_presets(**result)
+                    result = cropper_queue.get_nowait()
+                    processing.presets(**result)
                     break
                 except:
                     await asyncio.sleep(3)
@@ -270,8 +270,8 @@ async def handle_image_queue(user_id: int, bot: Bot):
                 return
 
         else:
-            processing.set_presets(
-                img=img,
+            processing.presets(
+                image=image,
                 number=number,
                 width_cm=width_cm,
                 height_cm=height_cm,
@@ -293,7 +293,7 @@ async def handle_image_queue(user_id: int, bot: Bot):
             await reply_message.edit_text(
                 f"{handlers_lex['processing_error']} {e}"
                 f"\n"
-                f"\n{handlers_lex['processing_image_saved']}</b>"
+                f"\n{handlers_lex['processing_image_saved']}"
                 f"\n<code>{filepath}</code>"
             )
 
