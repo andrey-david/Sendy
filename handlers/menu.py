@@ -49,7 +49,7 @@ async def settings_command(message: Message):
 @menu_router.message(Command(commands=["cropper"]))
 @menu_router.message(F.text.lower().in_(['✂️', '%']))
 async def open_cropper(message: Message):
-    Thread(target=sendy_cropper, kwargs={'message': message}).start()
+    Thread(target=sendy_cropper, daemon=True).start()
 
 
 @menu_router.message(Command(commands=["counter"]))
