@@ -1,5 +1,4 @@
 import asyncio
-import threading
 import random
 import logging
 
@@ -20,15 +19,27 @@ from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 
 from config import config
-from handlers.handlers import handlers_router
-from tray import sendy_tray
-from image_loader.image_loader import image_loader, image_loader_router
-from handlers.menu import menu_router
-from handlers.settings_handlers import settings_router
+from tray import tray
+from handlers import (
+    menu_router,
+    handlers_router,
+    settings_router,
+    image_processing_router
+)
 from lexicon import sendy_info
-from lexicon.lexicon import hello, hello_new_year, hello_emoji_new_year, easter_egg_days, MENU_COMMANDS
+from lexicon.lexicon import (
+    hello,
+    hello_new_year,
+    hello_emoji_new_year,
+    easter_egg_days,
+    MENU_COMMANDS
+)
 from updater import check_for_updates
-import resources_rc
+from image_loader.image_loader import (
+    image_loader,
+    image_loader_router
+)
+
 
 async def set_main_menu(bot: Bot):
     main_menu_commands = [
@@ -50,18 +61,13 @@ async def welcome_message(bot: Bot, datatime_on_start, chat_id) -> None:
         await bot.send_message(chat_id=chat_id, text="🎂")
         await bot.send_message(chat_id=chat_id, text='🎉 С днём рождения!')
     elif datatime_on_start.day == 1 and datatime_on_start.month == 4:
-        await bot.send_message(chat_id=chat_id, text='🎉 С первым апреля!')
+        await bot.send_message(chat_id=chat_id, text='🎉 С первым мая!')
     else:
         await bot.send_message(chat_id=chat_id, text='🤖 ' + random.choice(hello))
 
     if (datatime_on_start.day, datatime_on_start.month) in easter_egg_days:
         msg = easter_egg_days[(datatime_on_start.day, datatime_on_start.month)]
         await bot.send_message(chat_id=chat_id, text=msg)
-
-
-async def tray():
-    await asyncio.sleep(1)
-    threading.Thread(target=sendy_tray.run, daemon=True).start()
 
 
 async def main():
@@ -80,6 +86,7 @@ async def main():
         dp.include_router(settings_router)
         dp.include_router(menu_router)
         dp.include_router(image_loader_router)
+        dp.include_router(image_processing_router)
         dp.startup.register(set_main_menu)
         _ = asyncio.create_task(image_loader())
     except Exception as e:
@@ -108,4 +115,7 @@ async def main():
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except Exception as e:
+        logger.exception("Fatal error in event loop: %s", e)
