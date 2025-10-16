@@ -39,6 +39,8 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 import pickle
 
+from config import config
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,17 +62,21 @@ class Data:
     cropper_css: str = ':/cropper_bright.css'
 
     def save(self):
-        with open('sendy.data', 'wb') as file:
+        data_path = os.path.join(config.app_dir, 'sendy.data')
+
+        with open(data_path, 'wb') as file:
             pickle.dump(asdict(self), file)
 
     @classmethod
     def load(cls):
-        if not os.path.exists('sendy.data'):
-            with open('sendy.data', 'wb') as file:
+        data_path = os.path.join(config.app_dir, 'sendy.data')
+
+        if not os.path.exists(data_path):
+            with open(data_path, 'wb') as file:
                 pickle.dump(asdict(cls()), file)
             return cls()
         try:
-            with open('sendy.data', 'rb') as file:
+            with open(data_path, 'rb') as file:
                 data_from_pickle = pickle.load(file)
                 return cls(**data_from_pickle)
         except (EOFError, pickle.UnpicklingError):
