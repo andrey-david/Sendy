@@ -3,11 +3,11 @@
         <file alias="cropper_bright.css">cropper/ui/styles/cropper_bright.css</file>
         <file alias="cropper_dark.css">cropper/ui/styles/cropper_dark.css</file>
         <file alias="sendy.ico">sendy.ico</file>
-        <file alias="rotate">rotate.svg</file>
-        <file alias="swap">swap.svg</file>
-        <file alias="full">full.svg</file>
-        <file alias="split">split.svg</file>
-        <file alias="contrast1">contrast1.svg</file>
-        <file alias="contrast2">contrast2.svg</file>
+        <file alias="rotate">cropper/ui/icons/rotate.svg</file>
+        <file alias="swap">cropper/ui/icons/swap.svg</file>
+        <file alias="full">cropper/ui/icons/full.svg</file>
+        <file alias="split">cropper/ui/icons/split.svg</file>
+        <file alias="contrast1">cropper/ui/icons/contrast1.svg</file>
+        <file alias="contrast2">cropper/ui/icons/contrast2.svg</file>
     </qresource>
 </RCC>
