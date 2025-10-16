@@ -10,6 +10,7 @@ Note:
 
 import asyncio
 import logging
+import os
 
 import pystray
 import threading
@@ -20,7 +21,7 @@ from config import config
 from handlers import stop_sendy
 
 logger = logging.getLogger(__name__)
-icon_path = "sendy.ico"
+icon_path = os.path.join(config.app_dir, "sendy.ico")
 
 
 def run_cropper() -> None:
