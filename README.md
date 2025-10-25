@@ -81,22 +81,22 @@ text
 
 The user sends an image with a description, and the bot returns the processed result.
 
-![](\images\Photo_Processing_1.png)
+<img src="\images\Photo_Processing_1.png"/>
 
 
 **Photo Processing** `/settings`.
 
-![](\images\Photo_Processing_2.png)
+<img src="\images\Photo_Processing_2.png"/>
 
 
 Example of the processed result.
 
-![](\images\Photo_Processing_3.png)
+<img src="\images\Photo_Processing_3.png"/>
 
 <details>
   <summary>See full resulting image</summary>
 
-  ![](\images\Photo_Processing_4.jpg)
+<img src="\images\Photo_Processing_4.jpg"/>
 
 </details>
 
@@ -104,38 +104,38 @@ Example of the processed result.
 
 To open the Cropper, simply add the `%` symbol to the description.
 
-![](\images\Cropper_1.png)
+<img src="\images\Cropper_1.png"/>
 
 Cropper main window.
 
-![](\images\Cropper_2.png)
+<img src="\images\Cropper_2.png"/>
 
 What you’ll see in the bot chat after pressing the `Crop` button.
 
-![](\images\Cropper_3.png)
+<img src="\images\Cropper_3.png"/>
 
 <details>
   <summary>See full resulting image</summary>
 
-  ![](\images\Cropper_4.jpg)
+<img src="\images\Cropper_4.jpg"/>
 
 </details>
 
 **Cropper Settings**.
 
-![](\images\Cropper_5.png)
+<img src="\images\Cropper_5.png"/>
 
 - ***Image Counter:***
 
 Example of counting images in `counter_test` folder.
 
-![](\images\Image_counter_1.png)
+<img src="\images\Image_counter_1.png"/>
 
 - ***Image Loader:***
 
 To load images, simply put them in the folder and the bot will automatically upload them to the chat.
 
-![](\images\Image_loader_1.png)
+<img src="\images\Image_loader_1.png"/>
 
 ---
 
