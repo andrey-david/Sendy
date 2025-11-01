@@ -18,195 +18,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLineEdit" name="lineEdit_width">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>150</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="placeholderText">
-         <string>ШИРИНА</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_swap">
-        <property name="minimumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="font">
-         <font/>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	qproperty-icon: url(:/swap);
-    qproperty-iconSize: 32px;
-}
-</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_height">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>61</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>81</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>150</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="placeholderText">
-         <string>ВЫСОТА</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="lineEdit_number">
-        <property name="minimumSize">
-         <size>
-          <width>160</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>250</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="placeholderText">
-         <string>НОМЕР</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QComboBox" name="comboBox_material">
-        <property name="minimumSize">
-         <size>
-          <width>194</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>180</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <item>
-         <property name="text">
-          <string>ХОЛСТ</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>БАННЕР</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>ХЛОПОК</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>МАТОВЫЙ</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_crop">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>161</width>
-          <height>61</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>-1</pointsize>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    font-size: 24px;
-}</string>
-        </property>
-        <property name="text">
-         <string>CROP</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::MinimumExpanding</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>10</width>
-          <height>50</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -244,7 +55,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -273,7 +90,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -302,7 +125,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -331,7 +160,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -360,7 +195,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -389,7 +230,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -418,7 +265,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -447,7 +300,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -476,7 +335,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -505,7 +370,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -534,7 +405,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -563,7 +440,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -594,7 +477,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>0</width>
-                 <height>20</height>
+                 <height>18</height>
                 </size>
                </property>
               </spacer>
@@ -612,7 +495,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -641,7 +530,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -670,7 +565,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -699,7 +600,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -728,7 +635,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -757,7 +670,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -786,7 +705,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -815,7 +740,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -844,7 +775,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -873,7 +810,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -902,7 +845,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -933,7 +882,7 @@
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>0</width>
-                 <height>20</height>
+                 <height>18</height>
                 </size>
                </property>
               </spacer>
@@ -951,7 +900,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -980,7 +935,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1009,7 +970,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1038,7 +1005,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1067,7 +1040,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1096,7 +1075,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1125,7 +1110,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1154,7 +1145,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1183,7 +1180,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1212,7 +1215,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1241,7 +1250,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1270,7 +1285,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1299,7 +1320,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1328,7 +1355,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1357,7 +1390,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1386,7 +1425,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1415,7 +1460,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1444,7 +1495,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1473,7 +1530,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1502,7 +1565,13 @@
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
-                   <height>43</height>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>46</height>
                   </size>
                  </property>
                  <property name="font">
@@ -1565,23 +1634,26 @@
          <widget class="QPushButton" name="pushButton_rotate">
           <property name="minimumSize">
            <size>
-            <width>81</width>
-            <height>61</height>
+            <width>44</width>
+            <height>44</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>81</width>
-            <height>61</height>
+            <width>44</width>
+            <height>44</height>
            </size>
           </property>
           <property name="font">
            <font/>
           </property>
+          <property name="toolTip">
+           <string>Повернуть по часовой</string>
+          </property>
           <property name="styleSheet">
            <string notr="true">QPushButton {
 	qproperty-icon: url(:/rotate);
-    qproperty-iconSize: 32px;
+    qproperty-iconSize: 28px;
 }
 </string>
           </property>
@@ -1594,14 +1666,14 @@
          <widget class="QPushButton" name="pushButton_contrast">
           <property name="minimumSize">
            <size>
-            <width>81</width>
-            <height>61</height>
+            <width>44</width>
+            <height>44</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>81</width>
-            <height>61</height>
+            <width>44</width>
+            <height>44</height>
            </size>
           </property>
           <property name="font">
@@ -1623,41 +1695,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_full_screen">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>81</width>
-            <height>61</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>81</width>
-            <height>61</height>
-           </size>
-          </property>
-          <property name="font">
-           <font/>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton {
-
-    qproperty-iconSize: 32px;
-}
-</string>
-          </property>
-          <property name="text">
-           <string>⛶</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <spacer name="verticalSpacer_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -1669,6 +1706,45 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_full_screen">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>44</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>44</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="toolTip">
+           <string>Полный экран</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+
+    qproperty-iconSize: 32px;
+}
+
+</string>
+          </property>
+          <property name="text">
+           <string>⛶</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -1688,10 +1764,328 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>15</height>
+        <height>8</height>
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>8</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_width">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Ширина</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string>ШИРИНА</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_swap">
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="font">
+         <font/>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Обменять ширину и высоту</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	qproperty-icon: url(:/swap);
+    qproperty-iconSize: 28px;
+}
+</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_height">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>61</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>130</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Высота</string>
+        </property>
+        <property name="placeholderText">
+         <string>ВЫСОТА</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_number">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>200</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Номер</string>
+        </property>
+        <property name="placeholderText">
+         <string>НОМЕР</string>
+        </property>
+        <property name="cursorMoveStyle">
+         <enum>Qt::LogicalMoveStyle</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_5">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_material">
+        <property name="minimumSize">
+         <size>
+          <width>110</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Материал</string>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="insertPolicy">
+         <enum>QComboBox::NoInsert</enum>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>ХОЛСТ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>БАННЕР</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>ХЛОПОК</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>МАТОВЫЙ</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_crop">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>110</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>-1</pointsize>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Обрезать и закрыть</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    font-size: 20px;
+}
+
+QPushButton:hover {
+	color: #0078d7
+}</string>
+        </property>
+        <property name="text">
+         <string>CROP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::MinimumExpanding</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>50</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>3</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -1746,10 +2140,57 @@
  </widget>
  <tabstops>
   <tabstop>lineEdit_width</tabstop>
+  <tabstop>pushButton_swap</tabstop>
   <tabstop>lineEdit_height</tabstop>
   <tabstop>lineEdit_number</tabstop>
   <tabstop>comboBox_material</tabstop>
   <tabstop>pushButton_crop</tabstop>
+  <tabstop>pushButton_rotate</tabstop>
+  <tabstop>pushButton_contrast</tabstop>
+  <tabstop>pushButton_full_screen</tabstop>
+  <tabstop>pushButton_20_30</tabstop>
+  <tabstop>pushButton_30_40</tabstop>
+  <tabstop>pushButton_30_45</tabstop>
+  <tabstop>pushButton_30_55</tabstop>
+  <tabstop>pushButton_40_60</tabstop>
+  <tabstop>pushButton_40_70</tabstop>
+  <tabstop>pushButton_45_60</tabstop>
+  <tabstop>pushButton_50_60</tabstop>
+  <tabstop>pushButton_50_70</tabstop>
+  <tabstop>pushButton_60_80</tabstop>
+  <tabstop>pushButton_60_90</tabstop>
+  <tabstop>pushButton_90_120</tabstop>
+  <tabstop>pushButton_20_20</tabstop>
+  <tabstop>pushButton_30_30</tabstop>
+  <tabstop>pushButton_35_35</tabstop>
+  <tabstop>pushButton_40_40</tabstop>
+  <tabstop>pushButton_50_50</tabstop>
+  <tabstop>pushButton_60_60</tabstop>
+  <tabstop>pushButton_70_70</tabstop>
+  <tabstop>pushButton_80_80</tabstop>
+  <tabstop>pushButton_90_90</tabstop>
+  <tabstop>pushButton_100_100</tabstop>
+  <tabstop>pushButton_110_110</tabstop>
+  <tabstop>pushButton_20_35</tabstop>
+  <tabstop>pushButton_20_40</tabstop>
+  <tabstop>pushButton_25_30</tabstop>
+  <tabstop>pushButton_30_50</tabstop>
+  <tabstop>pushButton_30_60</tabstop>
+  <tabstop>pushButton_40_50</tabstop>
+  <tabstop>pushButton_40_80</tabstop>
+  <tabstop>pushButton_40_90</tabstop>
+  <tabstop>pushButton_50_55</tabstop>
+  <tabstop>pushButton_50_75</tabstop>
+  <tabstop>pushButton_50_80</tabstop>
+  <tabstop>pushButton_50_90</tabstop>
+  <tabstop>pushButton_70_80</tabstop>
+  <tabstop>pushButton_70_90</tabstop>
+  <tabstop>pushButton_70_120</tabstop>
+  <tabstop>pushButton_80_110</tabstop>
+  <tabstop>pushButton_80_120</tabstop>
+  <tabstop>pushButton_80_130</tabstop>
+  <tabstop>pushButton_90_110</tabstop>
+  <tabstop>pushButton_90_130</tabstop>
   <tabstop>graphicsView_main</tabstop>
   <tabstop>graphicsView_preview</tabstop>
  </tabstops>

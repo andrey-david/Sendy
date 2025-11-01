@@ -48,7 +48,7 @@ QTabBar::tab {
     background: transparent;
     color: #F1F1F1;
     padding: 10px 18px;
-    border: none;                 
+    border: none;               
     min-width: 80px;
 }
 
@@ -62,11 +62,15 @@ QTabWidget::pane {
     background: transparent;
 }
 
+QTabBar:focus {
+    border: #ff0000;
+}
+
 QPushButton {
     background-color: #272727;
     color: #F1F1F1;
     border: 2px solid #272727;
-    border-radius: 5px;
+    border-radius: 22px;
     padding: 12px 10px;
     font-family: "Helvetica";
     font-size: 16px;
@@ -83,13 +87,13 @@ QPushButton:pressed {
 }
 
 QLineEdit {
-    background-color: #272727;
+    background-color: #121212;
     color: #F1F1F1;
     border: 2px solid #272727;
-    border-radius: 5px;
+    border-radius: 22px;
     padding: 10px;
     font-family: "Helvetica";
-    font-size: 22px;
+    font-size: 16px;
 }
 
 QLineEdit:placeholder {
@@ -97,11 +101,11 @@ QLineEdit:placeholder {
 }
 
 QComboBox {
-    font: 18pt "Helvetica";
+    font: 14pt "Helvetica";
     color: #F1F1F1;
     background-color: #272727;
     border: 2px solid #272727;
-    border-radius: 6px;
+    border-radius: 22px;
     padding: 6px 30px 6px 10px;
     min-width: 150px;
 }
@@ -117,6 +121,7 @@ QComboBox::drop-down {
 QGraphicsView {
     background-color: #2B2D30;
     border: 2px solid #272727;
+    border-radius: 8px;
 }
 
 QFrame[frameShape="4"] {
@@ -130,35 +135,35 @@ QStatusBar QLabel {
     color: #F1F1F1;
 }
 
-*:focus {
-    border: 2px solid #0078d7;
-    outline: none;
-    }
-
 QGraphicsView:focus {
     border: 2px solid #272727;
 }
 
 QListWidget {
-    border-radius: 5px;
+    border-radius: 22px;
     background: #272727;
     font-size: 16px;
 }
 
+QListWidget:focus {
+    border: 2px solid transparent;
+    outline: none;
+    }
+
 QListWidget::item {
-    border-radius: 5px;
+    border-radius: 22px;
     color: #F1F1F1;
     padding: 16px;
     
 }
 
 QListWidget::item:hover {
-    border-radius: 5px;
+    border-radius: 22px;
     background: #3F3F3F;
 }
 
 QListWidget::item:selected {
-    border-radius: 5px;
+    border-radius: 22px;
     background: #656565;    
 }
 
@@ -188,19 +193,20 @@ QScrollBar::sub-line:vertical {
     border: none;
 }
 
+QCheckBox {
+    spacing: 10px;
+    color: #F1F1F1;
+    border: 2px solid transparent;
+    font-family: "Helvetica";
+    font-size: 16px;
+}
+
 QCheckBox::indicator {
     width: 20px; 
     height: 20px;
     border: 2px solid #555;
-    border-radius: 4px;
+    border-radius: 10px;
     background: #fff;
-}
-
-QCheckBox {
-    spacing: 12px;
-    color: #F1F1F1;
-    font-family: "Helvetica";
-    font-size: 22px;
 }
 
 QCheckBox::indicator:checked {
@@ -213,3 +219,8 @@ QCheckBox::indicator:unchecked {
     background: #272727;
     border: 2px solid #272727;
 }
+
+*:focus {
+    border: 2px solid #0078d7;
+    outline: none;
+    }
