@@ -26,7 +26,7 @@ import pyautogui
 from lexicon import is_admin, settings_lexicon, menu
 from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
-from cropper.cropper_main import sendy_cropper
+from handlers.image_processing_handlers import add_image_to_queue
 from data import data
 from image_counter.image_counter import count_images_in_folder
 
@@ -49,7 +49,7 @@ async def settings_command(message: Message):
 @menu_router.message(Command(commands=["cropper"]))
 @menu_router.message(F.text.lower().in_(['✂️', '%']))
 async def open_cropper(message: Message):
-    Thread(target=sendy_cropper, daemon=True).start()
+    await add_image_to_queue(message, cropper=True)
 
 
 @menu_router.message(Command(commands=["counter"]))
