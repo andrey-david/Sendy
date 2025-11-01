@@ -1,150 +1,158 @@
 import os
 import logging
-import asyncio
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
 from data import data
-from config import config
-from keyboards import manage_photo_inline_kb
 
 logger = logging.getLogger(__name__)
 
 
 class PhotoProc:
     def __init__(self):
-        self.img = None
-        self.FONT_PATH: str = "arial.ttf"
+        self.image = None
         self.number: str = ''
-        self.width_cm: float = 0
-        self.height_cm: float = 0
-        self.material: str = 'ХОЛСТ'
-        self.message = None
-        self.flag: bool = True
+        self.width_cm: int = 0
+        self.height_cm: int = 0
+        self.material: str = 'Холст'
         self.coordinates: tuple[int, int, int, int] = (0, 0, 0, 0)
-        self.WRAP_CM: float = data.photo_processing_wrap_cm
-        self.WHITE_CM: float = data.photo_processing_white_cm
+
+        self.wrap_cm: float = data.photo_processing_wrap_cm
+        self.white_cm: float = data.photo_processing_white_cm
         self.black_px: int = data.photo_processing_black_px
         self.text_px: int = data.photo_processing_font_size_px
-        self.DPI: int = data.photo_processing_dpi
+        self.crop_px = data.photo_processing_crop_px
+        self.font_path: str = "arial.ttf"
+        self.dpi: int = data.photo_processing_dpi
+
         self.CM_TO_INCH: float = 2.54
-        self.CM_TO_PX = lambda cm: int((cm * self.DPI) / self.CM_TO_INCH)
+        self.cm_to_px = lambda cm: int((cm * self.dpi) / self.CM_TO_INCH)
+
         self.filepath = None
-        self.filename = ''
 
-    def add_image(self, img):
-        self.img = img
+    def presets(
+            self,
+            image,
+            number='',
+            width_cm=0,
+            height_cm=0,
+            material='Холст',
+            coordinates=None
+    ):
+        self.image = image
+        image_width, image_height = self.image.size
 
-    def set_presets(self, number='', width_cm=0, height_cm=0, material=0, message=None, flag=True,
-                    coordinates=(0, 0, 0, 0)):
+        if coordinates:
+            self.coordinates = coordinates
+        else:
+            self.coordinates: tuple[int, ...] = (self.crop_px,
+                                                 self.crop_px,
+                                                 image_width - self.crop_px,
+                                                 image_height - self.crop_px
+                                                 )
+
         self.number = number
         self.width_cm = width_cm
         self.height_cm = height_cm
         self.material = material
-        self.message = message
-        self.flag = flag
-        self.coordinates = coordinates
 
-    def stretch_edges(self):
-        w, h = self.img.size
-        zav_px = self.CM_TO_PX(self.WRAP_CM)
-        source_px = 20
+    def stretch(self):
+        image_width, image_height = self.image.size
+        wrap_px = self.cm_to_px(self.wrap_cm)
+        strip_crop_px = 20
+        corner_crop_px = 20
 
-        def get_stretched_strip(crop_box, final_size):
-            strip = self.img.crop(crop_box)
+        def stretched_strip(crop_box, final_size):
+            strip = self.image.crop(crop_box)
             return strip.resize(final_size, Image.LANCZOS)
 
-        left_strip = get_stretched_strip((0, 0, source_px, h), (zav_px, h))
-        right_strip = get_stretched_strip((w - source_px, 0, w, h), (zav_px, h))
-        top_strip = get_stretched_strip((0, 0, w, source_px), (w, zav_px))
-        bottom_strip = get_stretched_strip((0, h - source_px, w, h), (w, zav_px))
+        left_strip = stretched_strip((0, 0, strip_crop_px, image_height), (wrap_px, image_height))
+        right_strip = stretched_strip((image_width - strip_crop_px, 0, image_width, image_height),
+                                      (wrap_px, image_height))
+        top_strip = stretched_strip((0, 0, image_width, strip_crop_px), (image_width, wrap_px))
+        bottom_strip = stretched_strip((0, image_height - strip_crop_px, image_width, image_height),
+                                       (image_width, wrap_px))
 
-        left_zav = left_strip.crop((zav_px - zav_px, 0, zav_px, h))
-        right_zav = right_strip.crop((0, 0, zav_px, h))
-        top_zav = top_strip.crop((0, zav_px - zav_px, w, zav_px))
-        bottom_zav = bottom_strip.crop((0, 0, w, zav_px))
+        left_wrap = left_strip.crop((wrap_px - wrap_px, 0, wrap_px, image_height)).transpose(Image.FLIP_LEFT_RIGHT)
+        right_wrap = right_strip.crop((0, 0, wrap_px, image_height)).transpose(Image.FLIP_LEFT_RIGHT)
+        top_wrap = top_strip.crop((0, wrap_px - wrap_px, image_width, wrap_px)).transpose(Image.FLIP_TOP_BOTTOM)
+        bottom_wrap = bottom_strip.crop((0, 0, image_width, wrap_px)).transpose(Image.FLIP_TOP_BOTTOM)
 
-        new_img = Image.new("RGB", (w + 2 * zav_px, h + 2 * zav_px))
+        corner_top_left = self.image.crop((corner_crop_px, corner_crop_px, corner_crop_px * 2, corner_crop_px * 2))
+        corner_top_right = self.image.crop(
+            (image_width - corner_crop_px * 2, corner_crop_px, image_width - corner_crop_px, corner_crop_px * 2))
+        corner_bottom_left = self.image.crop(
+            (corner_crop_px, image_height - corner_crop_px * 2, corner_crop_px * 2, image_height - corner_crop_px))
+        corner_bottom_right = self.image.crop(
+            (image_width - corner_crop_px * 2, image_height - corner_crop_px * 2, image_width - corner_crop_px,
+             image_height - corner_crop_px))
 
-        left_zav = left_zav.transpose(Image.FLIP_LEFT_RIGHT)
-        right_zav = right_zav.transpose(Image.FLIP_LEFT_RIGHT)
-        top_zav = top_zav.transpose(Image.FLIP_TOP_BOTTOM)
-        bottom_zav = bottom_zav.transpose(Image.FLIP_TOP_BOTTOM)
+        corner_top_left = corner_top_left.resize((wrap_px, wrap_px)).crop((0, 0, wrap_px, wrap_px))
+        corner_top_right = corner_top_right.resize((wrap_px, wrap_px)).crop((wrap_px - wrap_px, 0, wrap_px, wrap_px))
+        corner_bottom_left = corner_bottom_left.resize((wrap_px, wrap_px)).crop(
+            (0, wrap_px - wrap_px, wrap_px, wrap_px))
+        corner_bottom_right = corner_bottom_right.resize((wrap_px, wrap_px)).crop(
+            (wrap_px - wrap_px, wrap_px - wrap_px, wrap_px, wrap_px))
 
-        new_img.paste(self.img, (zav_px, zav_px))
-        new_img.paste(left_zav, (0, zav_px))
-        new_img.paste(right_zav, (w + zav_px, zav_px))
-        new_img.paste(top_zav, (zav_px, 0))
-        new_img.paste(bottom_zav, (zav_px, h + zav_px))
+        new_image = Image.new("RGB", (image_width + 2 * wrap_px, image_height + 2 * wrap_px))
 
-        # Обработка углов изображения
-        corner_crop_px = 20
-        corner_orig_tl = self.img.crop((20, 20, 40, 40))
-        corner_orig_tr = self.img.crop((w - 40, 20, w - 20, 40))
-        corner_orig_bl = self.img.crop((20, h - 40, 40, h - 20))
-        corner_orig_br = self.img.crop((w - 40, h - 40, w - 20, h - 20))
+        new_image.paste(self.image, (wrap_px, wrap_px))
+        new_image.paste(left_wrap, (0, wrap_px))
+        new_image.paste(right_wrap, (image_width + wrap_px, wrap_px))
+        new_image.paste(top_wrap, (wrap_px, 0))
+        new_image.paste(bottom_wrap, (wrap_px, image_height + wrap_px))
 
-        corner_tl = corner_orig_tl.resize((zav_px, zav_px)).crop((0, 0, zav_px, zav_px))
-        corner_tr = corner_orig_tr.resize((zav_px, zav_px)).crop((zav_px - zav_px, 0, zav_px, zav_px))
-        corner_bl = corner_orig_bl.resize((zav_px, zav_px)).crop((0, zav_px - zav_px, zav_px, zav_px))
-        corner_br = corner_orig_br.resize((zav_px, zav_px)).crop((zav_px - zav_px, zav_px - zav_px, zav_px, zav_px))
+        new_image.paste(corner_top_left, (0, 0))
+        new_image.paste(corner_top_right, (image_width + wrap_px, 0))
+        new_image.paste(corner_bottom_left, (0, image_height + wrap_px))
+        new_image.paste(corner_bottom_right, (image_width + wrap_px, image_height + wrap_px))
 
-        new_img.paste(corner_tl, (0, 0))
-        new_img.paste(corner_tr, (w + zav_px, 0))
-        new_img.paste(corner_bl, (0, h + zav_px))
-        new_img.paste(corner_br, (w + zav_px, h + zav_px))
+        self.image = new_image
 
-        self.img = new_img
+    def white_frame(self):
+        white_px = self.cm_to_px(self.white_cm)
+        image_width, image_height = self.image.size
 
-    def photo_proc(self):
-        WRAP_CM = self.WRAP_CM
-        WHITE_CM = self.WHITE_CM
-        white_px = self.CM_TO_PX(WHITE_CM)
-        black_px = self.black_px
-        text_px = self.text_px
-        DPI = self.DPI
+        target_width = round((self.width_cm + 2 * self.wrap_cm + 2 * self.white_cm) * self.dpi / self.CM_TO_INCH)
+        target_height = round((self.height_cm + 2 * self.wrap_cm + 2 * self.white_cm) * self.dpi / self.CM_TO_INCH)
 
-        # Растягивание краёв изображения
-        w, h = self.img.size
+        actual_width = image_width + 2 * white_px
+        actual_height = image_height + 2 * white_px
+        delta_width = actual_width - target_width
+        delta_height = actual_height - target_height
 
-        # Желаемый финальный размер:
+        if delta_width != 0:
+            white_left = white_px - ((delta_width // 2) + delta_width % 2)
+            white_right = white_px - (delta_width // 2)
+        else:
+            white_left = white_px
+            white_right = white_px
 
-        target_w = round((self.width_cm + 2 * WRAP_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
-        target_h = round((self.height_cm + 2 * WRAP_CM + 2 * WHITE_CM) * DPI / self.CM_TO_INCH)
+        if delta_height != 0:
+            white_top = white_px - ((delta_height // 2) + delta_height % 2)
+            white_bottom = white_px - (delta_height // 2)
+        else:
+            white_top = white_px
+            white_bottom = white_px
 
-        # Коррекция white_px
-        actual_w = w + 2 * white_px
-        actual_h = h + 2 * white_px
-        delta_w = actual_w - target_w
-        delta_h = actual_h - target_h
-
-        # Распределим отступы по сторонам
-        white_left = white_px
-        white_right = white_px
-        white_top = white_px
-        white_bottom = white_px
-
-        if delta_w != 0:
-            white_left = white_px - ((delta_w // 2) + delta_w % 2)
-            white_right = white_px - (delta_w // 2)
-        if delta_h != 0:
-            white_top = white_px - ((delta_h // 2) + delta_h % 2)
-            white_bottom = white_px - (delta_h // 2)
-
-        # Создание белой рамки
-        canvas_width = w + white_left + white_right
-        canvas_height = h + white_top + white_bottom
+        canvas_width = image_width + white_left + white_right
+        canvas_height = image_height + white_top + white_bottom
         canvas = Image.new("RGB", (canvas_width, canvas_height), color="white")
+        canvas.paste(self.image, (white_left, white_top))
 
-        # Вставка изображения внутрь белой рамки
-        canvas.paste(self.img, (white_left, white_top))
+        self.image = canvas
 
-        # Добавление текста (номера)
+    def add_number(self):
+        canvas = self.image
+        white_px = self.cm_to_px(self.white_cm)
+
         draw = ImageDraw.Draw(canvas)
+
         try:
-            font = ImageFont.truetype(self.FONT_PATH, text_px)
-        except:
+            font = ImageFont.truetype(self.font_path, self.text_px)
+        except Exception:
+            logger.exception('Font not found')
             font = ImageFont.load_default()
 
         if self.number:
@@ -152,27 +160,32 @@ class PhotoProc:
             text_width = bbox[2] - bbox[0]
             text_height = bbox[3] - bbox[1]
 
-            # номер сверху
+            # top number
             x = (canvas.width - text_width) // 2
-            y = (white_px + black_px) // 2 - text_height // 2 - 10
+            y = (white_px + self.black_px) // 2 - text_height // 2 - 10
             draw.text((x, y), self.number, font=font, fill="red", stroke_width=5, stroke_fill="white")
 
-            # номер снизу
-            x = (canvas.width - text_width) // 2
-            y = canvas.height - black_px - text_height * 2 + 10
+            # bottom number
+            y = canvas.height - self.black_px - text_height * 2 + 10
             draw.text((x, y), self.number, font=font, fill="red", stroke_width=5, stroke_fill="white")
 
-        # Добавление чёрной рамки поверх всей композиции
+            self.image = canvas
+
+    def black_frame(self):
+        canvas = self.image
+
         draw = ImageDraw.Draw(canvas)
         draw.rectangle(
             [(0, 0), (canvas.width - 1, canvas.height - 1)],
             outline="black",
-            width=black_px)
+            width=self.black_px)
 
-        # Сохранение
+        self.image = canvas
+
+    def save(self):
         os.makedirs(data.photo_processing_path, exist_ok=True)
-        product_dir = os.path.join(data.photo_processing_path, self.material)
-        os.makedirs(product_dir, exist_ok=True)
+        material_dir = os.path.join(data.photo_processing_path, self.material)
+        os.makedirs(material_dir, exist_ok=True)
 
         filename = f"{self.width_cm}х{self.height_cm}"
         if self.material == 'Баннер':
@@ -182,8 +195,8 @@ class PhotoProc:
 
         if self.number:
             filename += f" {self.number}"
-        filename += f" {self.material}"
-        filename += ".jpg"
+
+        filename += f" {self.material}.jpg"
 
         def unique_filename(directory, base_filename):
             base, ext = os.path.splitext(base_filename)
@@ -191,43 +204,29 @@ class PhotoProc:
             new_filename = base_filename
 
             while os.path.exists(os.path.join(directory, new_filename)):
-                new_filename = f"{base}_{counter}{ext}"
+                new_filename = f"{base} ({counter}){ext}"
                 counter += 1
 
             return new_filename
 
-        filename = unique_filename(product_dir, filename)
-        self.filename = filename
-        self.filepath = os.path.join(product_dir, filename)
+        filename = unique_filename(material_dir, filename)
+        self.filepath = os.path.join(material_dir, filename)
 
-        with open(r"C:\Windows\System32\spool\drivers\color\sRGB Color Space Profile.icm", "rb") as f:
-            icc_bytes = f.read()
+        with open(r"C:\Windows\System32\spool\drivers\color\sRGB Color Space Profile.icm", "rb") as icc_profile:
+            icc_bytes = icc_profile.read()
 
-        canvas.save(self.filepath, "JPEG", quality=100, dpi=(DPI, DPI), icc_profile=icc_bytes)
-        logger.info(f"Файл сохранён: {self.filepath}")
+        self.image.save(self.filepath, "JPEG", quality=100, dpi=(self.dpi, self.dpi), icc_profile=icc_bytes)
+        logger.info(f"File saved: {self.filepath}")
 
-    def process_image(self):
-        if self.img:
-            crop_px = data.photo_processing_crop_px
-            w, h = self.img.size
+    def process_image(self) -> Path:
+        if self.image:
+            self.image = self.image.crop(self.coordinates)
+            self.image = self.image.resize((self.cm_to_px(self.width_cm), self.cm_to_px(self.height_cm)))
 
-            if self.flag:  # обработка БЕЗ sendy_cropper
-                self.img = self.img.crop((crop_px, crop_px, w - crop_px, h - crop_px))
-                self.img = self.img.resize((self.CM_TO_PX(self.width_cm), self.CM_TO_PX(self.height_cm)))
-            else:  # обработка ЧЕРЕЗ sendy_cropper
-                self.img = self.img.crop(self.coordinates)
-                self.img = self.img.resize((self.CM_TO_PX(self.width_cm), self.CM_TO_PX(self.height_cm)))
+            self.stretch()
+            self.white_frame()
+            self.black_frame()
+            self.add_number()
+            self.save()
 
-            self.stretch_edges()
-            self.photo_proc()
-
-            asyncio.run_coroutine_threadsafe(self.send_via_bot(), config.bot_loop)
-
-    async def send_via_bot(self):
-        try:
-            await self.message.answer(f"✅ <b>Изображение сохранено</b>\n\n🏷 <code>{self.filename}</code>",
-                                      reply_markup=manage_photo_inline_kb(Path(self.filepath)),
-                                      reply_to_message_id=self.message.message_id)
-        except Exception as e:
-            await self.message.answer(f"💀 Ошибка: {str(e)}"
-                                      f"\n\n✅ <b>Изображение успешно сохранено: </b>\n<code>{self.filepath}</code>")
+        return Path(self.filepath)
