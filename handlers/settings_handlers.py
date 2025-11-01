@@ -154,7 +154,7 @@ async def receive_settings_photo_processing_value(message: Message, state: FSMCo
     attr = STATE_TO_ATTR.get(current_state)
     try:
         value = message.text.replace(',', '.')
-        if 1 < float(value) < 500:
+        if 1 <= float(value) <= 500:
             setattr(data, attr, ATTR_type[attr](value))
             data.save()
             await state.clear()
