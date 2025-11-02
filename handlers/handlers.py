@@ -28,9 +28,8 @@ async def update(callback: CallbackQuery) -> None:
        If found, notifies the user, starts the updater, and stops the bot gracefully.
        Otherwise, sends an error message.
     """
-    bot_dir = os.path.dirname(os.path.abspath(__file__))
-    updater_filename = "updater.exe"
-    updater_path = os.path.join(bot_dir, updater_filename)
+    updater_name = "updater.exe"
+    updater_path = os.path.join(config.app_dir, updater_name)
     if os.path.exists(updater_path):
         await callback.answer(handlers_lex['reboot'])
         subprocess.Popen([updater_path], close_fds=True)
