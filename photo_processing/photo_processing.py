@@ -1,3 +1,21 @@
+"""Photo Processing
+
+This module provides a complete workflow for processing photos intended for print production (canvas, matte, or banner).
+It performs cropping, edge stretching, frame creation (wide white and black line), numbering,
+and saving with precise DPI and ICC profile settings.
+
+Main parts:
+------------
+- PhotoProc: main class that manages the full image processing pipeline.
+  - presets(): initializes image parameters (size, material, coordinates, etc.).
+  - stretch(): extends image edges for gallery wrap effect.
+  - white_frame(): adds white margins to reach the target print size.
+  - black_frame(): draws a black outline border around the final image.
+  - add_number(): overlays order or print number on the top and bottom edges.
+  - save(): saves the final image with ICC profile and unique filename.
+  - process_image(): executes the complete processing pipeline and returns the saved file path.
+"""
+
 import os
 import logging
 from pathlib import Path
