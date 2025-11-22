@@ -14,6 +14,7 @@ from .settings_lex import (settings_main_btns,
                            )
 from .lexicon import (LEXICON,
                       MAIN_BUTTONS,
+                      MENU_COMMANDS,
                       shutdown_btns,
                       update_btn,
                       sendy_info,

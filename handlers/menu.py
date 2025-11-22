@@ -1,6 +1,4 @@
-"""
-Bot Menu
---------
+"""Bot Menu
 
 Contains message handlers for bot's main menu:
 - /start: shows welcome text and main keyboard (main_kb duplicate some main menu commands)
@@ -18,12 +16,12 @@ import logging
 import time
 from datetime import datetime
 
-from aiogram import F, Router
+from aiogram import F, Router, Bot
 from aiogram.filters import Command
-from aiogram.types import Message, FSInputFile, CallbackQuery
+from aiogram.types import Message, FSInputFile, CallbackQuery, BotCommand
 import pyautogui
 
-from lexicon import settings_lexicon, menu
+from lexicon import settings_lexicon, menu, MENU_COMMANDS
 from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
 from handlers.image_processing_handlers import add_image_to_queue
@@ -32,6 +30,16 @@ from image_counter.image_counter import count_images_in_folder
 
 logger = logging.getLogger(__name__)
 menu_router = Router(name='menu_router')
+
+
+async def set_main_menu(bot: Bot):
+    main_menu_commands = [
+        BotCommand(
+            command=command,
+            description=description
+        ) for command, description in MENU_COMMANDS.items()
+    ]
+    await bot.set_my_commands(main_menu_commands)
 
 
 @menu_router.message(Command(commands=["start"]))

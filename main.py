@@ -23,12 +23,12 @@ logging.basicConfig(
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.types import BotCommand
 
 from config import config
 from tray import tray
 from handlers import (
     menu_router,
+    set_main_menu,
     handlers_router,
     settings_router,
     image_processing_router
@@ -39,7 +39,6 @@ from lexicon.lexicon import (
     hello_new_year,
     hello_emoji_new_year,
     easter_egg_days,
-    MENU_COMMANDS
 )
 from updater import check_for_updates
 from image_loader.image_loader import (
@@ -47,16 +46,6 @@ from image_loader.image_loader import (
     image_loader_router
 )
 from middlewares import IsAdminMiddleware
-
-
-async def set_main_menu(bot: Bot):
-    main_menu_commands = [
-        BotCommand(
-            command=command,
-            description=description
-        ) for command, description in MENU_COMMANDS.items()
-    ]
-    await bot.set_my_commands(main_menu_commands)
 
 
 # Отправить сообщение при запуске
@@ -95,6 +84,7 @@ async def main():
         dp.include_router(menu_router)
         dp.include_router(image_loader_router)
         dp.include_router(image_processing_router)
+
         dp.startup.register(set_main_menu)
 
         dp.update.outer_middleware(IsAdminMiddleware())
