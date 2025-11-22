@@ -1,9 +1,16 @@
 import asyncio
 import random
 import logging
+import os
+import sys
 
 logger = logging.getLogger()
-logging_handler = logging.FileHandler(filename='sendy.log', encoding='utf-8')
+if getattr(sys, 'frozen', False):
+    app_dir = os.path.dirname(sys.executable)
+else:
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+log_path = os.path.join(app_dir, 'sendy.log')
+logging_handler = logging.FileHandler(filename=log_path, encoding='utf-8')
 logging_console = logging.StreamHandler()
 logging.basicConfig(
     level=logging.INFO,
@@ -39,6 +46,7 @@ from image_loader.image_loader import (
     image_loader,
     image_loader_router
 )
+from middlewares import IsAdminMiddleware
 
 
 async def set_main_menu(bot: Bot):
@@ -88,6 +96,9 @@ async def main():
         dp.include_router(image_loader_router)
         dp.include_router(image_processing_router)
         dp.startup.register(set_main_menu)
+
+        dp.update.outer_middleware(IsAdminMiddleware())
+
         _ = asyncio.create_task(image_loader())
     except Exception as e:
         logger.exception(f'Cannot run BOT: {e}')

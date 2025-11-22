@@ -12,19 +12,9 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.2', 'date': '01.11.25'}
+sendy_info: dict[str, str] = {'version': 'v2.2[DLC]', 'date': '03.11.25'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
-
-
-async def is_admin(id, message):
-    if id in ADMINS:
-        return True
-    await message.bot.send_message(chat_id=id, text='🚫 <i><b>ОТКАЗАНО В ДОСТУПЕ</b></i>')
-    await message.bot.send_message(chat_id=chat_id,
-                                   text=f' ⚠️ <i><b>КТО-ТО ЧТО-ТО НАЖАЛ!!</b></i> \n\nID: <code>{id}</code>\nUSERNAME: <code>{message.from_user.username}</code> \n\n<a href="tg://user?id={id}">ПОСМОТРЕТЬ ПРОФИЛЬ</a>')
-    return False
-
 
 MENU_COMMANDS: dict[str, str] = {
     '/start': 'запуск бота',
@@ -39,7 +29,11 @@ menu: dict[str, str] = {
               f'\n'
               f'\n📌 Исправлена ошибка при парсинге трёхзначных чисел.'
               f'\n'
-              f'\n📌 Уменьшено количество сообщений при обработке фото (flood control).',
+              f'\n📌 Уменьшено количество сообщений при обработке фото (flood control).'
+              f'\n'
+              f'\n⚡️ В Sendy Cropper добавлен drag and drop.'
+              f'\n'
+              f'\n⚡️ Sendy Cropper - завершён и работает.',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)

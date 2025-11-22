@@ -23,7 +23,7 @@ from aiogram.filters import Command
 from aiogram.types import Message, FSInputFile, CallbackQuery
 import pyautogui
 
-from lexicon import is_admin, settings_lexicon, menu
+from lexicon import settings_lexicon, menu
 from config import config
 from keyboards import main_kb, shutdown_inline_kb, settings_main_inline_kb
 from handlers.image_processing_handlers import add_image_to_queue
@@ -42,8 +42,7 @@ async def start_command(message: Message):
 @menu_router.message(Command("settings"))
 @menu_router.message(F.text == "⚙️")
 async def settings_command(message: Message):
-    if await is_admin(message.from_user.id, message):
-        await message.answer(text=settings_lexicon['settings_main_text'], reply_markup=settings_main_inline_kb)
+    await message.answer(text=settings_lexicon['settings_main_text'], reply_markup=settings_main_inline_kb)
 
 
 @menu_router.message(Command(commands=["cropper"]))
@@ -55,8 +54,7 @@ async def open_cropper(message: Message):
 @menu_router.message(Command(commands=["counter"]))
 @menu_router.message(F.text.lower() == '🧮')
 async def image_counter_start_counting(message: Message):
-    if await is_admin(message.from_user.id, message):
-        await count_images_in_folder(data.image_counter_path, message)
+    await count_images_in_folder(data.image_counter_path, message)
 
 
 @menu_router.message(Command(commands=["screenshoot"]))
@@ -69,10 +67,9 @@ async def take_screenshoot(message: Message):
     try:
         screenshot = pyautogui.screenshot()
         screenshot.save(filename)
-        if await is_admin(message.from_user.id, message):
-            await message.answer_document(document=FSInputFile(filename),
-                                          caption=f"{menu['/screenshoot']}\n\n🏷 <code>{filename}</code>",
-                                          )
+        await message.answer_document(document=FSInputFile(filename),
+                                      caption=f"{menu['/screenshoot']}\n\n🏷 <code>{filename}</code>",
+                                      )
     except FileNotFoundError:
         logger.exception('Path Error')
 
@@ -84,9 +81,8 @@ async def help_command(message: Message):
 
 @menu_router.message(Command(commands=["stop"]))
 async def stop_command(message: Message):
-    if await is_admin(message.from_user.id, message):
-        await message.answer(text=menu['/stop'],
-                             reply_markup=shutdown_inline_kb)
+    await message.answer(text=menu['/stop'],
+                         reply_markup=shutdown_inline_kb)
 
 
 async def stop_sendy():
