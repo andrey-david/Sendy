@@ -20,4 +20,9 @@ from .lexicon import (LEXICON,
                       sendy_info,
                       menu,
                       handlers_lex,
-                      image_loader_error_text)
+                      image_loader_error_text,
+                      welcome_message,
+                      welcome_emoji_new_year,
+                      welcome_message_new_year,
+                      celebration_days,
+                      )

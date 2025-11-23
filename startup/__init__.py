@@ -1,0 +1,1 @@
+from .on_start import send_welcome_message

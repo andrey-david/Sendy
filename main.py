@@ -1,5 +1,4 @@
 import asyncio
-import random
 import logging
 import os
 import sys
@@ -34,37 +33,13 @@ from handlers import (
     image_processing_router
 )
 from lexicon import sendy_info
-from lexicon.lexicon import (
-    hello,
-    hello_new_year,
-    hello_emoji_new_year,
-    easter_egg_days,
-)
 from updater import check_for_updates
 from image_loader.image_loader import (
     image_loader,
     image_loader_router
 )
+from startup import send_welcome_message
 from middlewares import IsAdminMiddleware
-
-
-# Отправить сообщение при запуске
-async def welcome_message(bot: Bot, datatime_on_start, chat_id) -> None:
-    if ((datatime_on_start.day in [24, 25, 26, 27, 28, 29, 30, 31] and datatime_on_start.month == 12) or
-            (datatime_on_start.day in [1, 2, 3, 4, 5, 6, 7] and datatime_on_start.month == 1)):
-        await bot.send_message(chat_id=chat_id, text=random.choice(hello_emoji_new_year))
-        await bot.send_message(chat_id=chat_id, text=random.choice(hello_new_year))
-    elif datatime_on_start.day == 23 and datatime_on_start.month == 1:
-        await bot.send_message(chat_id=chat_id, text="🎂")
-        await bot.send_message(chat_id=chat_id, text='🎉 С днём рождения!')
-    elif datatime_on_start.day == 1 and datatime_on_start.month == 4:
-        await bot.send_message(chat_id=chat_id, text='🎉 С первым мая!')
-    else:
-        await bot.send_message(chat_id=chat_id, text='🤖 ' + random.choice(hello))
-
-    if (datatime_on_start.day, datatime_on_start.month) in easter_egg_days:
-        msg = easter_egg_days[(datatime_on_start.day, datatime_on_start.month)]
-        await bot.send_message(chat_id=chat_id, text=msg)
 
 
 async def main():
@@ -96,7 +71,7 @@ async def main():
     try:
         config.bot_loop = asyncio.get_running_loop()
         await asyncio.gather(
-            welcome_message(bot, config.datatime_on_start, config.chat_id),
+            send_welcome_message(bot, config.datatime_on_start, config.chat_id),
             check_for_updates(bot),
             dp.start_polling(bot, skip_updates=True),
             tray()
