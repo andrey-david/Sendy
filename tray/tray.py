@@ -21,7 +21,7 @@ from config import config
 from handlers import stop_sendy
 
 logger = logging.getLogger(__name__)
-icon_path = os.path.join(config.app_dir, "sendy.ico")
+icon_path = os.path.join(config.info.app_directory, "sendy.ico")
 
 
 def run_cropper() -> None:

@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, User
 
-from config.config import ADMINS
+from config import config
 
 
 class IsAdminMiddleware(BaseMiddleware):
@@ -16,7 +16,7 @@ class IsAdminMiddleware(BaseMiddleware):
 
         user: User = data.get("event_from_user")
         if user is not None:
-            if user.id not in ADMINS:
+            if user.id not in config.bot.admin_ids:
                 return
 
         return await handler(event, data)

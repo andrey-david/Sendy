@@ -23,7 +23,7 @@ from lexicon import sendy_info, handlers_lex
 logger = logging.getLogger(__name__)
 
 async def check_for_updates(bot: Bot) -> None:
-    list_dir = os.listdir(config.app_dir)
+    list_dir = os.listdir(config.info.app_directory)
     url = "https://drive.usercontent.google.com/u/0/uc?id=1vjf8McN-gm7pc3Gfl4sYyOpOcXph5nXz&export=download"
     latest_version = sendy_info['version']
 
@@ -39,9 +39,9 @@ async def check_for_updates(bot: Bot) -> None:
                     except ValueError:
                         logger.error('Wrong update data')
                     if latest_version != sendy_info['version']:
-                        await bot.send_message(chat_id=config.chat_id,
+                        await bot.send_message(chat_id=config.bot.chat_id,
                                                text=f'🆕')
-                        await bot.send_message(chat_id=config.chat_id,
+                        await bot.send_message(chat_id=config.bot.chat_id,
                                                text=f'<b><i>{handlers_lex['update_available']} {latest_version}</i></b>',
                                                reply_markup=update_inline_kb)
     else:

@@ -1,23 +1,6 @@
 import asyncio
 import logging
 import os
-import sys
-
-logger = logging.getLogger()
-if getattr(sys, 'frozen', False):
-    app_dir = os.path.dirname(sys.executable)
-else:
-    app_dir = os.path.dirname(os.path.abspath(__file__))
-log_path = os.path.join(app_dir, 'sendy.log')
-logging_handler = logging.FileHandler(filename=log_path, encoding='utf-8')
-logging_console = logging.StreamHandler()
-logging.basicConfig(
-    level=logging.INFO,
-    format='[{asctime}] #{levelname:8} {filename}:{lineno} - {name} - {message}',
-    style='{',
-    handlers=[logging_handler, logging_console],
-    encoding='utf-8'
-)
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
@@ -41,18 +24,30 @@ from image_loader.image_loader import (
 from startup import send_welcome_message
 from middlewares import IsAdminMiddleware
 
+logger = logging.getLogger(__name__)
 
-async def main():
+
+async def main() -> None:
+    log_path = os.path.join(config.info.app_directory, 'sendy.log')
+    logging_handler = logging.FileHandler(filename=log_path, encoding='utf-8')
+    logging_console = logging.StreamHandler()
+    logging.basicConfig(
+        level=logging.INFO,
+        format='[{asctime}] #{levelname:8} {filename}:{lineno} - {name} - {message}',
+        style='{',
+        handlers=[logging_handler, logging_console],
+        encoding='utf-8'
+    )
+
     logger.info(f'BOT {sendy_info['version']} JUST STARTED')
-    # dotenv.load_dotenv()
     try:
-        bot = Bot(token=config.BOT_TOKEN,
+        bot = Bot(token=config.bot.token,
                   default=DefaultBotProperties(parse_mode=ParseMode.HTML)
                   )
-        config.bot = bot
+        config.cofn_bot = bot
 
         dp = Dispatcher()
-        config.dp = dp
+        config.conf_dp = dp
 
         dp.include_router(handlers_router)
         dp.include_router(settings_router)
@@ -71,7 +66,7 @@ async def main():
     try:
         config.bot_loop = asyncio.get_running_loop()
         await asyncio.gather(
-            send_welcome_message(bot, config.datatime_on_start, config.chat_id),
+            send_welcome_message(bot, config.info.datetime_on_start, config.bot.chat_id),
             check_for_updates(bot),
             dp.start_polling(bot, skip_updates=True),
             tray()

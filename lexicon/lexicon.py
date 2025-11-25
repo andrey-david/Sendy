@@ -7,7 +7,6 @@ text management to simplify localization and updates.
 
 import logging
 
-from config.config import chat_id, ADMINS
 from data import data
 
 logger = logging.getLogger(__name__)

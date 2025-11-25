@@ -62,14 +62,14 @@ class Data:
     cropper_css: str = ':/cropper_bright.css'
 
     def save(self):
-        data_path = os.path.join(config.app_dir, 'sendy.data')
+        data_path = os.path.join(config.info.app_directory, 'sendy.data')
 
         with open(data_path, 'wb') as file:
             pickle.dump(asdict(self), file)
 
     @classmethod
     def load(cls):
-        data_path = os.path.join(config.app_dir, 'sendy.data')
+        data_path = os.path.join(config.info.app_directory, 'sendy.data')
 
         if not os.path.exists(data_path):
             with open(data_path, 'wb') as file:
