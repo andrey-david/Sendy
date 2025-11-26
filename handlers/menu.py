@@ -94,14 +94,14 @@ async def stop_command(message: Message):
 
 
 async def stop_sendy():
-    await config.dp.stop_polling()
-    await config.bot.session.close()
+    await config.bot.dp.stop_polling()
+    await config.bot.bot.session.close()
     logger.info('STOPPED BY USER')
 
 
 @menu_router.callback_query(F.data == 'stop_sendy')
 async def process_button_shutdown_press(callback: CallbackQuery):
-    time = datetime.now() - config.datatime_on_start
+    time = datetime.now() - config.info.datetime_on_start
     time = str(time).split('.')[0]
     await callback.message.edit_text(text=f'{menu['stop_sendy']} {time}')
     await stop_sendy()

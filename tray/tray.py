@@ -31,7 +31,7 @@ def run_cropper() -> None:
 
 def stop_sendy_from_tray() -> None:
     """Schedules the asynchronous `stop_sendy` coroutine in the bot's event loop."""
-    asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot_loop)
+    asyncio.run_coroutine_threadsafe(stop_sendy(), config.bot.bot_loop)
 
 
 menu = pystray.Menu(

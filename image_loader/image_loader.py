@@ -43,7 +43,7 @@ async def image_loader() -> None:
 
                     try:
                         if os.path.exists(file_path):
-                            await config.bot.send_document(chat_id=config.chat_id, document=FSInputFile(file_path))
+                            await config.bot.send_document(chat_id=config.bot.chat_id, document=FSInputFile(file_path))
                             os.replace(file_path, os.path.join(uploaded_path, file_name))
                     except TelegramBadRequest:
                         logger.exception('Corrupted file or Wrong chat ID')
@@ -51,5 +51,5 @@ async def image_loader() -> None:
                     await asyncio.sleep(1)
 
     else:
-        await config.bot.send_message(chat_id=config.chat_id, text=image_loader_error_text())
+        await config.bot.send_message(chat_id=config.bot.chat_id, text=image_loader_error_text())
         logger.error('Invalid Image loader path')
