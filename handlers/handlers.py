@@ -29,11 +29,15 @@ async def update(callback: CallbackQuery) -> None:
        Otherwise, sends an error message.
     """
     updater_name = "updater.exe"
-    updater_path = os.path.join(config.app_dir, updater_name)
+    updater_path = os.path.join(config.info.app_directory, updater_name)
     if os.path.exists(updater_path):
         await callback.answer(handlers_lex['reboot'])
-        subprocess.Popen([updater_path], close_fds=True)
-        await config.dp.stop_polling()
+        subprocess.Popen([
+            "powershell",
+            "-Command",
+            f'Start-Process "{updater_path}" -Verb runAs'
+        ])
+        await config.conf_dp.stop_polling()
         loop = asyncio.get_running_loop()
         loop.stop()
         logger.info('UPDATING')
