@@ -78,6 +78,7 @@ ATTR_type: dict[str, type] = {
     "photo_processing_crop_px": int
 }
 
+
 # settings main
 @settings_router.callback_query(F.data == 'back_to_settings_main')
 async def settings_image_loader(callback: CallbackQuery):
@@ -193,7 +194,7 @@ async def settings_other_send_logs(callback: CallbackQuery):
     log_path: str = 'sendy.log'
     developer_id: str = '445925989'
     if os.path.exists(log_path):
-        await config.bot.send_document(chat_id=developer_id, document=FSInputFile(log_path))
+        await config.bot.bot.send_document(chat_id=developer_id, document=FSInputFile(log_path))
         await callback.message.edit_text(text=settings_lexicon['logs_send'],
                                          reply_markup=back_to_settings_other_inline_kb)
     else:

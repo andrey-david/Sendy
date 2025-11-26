@@ -37,7 +37,7 @@ async def update(callback: CallbackQuery) -> None:
             "-Command",
             f'Start-Process "{updater_path}" -Verb runAs'
         ])
-        await config.conf_dp.stop_polling()
+        await config.bot.dp.stop_polling()
         loop = asyncio.get_running_loop()
         loop.stop()
         logger.info('UPDATING')

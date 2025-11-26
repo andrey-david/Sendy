@@ -105,3 +105,7 @@ async def process_button_shutdown_press(callback: CallbackQuery):
     time = str(time).split('.')[0]
     await callback.message.edit_text(text=f'{menu['stop_sendy']} {time}')
     await stop_sendy()
+
+@menu_router.callback_query(F.data == 'close')
+async def process_button_shutdown_press(callback: CallbackQuery):
+    await callback.message.delete()

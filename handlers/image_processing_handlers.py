@@ -168,7 +168,7 @@ async def add_image_to_queue(message: Message, cropper=False) -> None:
     async with locks[user_id]:
         task = image_queue_tasks.get(user_id)
         if not task or task.done():
-            image_queue_tasks[user_id] = asyncio.create_task(_image_queue_worker(user_id, config.bot))
+            image_queue_tasks[user_id] = asyncio.create_task(_image_queue_worker(user_id, config.bot.bot))
 
 
 async def _image_queue_worker(user_id: int, bot: Bot) -> None:
@@ -204,11 +204,11 @@ async def send_result(message, path):
             reply_markup=manage_photo_inline_kb(path)
         )
     except Exception as e:
-        await config.bot.send_message(chat_id=config.chat_id, text=f"{handlers_lex['processing_error']} {e}"
-                                                                   f"\n"
-                                                                   f"\n{handlers_lex['processing_image_saved']}"
-                                                                   f"\n<code>{path}</code>"
-                                      )
+        await config.bot.bot.send_message(chat_id=config.bot.chat_id, text=f"{handlers_lex['processing_error']} {e}"
+                                                                           f"\n"
+                                                                           f"\n{handlers_lex['processing_image_saved']}"
+                                                                           f"\n<code>{path}</code>"
+                                          )
 
 
 async def process_image_add_to_queue(user_id: int, bot: Bot):
