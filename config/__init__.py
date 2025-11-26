@@ -1,1 +1,1 @@
-from .config import config, conf_dp, conf_bot, conf_bot_loop
+from .config import config
