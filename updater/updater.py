@@ -1,6 +1,5 @@
-"""
-Sendy Updater Script
---------------------
+"""Sendy Updater Script
+
 This script is used to update the "Sendy.exe" application.
 It performs the following steps:
     1. Waits for "Sendy.exe" to be closed (if it is running).
@@ -65,7 +64,7 @@ def download_update_file(url: str, update_file: str) -> None:
 
 
 def unzip_update_file(update_file: str, update_dir: str) -> None:
-    print(f'{colorama.Back.CYAN}{colorama.Fore.WHITE}[+] ИДЁТ ОБНОВЛЕНИЕ{colorama.Back.RESET}{colorama.Fore.CYAN}\n')
+    print(f'{colorama.Back.CYAN}{colorama.Fore.WHITE}[+] ИДЁТ УСТАНОВКА ОБНОВЛЕНИЯ{colorama.Back.RESET}{colorama.Fore.CYAN}\n')
     with zipfile.ZipFile(update_file, 'r') as archive:
         for file in tqdm(archive.namelist(), unit=" file"):
             archive.extract(file, update_dir)
