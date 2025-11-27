@@ -40,9 +40,10 @@ class PhotoProc:
         self.white_cm: float = data.photo_processing_white_cm
         self.black_px: int = data.photo_processing_black_px
         self.text_px: int = data.photo_processing_font_size_px
-        self.crop_px = data.photo_processing_crop_px
+        self.crop_px: int = data.photo_processing_crop_px
         self.font_path: str = "arial.ttf"
         self.dpi: int = data.photo_processing_dpi
+        self.icc: bytes | None = None
 
         self.CM_TO_INCH: float = 2.54
         self.cm_to_px = lambda cm: int((cm * self.dpi) / self.CM_TO_INCH)
@@ -59,6 +60,10 @@ class PhotoProc:
             coordinates=None
     ):
         self.image = image
+        self.icc = self.image.info.get("icc_profile")
+        if self.icc is None:
+            with open(r"C:\Windows\System32\spool\drivers\color\sRGB Color Space Profile.icm", "rb") as icc_profile:
+                self.icc = icc_profile.read()
         image_width, image_height = self.image.size
 
         if coordinates:
@@ -200,7 +205,7 @@ class PhotoProc:
 
         self.image = canvas
 
-    def save(self):
+    def save_image(self):
         os.makedirs(data.photo_processing_path, exist_ok=True)
         material_dir = os.path.join(data.photo_processing_path, self.material)
         os.makedirs(material_dir, exist_ok=True)
@@ -230,10 +235,7 @@ class PhotoProc:
         filename = unique_filename(material_dir, filename)
         self.filepath = os.path.join(material_dir, filename)
 
-        with open(r"C:\Windows\System32\spool\drivers\color\sRGB Color Space Profile.icm", "rb") as icc_profile:
-            icc_bytes = icc_profile.read()
-
-        self.image.save(self.filepath, "JPEG", quality=100, dpi=(self.dpi, self.dpi), icc_profile=icc_bytes)
+        self.image.save(self.filepath, "JPEG", quality=100, dpi=(self.dpi, self.dpi), icc_profile=self.icc)
         logger.info(f"File saved: {self.filepath}")
 
     def process_image(self) -> Path:
@@ -245,6 +247,6 @@ class PhotoProc:
             self.white_frame()
             self.black_frame()
             self.add_number()
-            self.save()
+            self.save_image()
 
         return Path(self.filepath)
