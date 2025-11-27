@@ -71,8 +71,40 @@ The bot does not require deployment to a remote server and can be run directly o
 
 ## How to run
 
-text
+You can run the project either as a `Python application` or as a compiled `.exe` file.
 
+📌 ***Run as a Python project***
+1. Clone the repository: 
+```
+git clone https://github.com/andrey-david/Sendy.git
+```
+2. Create and activate a virtual environment
+3. Install dependencies:
+```
+pip install -r requirements.txt
+```
+4. Create `.env` file in the project root and put in it your **Telegram bot token** and **Telegram user ID**.
+5. Run `main.py`
+
+📌 ***Run as .exe*** (You can just [download zip file](https://github.com/andrey-david/Sendy/releases/tag/v2.3))
+1. Perform steps 1–3 from the **Run as a Python project** section.
+2. Use `pyinstaller` to build the `.exe` file:
+```
+pyinstaller --noconsole --icon=sendy.ico --name Sendy main.py
+```
+3. Add in `/dist/Sendy` `sendy.ico` file and create `.env`. Put in `.env` your **Telegram bot token** and **Telegram 
+user ID**.
+Your folder should contain:
+- _internal
+- Sendy.exe
+- sendy.ico
+- .env
+4. Run `Sendy.exe`
+5. You can also include `updater.exe` if you want to always have the latest version of the Sendy program.
+Use `pyinstaller` to build the `updater.exe` file:
+```
+pyinstaller --console --icon=updater/updater.ico --name=updater updater/updater.py
+```
 ---
 
 ## Screenshots
@@ -136,12 +168,6 @@ Example of counting images in `counter_test` folder.
 To load images, simply put them in the folder and the bot will automatically upload them to the chat.
 
 <img src="\images\Image_loader_1.png"/>
-
----
-
-## Features
-
-text
 
 ---
 
