@@ -59,7 +59,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -211,7 +211,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Размер шрифта, px</string>
+         <string>Размер шрифта, pt</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_3">

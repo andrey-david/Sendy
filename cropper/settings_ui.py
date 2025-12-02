@@ -190,7 +190,7 @@ class Ui_SendySettings(object):
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.retranslateUi(SendySettings)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(SendySettings)
         SendySettings.setTabOrder(self.lineEdit_photo_processing_path, self.pushButton_set_photo_processing_path)
         SendySettings.setTabOrder(self.pushButton_set_photo_processing_path, self.lineEdit_photo_processing_wrap)
@@ -210,7 +210,7 @@ class Ui_SendySettings(object):
         self.label_15.setText(_translate("SendySettings", "Автозапуск"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), _translate("SendySettings", "Общие настройки"))
         self.label_7.setText(_translate("SendySettings", "Обрезка края фото, px"))
-        self.label_6.setText(_translate("SendySettings", "Размер шрифта, px"))
+        self.label_6.setText(_translate("SendySettings", "Размер шрифта, pt"))
         self.label_3.setText(_translate("SendySettings", "Белая рамка, см"))
         self.label_4.setText(_translate("SendySettings", "Чёрная рамка, px"))
         self.label_5.setText(_translate("SendySettings", "DPI"))
