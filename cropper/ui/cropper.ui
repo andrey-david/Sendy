@@ -1695,6 +1695,38 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton_test">
+          <property name="minimumSize">
+           <size>
+            <width>44</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>44</width>
+            <height>44</height>
+           </size>
+          </property>
+          <property name="font">
+           <font/>
+          </property>
+          <property name="toolTip">
+           <string>Контраст</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+
+    qproperty-iconSize: 32px;
+}
+</string>
+          </property>
+          <property name="text">
+           <string>T</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer_4">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
