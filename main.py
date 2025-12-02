@@ -32,22 +32,22 @@ async def main() -> None:
     logging_handler = logging.FileHandler(filename=log_path, encoding='utf-8')
     logging_console = logging.StreamHandler()
     logging.basicConfig(
-        level=logging.INFO,
-        format='[{asctime}] #{levelname:8} {filename}:{lineno} - {name} - {message}',
+        level=logging.getLevelName(level=config.log.level),
+        format=config.log.format,
         style='{',
         handlers=[logging_handler, logging_console],
         encoding='utf-8'
     )
 
-    logger.info(f'BOT {sendy_info['version']} JUST STARTED')
+    logger.info(f"BOT {sendy_info['version']} JUST STARTED")
     try:
         bot = Bot(token=config.bot.token,
                   default=DefaultBotProperties(parse_mode=ParseMode.HTML)
                   )
-        config.cofn_bot = bot
+        config.bot.bot = bot
 
         dp = Dispatcher()
-        config.conf_dp = dp
+        config.bot.dp = dp
 
         dp.include_router(handlers_router)
         dp.include_router(settings_router)
@@ -64,7 +64,7 @@ async def main() -> None:
         logger.exception(f'Cannot run BOT: {e}')
 
     try:
-        config.bot_loop = asyncio.get_running_loop()
+        config.bot.bot_loop = asyncio.get_running_loop()
         await asyncio.gather(
             send_welcome_message(bot, config.info.datetime_on_start, config.bot.chat_id),
             check_for_updates(bot),
