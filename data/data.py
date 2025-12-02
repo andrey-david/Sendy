@@ -26,7 +26,7 @@ Attributes:
     photo_processing_crop_px (int): Cropping border of image in pixels.
     photo_processing_font_size_px (int): Font size in pixels for nuber on image.
 
-    cropper_css (str): Path to the stylesheet used by the Cropper windows.
+    cropper_qss (str): Path to the stylesheet used by the Cropper windows.
 
 Methods:
     save(): Saves current configuration to `sendy.data`.
