@@ -12,7 +12,7 @@ Main parts:
   - white_frame(): adds white margins to reach the target print size.
   - black_frame(): draws a black outline border around the final image.
   - add_number(): overlays order or print number on the top and bottom edges.
-  - save(): saves the final image with ICC profile and unique filename.
+  - save_image(): saves the final image with ICC profile and unique filename.
   - process_image(): executes the complete processing pipeline and returns the saved file path.
 """
 
@@ -79,6 +79,9 @@ class PhotoProc:
         self.width_cm = width_cm
         self.height_cm = height_cm
         self.material = material
+
+    def set_dpi(self, value):
+        self.dpi = value
 
     def stretch(self):
         image_width, image_height = self.image.size
@@ -172,8 +175,10 @@ class PhotoProc:
 
         draw = ImageDraw.Draw(canvas)
 
+        px = (self.text_px / 72) * self.dpi
+
         try:
-            font = ImageFont.truetype(self.font_path, self.text_px)
+            font = ImageFont.truetype(self.font_path, px)
         except Exception:
             logger.exception('Font not found')
             font = ImageFont.load_default()
@@ -250,3 +255,15 @@ class PhotoProc:
             self.save_image()
 
         return Path(self.filepath)
+    
+    def get_result_image(self) -> Image.Image:
+        if self.image:
+            self.image = self.image.crop(self.coordinates)
+            self.image = self.image.resize((self.cm_to_px(self.width_cm), self.cm_to_px(self.height_cm)))
+
+            self.stretch()
+            self.white_frame()
+            self.black_frame()
+            self.add_number()
+        
+        return self.image
