@@ -80,6 +80,7 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
     else:
         parser_number = False
 
+    parser_no_material = False
     if re.search(r'мат', text.lower()):
         parser_material = 'Матовый холст'
     elif re.search(r'холст|глян|хол', text.lower()):
@@ -90,6 +91,7 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
         parser_material = 'Баннер'
     else:
         parser_material = 'Холст'
+        parser_no_material = True
 
     parser_cropper = re.search(r'%|✂️|cropper', text)
 
@@ -98,6 +100,7 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
     return {'sizes': parser_sizes,
             'number': parser_number,
             'material': parser_material,
+            'no_material': parser_no_material,
             'cropper': bool(parser_cropper),
             'urgent': bool(parser_urgent)
             }
@@ -195,11 +198,11 @@ async def download_image(file, bot: Bot):
     return image
 
 
-async def send_result(message, path):
+async def send_result(message, path, no_material):
     try:
         await message.edit_text(
             f'{handlers_lex['processing_image_saved']}'
-            f'\n'
+            f'\n{handlers_lex['processing_no_material'] if no_material else ''}'
             f'\n🏷 <code>{path.name}</code>',
             reply_markup=manage_photo_inline_kb(path)
         )
@@ -277,6 +280,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             number = ''  # Ø
 
         material = parsed['material']
+        no_material = parsed['no_material']
 
         if parsed['urgent']:
             number += ' ‼'
@@ -334,7 +338,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
         filepath: Path = processing.process_image()
 
         # Sending result to user chat
-        await send_result(reply_message, filepath)
+        await send_result(reply_message, filepath, no_material)
 
 
 @image_processing_router.callback_query(F.data.startswith("choose_size:"))

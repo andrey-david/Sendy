@@ -208,6 +208,7 @@ handlers_lex: dict[str, str] = {
     'processing_waiting_for_cropper': '🥱✂️ <i>Работает Cropper, ожидаю...</i>',
 
     'processing_image_saved': '✅ <b>Изображение сохранено</b>',
+    'processing_no_material': '⚠️ <b>Материал не был указан</b>\n',
     'processing_error': '💀 Ошибка:',
 }
 
