@@ -198,12 +198,13 @@ async def download_image(file, bot: Bot):
     return image
 
 
-async def send_result(message, path, no_material):
+async def send_result(message, path, no_material, number):
     try:
         await message.edit_text(
-            f'{handlers_lex['processing_image_saved']}'
-            f'\n{handlers_lex['processing_no_material'] if no_material else ''}'
-            f'\n🏷 <code>{path.name}</code>',
+            f'{handlers_lex['processing_image_saved']}\n'
+            f'{handlers_lex['processing_no_material'] if no_material else ''}'
+            f'{'' if number else handlers_lex['processing_no_number']}\n'
+            f'🏷 <code>{path.name}</code>',
             reply_markup=manage_photo_inline_kb(path)
         )
     except Exception as e:
@@ -338,7 +339,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
         filepath: Path = processing.process_image()
 
         # Sending result to user chat
-        await send_result(reply_message, filepath, no_material)
+        await send_result(reply_message, filepath, no_material, number)
 
 
 @image_processing_router.callback_query(F.data.startswith("choose_size:"))
