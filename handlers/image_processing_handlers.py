@@ -208,10 +208,11 @@ async def send_result(message, path, no_material, number):
             reply_markup=manage_photo_inline_kb(path)
         )
     except Exception as e:
-        await config.bot.bot.send_message(chat_id=config.bot.chat_id, text=f"{handlers_lex['processing_error']} {e}"
-                                                                           f"\n"
-                                                                           f"\n{handlers_lex['processing_image_saved']}"
-                                                                           f"\n<code>{path}</code>"
+        await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                          text=f"{handlers_lex['processing_error']} {e}"
+                                               f"\n"
+                                               f"\n{handlers_lex['processing_image_saved']}"
+                                               f"\n<code>{path}</code>"
                                           )
 
 
@@ -237,6 +238,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             parsed = {'sizes': [],
                       'number': None,
                       'material': 'Холст',
+                      'no_material': True,
                       'cropper': True,
                       'urgent': False
                       }
@@ -318,6 +320,8 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             while result:
                 try:
                     result = cropper_queue.get_nowait()
+                    number = result['number']
+                    no_material = False
                     processing.presets(**result)
                     break
                 except:
