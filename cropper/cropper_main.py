@@ -46,8 +46,6 @@ class SendyCropper(QMainWindow):
         super().__init__()
 
         # Window configuration
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setAcceptDrops(True)
         self.setFocusPolicy(Qt.StrongFocus)
         self.setWindowIcon(self.load_icon())
@@ -179,8 +177,8 @@ class SendyCropper(QMainWindow):
             self.ui.sizes.show()
             self.ui.graphicsView_preview.show()
             self.ui.pushButton_full_screen.setText('⛶')
-        self.rescale_preview()
         self.rescale_main()
+        self.rescale_preview()
 
     # Set image and other presets
     def load_image(self, image):
@@ -198,6 +196,8 @@ class SendyCropper(QMainWindow):
 
         self.pixmap_main = image
         self.image_item = QGraphicsPixmapItem(self.pixmap_main)
+        if self.pixmap_main:
+            self.scene.setSceneRect(0, 0, self.pixmap_main.width(), self.pixmap_main.height())
         self.scene.addItem(self.image_item)
         self.ui.graphicsView_main.setScene(self.scene)
         self.rescale_main()
@@ -264,13 +264,20 @@ class SendyCropper(QMainWindow):
                                   """
 
         if event.mimeData().hasUrls():
-            event.acceptProposedAction()
+            self.ui.graphicsView_main.setScene(None)
             self.ui.graphicsView_main.setStyleSheet(drag_image_qss)
+            event.acceptProposedAction()
         else:
             event.ignore()
 
-    def dragLeaveEvent(self, event):
-        self.ui.graphicsView_main.setStyleSheet('')
+    def dragMoveEvent(self, event):
+        global_pos = self.mapToGlobal(event.pos())
+        win_rect = self.frameGeometry()
+
+        if not win_rect.contains(global_pos):
+            self.ui.graphicsView_main.setStyleSheet('')
+            self.ui.graphicsView_main.setScene(self.scene)
+
         event.accept()
 
     def dropEvent(self, event):
@@ -312,34 +319,36 @@ class SendyCropper(QMainWindow):
             logger.exception(f'help_window')
 
     # Graphics View
+    @staticmethod
+    def rescale_graphics_view(graphics_view, image_width, image_height, hide_scroll_factor):
+        view_width = graphics_view.width()
+        view_height = graphics_view.height()
+        scale = min((view_width / image_width), (view_height / image_height)) - hide_scroll_factor
+
+        graphics_view.resetTransform()
+        graphics_view.scale(scale, scale)
+
     def rescale_main(self):
         if self.pixmap_main is None:
             logging.debug('No image for rescale main')
             return
 
-        view_width = self.ui.graphicsView_main.width()
-        view_height = self.ui.graphicsView_main.height()
-        image_width = self.image_item.pixmap().width()
-        image_height = self.image_item.pixmap().height()
-        if image_width > 0 and image_height > 0:
-            scale = min((view_width / image_width), (
-                    view_height / image_height)) - 0.005  # 0.005 - позволяет уменьшить изобр так, чтобы убрать scroll
-            self.ui.graphicsView_main.resetTransform()
-            self.ui.graphicsView_main.scale(scale, scale)
+        self.rescale_graphics_view(self.ui.graphicsView_main,
+                                   self.image_item.pixmap().width(),
+                                   self.image_item.pixmap().height(),
+                                   0.005
+                                   )
 
     def rescale_preview(self):
         if self.cropped_image is None:
             logging.debug('No image for preview rescale')
             return
 
-        view_width = self.ui.graphicsView_preview.width()
-        view_height = self.ui.graphicsView_preview.height()
-        cropped_image_width = self.cropped_image.width()
-        cropped_image_height = self.cropped_image.height()
-        scale = min((view_width / cropped_image_width), (
-                view_height / cropped_image_height)) - 0.05  # 0.05 - позволяет уменьшить изобр так, чтобы убрать scroll
-        self.ui.graphicsView_preview.resetTransform()
-        self.ui.graphicsView_preview.scale(scale, scale)
+        self.rescale_graphics_view(self.ui.graphicsView_preview,
+                                   self.cropped_image.width(),
+                                   self.cropped_image.height(),
+                                   0.05
+                                   )
 
     def update_preview(self):
         if self.pixmap_main is None:
@@ -558,8 +567,10 @@ class SendyCropper(QMainWindow):
         super().keyReleaseEvent(event)
 
     def resize_by_wheel(self, event):
-        rect = self.crop_frame.rect()
+        if self.crop_frame is None:
+            return
 
+        rect = self.crop_frame.rect()
         delta = event.angleDelta().y()
         factor = self.frame_scale if delta > 0 else 1 / self.frame_scale
 
@@ -713,3 +724,7 @@ def sendy_cropper(
     app.exec_()
 
     return window.result
+
+
+if __name__ == '__main__':
+    sendy_cropper()
