@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1948</width>
+    <width>1953</width>
     <height>1248</height>
    </rect>
   </property>
@@ -1614,6 +1614,12 @@
         </item>
         <item>
          <widget class="QGraphicsView" name="graphicsView_main">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -1621,6 +1627,12 @@
         </item>
         <item>
          <widget class="QGraphicsView" name="graphicsView_preview">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="styleSheet">
            <string notr="true"/>
           </property>
@@ -2126,7 +2138,7 @@ QPushButton:hover {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1948</width>
+     <width>1953</width>
      <height>21</height>
     </rect>
    </property>
