@@ -106,12 +106,22 @@ def test10_parser():
 
 def test11_parser():
     assert parser('n41wed 30:90') == {'sizes': ['30х90'],
-                                             'number': '41wed',
-                                             'material': 'Холст',
-                                             'no_material': True,
-                                             'cropper': False,
-                                             'urgent': False
-                                             }
+                                      'number': '41wed',
+                                      'material': 'Холст',
+                                      'no_material': True,
+                                      'cropper': False,
+                                      'urgent': False
+                                      }
+
+
+def test12_parser():
+    assert parser('#7107 гдянец 50/70 2.40:60') == {'sizes': ['50х70', '40х60'],
+                                                    'number': '7107',
+                                                    'material': 'Холст',
+                                                    'no_material': True,
+                                                    'cropper': False,
+                                                    'urgent': False
+                                                    }
 
 
 if __name__ == '__main__':
