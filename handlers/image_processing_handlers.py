@@ -198,15 +198,19 @@ async def download_image(file, bot: Bot):
     return image
 
 
-async def send_result(message, path, no_material, number):
+async def send_result(path, no_material, number, message=None):
     try:
-        await message.edit_text(
-            f'{handlers_lex['processing_image_saved']}\n'
-            f'{handlers_lex['processing_no_material'] if no_material else ''}'
-            f'{'' if number else handlers_lex['processing_no_number']}\n'
-            f'🏷 <code>{path.name}</code>',
-            reply_markup=manage_photo_inline_kb(path)
-        )
+        text = (f'{handlers_lex['processing_image_saved']}\n'
+                f'{handlers_lex['processing_no_material'] if no_material else ''}'
+                f'{'' if number else handlers_lex['processing_no_number']}\n'
+                f'🏷 <code>{path.name}</code>'
+                )
+
+        if message:
+            await message.edit_text(text, reply_markup=manage_photo_inline_kb(path))
+        else:
+            await config.bot.bot.send_message(config.bot.chat_id, text, reply_markup=manage_photo_inline_kb(path))
+
     except Exception as e:
         await config.bot.bot.send_message(chat_id=config.bot.chat_id,
                                           text=f"{handlers_lex['processing_error']} {e}"
@@ -343,7 +347,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
         filepath: Path = processing.process_image()
 
         # Sending result to user chat
-        await send_result(reply_message, filepath, no_material, number)
+        await send_result(filepath, no_material, number, reply_message)
 
 
 @image_processing_router.callback_query(F.data.startswith("choose_size:"))

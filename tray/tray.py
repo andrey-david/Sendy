@@ -11,6 +11,8 @@ Note:
 import asyncio
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 import pystray
 import threading
@@ -18,15 +20,30 @@ from PIL import Image
 
 from cropper.cropper_main import sendy_cropper
 from config import config
-from handlers import stop_sendy
+from handlers import stop_sendy, send_result
+from photo_processing import PhotoProc
 
 logger = logging.getLogger(__name__)
 icon_path = os.path.join(config.info.app_directory, "sendy.ico")
 
 
 def run_cropper() -> None:
+    config.bot.bot_loop.call_soon_threadsafe(
+        asyncio.create_task,
+        run_cropper_async()
+    )
+
+async def run_cropper_async():
     """Start the Sendy Cropper application in a new thread."""
-    threading.Thread(target=sendy_cropper).start()
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        future = executor.submit(sendy_cropper)
+        result = future.result()
+
+    processing = PhotoProc()
+    number = result['number']
+    processing.presets(**result)
+    filepath: Path = processing.process_image()
+    await send_result(filepath, False, number)
 
 
 def stop_sendy_from_tray() -> None:
