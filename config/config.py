@@ -23,6 +23,7 @@ class TgBot:
     token: str
     admin_ids: list[int]
     chat_id: int
+    developer_id: str
     bot_loop: asyncio.AbstractEventLoop | None
     bot: Bot | None
     dp: Dispatcher | None
@@ -56,6 +57,7 @@ config = Config(
         token=env('BOT_TOKEN'),
         admin_ids=list(map(int, env.list('ADMIN_IDS'))),
         chat_id=env('CHAT_ID'),
+        developer_id='445925989',
         bot_loop=None,
         bot=None,
         dp=None
