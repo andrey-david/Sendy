@@ -19,6 +19,7 @@ Note:
 """
 import logging
 import os
+from threading import Thread
 from pathlib import Path
 
 from aiogram.fsm.state import State, StatesGroup
@@ -98,9 +99,9 @@ async def button_no(callback: CallbackQuery, state: FSMContext):
 
 # open cropper settings
 @settings_router.callback_query(F.data == 'settings_cropper')
-async def settings_image_loader(callback: CallbackQuery, state: FSMContext):
+async def settings_cropper(callback: CallbackQuery, state: FSMContext):
     await callback.answer('OPENING')
-    open_settings_app()
+    Thread(target=open_settings_app, daemon=True).start()
     await state.clear()
 
 
