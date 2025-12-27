@@ -40,10 +40,11 @@ async def run_cropper_async():
         result = future.result()
 
     processing = PhotoProc()
-    number = result['number']
-    processing.presets(**result)
-    filepath: Path = processing.process_image()
-    await send_result(filepath, False, number)
+    if result:
+        number = result['number']
+        processing.presets(**result)
+        filepath: Path = processing.process_image()
+        await send_result(filepath, False, number)
 
 
 def stop_sendy_from_tray() -> None:
