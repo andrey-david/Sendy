@@ -46,6 +46,7 @@ from keyboards import (
     back_to_settings_other_inline_kb,
     back_to_image_loader_inline_kb
 )
+from cropper import open_settings_app
 
 settings_router = Router(name='settings_router')
 
@@ -91,6 +92,13 @@ async def settings_image_loader(callback: CallbackQuery):
 @settings_router.callback_query(F.data == 'settings_close')
 async def button_no(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
+    await state.clear()
+
+# open cropper settings
+@settings_router.callback_query(F.data == 'settings_cropper')
+async def settings_image_loader(callback: CallbackQuery, state: FSMContext):
+    await callback.answer('OPENING')
+    open_settings_app()
     await state.clear()
 
 
