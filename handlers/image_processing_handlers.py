@@ -23,6 +23,7 @@ Notes:
 """
 
 import asyncio
+import random
 import re
 import logging
 import os
@@ -36,13 +37,13 @@ from aiogram import F, Router
 from aiogram import Bot
 from aiogram.types import CallbackQuery, Message, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, UnidentifiedImageError
 import pillow_heif
 
 from cropper.cropper_main import sendy_cropper
 from photo_processing import PhotoProc
 from keyboards import photo_paths, manage_photo_inline_kb
-from lexicon import handlers_lex
+from lexicon import handlers_lex, processing_lex
 from config import config
 
 image_processing_router = Router(name='image_processing_router')
@@ -82,7 +83,7 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
 
     parser_no_material = False
     if re.search(r'мат', text.lower()):
-        parser_material = 'Матовый холст'
+        parser_material = 'Матовый'
     elif re.search(r'холст|глян|хол', text.lower()):
         parser_material = 'Холст'
     elif re.search(r'хлоп', text.lower()):
@@ -189,11 +190,21 @@ async def _image_queue_worker(user_id: int, bot: Bot) -> None:
 
 async def download_image(file, bot: Bot):
     img_data = BytesIO()
-    await bot.download_file(file.file_path, destination=img_data)
+
+    try:
+        await bot.download_file(file.file_path, destination=img_data)
+    except TimeoutError:
+        logger.exception('TimeoutError while downloading image')
+        return None
+
     pillow_heif.register_heif_opener()
-    img_data.seek(0)
-    image = Image.open(img_data).convert("RGB")
-    image = ImageOps.exif_transpose(image)
+    try:
+        img_data.seek(0)
+        image = Image.open(img_data).convert("RGB")
+        image = ImageOps.exif_transpose(image)
+    except UnidentifiedImageError:
+        logger.exception('Corrupted image')
+        return None
 
     return image
 
@@ -224,6 +235,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
     while not image_queue[user_id].empty():
         user_message = await image_queue[user_id].get()
         reply_message = await user_message.reply(handlers_lex['processing_downloading'])
+        image = None
 
         # Downloading
         if user_message.photo or user_message.document:
@@ -231,21 +243,14 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             file = await bot.get_file(file_id)
             image = await download_image(file, bot)
 
-        else:
-            image = None
-
         # Parsing
-        await reply_message.edit_text(handlers_lex['processing_processing'])
         if image:
             parsed = parser(user_message.caption or '')
         else:
-            parsed = {'sizes': [],
-                      'number': None,
-                      'material': 'Холст',
-                      'no_material': True,
-                      'cropper': True,
-                      'urgent': False
-                      }
+            await reply_message.edit_text(handlers_lex['processing_image_error'])
+            return
+
+        await reply_message.edit_text(random.choice(processing_lex))
 
         width_height = parsed['sizes']
         cropper = parsed['cropper']
