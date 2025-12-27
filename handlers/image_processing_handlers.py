@@ -244,9 +244,8 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             image = await download_image(file, bot)
 
         # Parsing
-        if image:
-            parsed = parser(user_message.caption or '')
-        else:
+        parsed = parser(user_message.caption or '%')
+        if not image and not parsed['cropper']:
             await reply_message.edit_text(handlers_lex['processing_image_error'])
             return
 
