@@ -218,7 +218,7 @@ class PhotoProc:
         filename = f"{self.width_cm}х{self.height_cm}"
         if self.material == 'Баннер':
             filename = '_' + filename
-        elif self.material == 'Матовый холст':
+        elif self.material == 'Матовый':
             filename = '@' + filename
 
         if self.number:
