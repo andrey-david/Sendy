@@ -714,16 +714,19 @@ def sendy_cropper(
         width=None,
         height=None,
 ):
-    app = QApplication(sys.argv)
-    window = SendyCropper()
-    window.load_image(image)
-    window.set_number(number)
-    window.set_width_and_height(width, height)
-    window.set_material(material)
-    window.showMaximized()
-    app.exec_()
+    try:
+        app = QApplication(sys.argv)
+        window = SendyCropper()
+        window.showMaximized()
+        window.load_image(image)
+        window.set_number(number)
+        window.set_width_and_height(width, height)
+        window.set_material(material)
+        app.exec_()
 
-    return window.result
+        return window.result
+    except:
+        logger.exception('Cropper error')
 
 
 if __name__ == '__main__':
