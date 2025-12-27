@@ -39,6 +39,7 @@ settings_lexicon: dict[str, str] = {
 
 # settings main
 settings_main_btns: dict[str, str] = {
+    'settings_cropper': '🧰 Открыть окно настроек',
     'settings_image_loader': '📤 Загрузка фото',
     'settings_photo_processing': '🌄 Обработка фото',
     'settings_image_counter': '🧮 Подсчёт печати',
