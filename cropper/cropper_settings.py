@@ -292,11 +292,13 @@ class SendySettings(QDialog):
         self.accept()
 
 
-if __name__ == '__main__':
+def open_settings_app():
     import resources_rc
 
     app = QApplication(sys.argv)
     dlg = SendySettings()
     dlg.set_QSS()
     dlg.exec_()
-    sys.exit(0)
+
+if __name__ == '__main__':
+    open_settings_app()

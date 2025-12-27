@@ -1,0 +1,1 @@
+from .cropper_settings import open_settings_app
