@@ -26,4 +26,5 @@ from .lexicon import (LEXICON,
                       welcome_emoji_new_year,
                       welcome_message_new_year,
                       celebration_days,
+                      processing_lex
                       )
