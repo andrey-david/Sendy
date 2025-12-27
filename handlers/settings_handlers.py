@@ -17,7 +17,7 @@ Technologies:
 Note:
     All changes are saved to the `data` object by calling its `save()` method.
 """
-
+import logging
 import os
 from pathlib import Path
 
@@ -48,6 +48,7 @@ from keyboards import (
 )
 from cropper import open_settings_app
 
+logger = logging.getLogger(__name__)
 settings_router = Router(name='settings_router')
 
 
@@ -93,6 +94,7 @@ async def settings_image_loader(callback: CallbackQuery):
 async def button_no(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await state.clear()
+
 
 # open cropper settings
 @settings_router.callback_query(F.data == 'settings_cropper')
