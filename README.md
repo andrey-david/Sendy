@@ -86,7 +86,7 @@ pip install -r requirements.txt
 4. Create `.env` file in the project root and put in it your **Telegram bot token** and **Telegram user ID**.
 5. Run `main.py`
 
-📌 ***Run as .exe*** (You can just [download zip file](https://github.com/andrey-david/Sendy/releases/tag/v2.3))
+📌 ***Run as .exe*** (You can just [download zip file](https://github.com/andrey-david/Sendy/releases))
 1. Perform steps 1–3 from the **Run as a Python project** section.
 2. Use `pyinstaller` to build the `.exe` file:
 ```
