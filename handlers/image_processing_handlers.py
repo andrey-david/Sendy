@@ -120,6 +120,10 @@ async def processed_photo_btns_handler(callback: CallbackQuery) -> None:
     attr, file_id = callback.data.split(':', 1)
     filepath = photo_paths.get(file_id)
 
+    if not filepath:
+        await callback.answer(handlers_lex['processed_photo_error'], show_alert=False)
+        return
+
     try:
         if attr == 'open_photo':
             os.startfile(filepath)
