@@ -83,6 +83,7 @@ class SendySettings(QDialog):
                        self.ui.lineEdit_photo_processing_dpi,
                        self.ui.lineEdit_photo_processing_fontsize,
                        self.ui.lineEdit_photo_processing_crop,
+                       self.ui.lineEdit_photo_processing_strip_length,
                        self.ui.lineEdit_image_counter_path,
                        self.ui.lineEdit_image_loader_path
                        ]
@@ -157,6 +158,7 @@ class SendySettings(QDialog):
         self.ui.lineEdit_photo_processing_dpi.setText(str(data.photo_processing_dpi))
         self.ui.lineEdit_photo_processing_fontsize.setText(str(data.photo_processing_font_size_px))
         self.ui.lineEdit_photo_processing_crop.setText(str(data.photo_processing_crop_px))
+        self.ui.lineEdit_photo_processing_strip_length.setText(str(data.photo_processing_strip_length_px))
 
         # image counter
         self.ui.lineEdit_image_counter_path.setText(str(data.image_counter_path))
@@ -253,6 +255,7 @@ class SendySettings(QDialog):
             check_validation(self.ui.lineEdit_photo_processing_dpi, lambda x: 1 <= int(x.text()) <= 500),
             check_validation(self.ui.lineEdit_photo_processing_fontsize, lambda x: 1 <= int(x.text()) <= 500),
             check_validation(self.ui.lineEdit_photo_processing_crop, lambda x: 1 <= int(x.text()) <= 500),
+            check_validation(self.ui.lineEdit_photo_processing_strip_length, lambda x: 1 <= int(x.text()) <= 500),
 
             # image counter
             check_validation(self.ui.lineEdit_image_counter_path, lambda p: Path(p.text()).exists()),
@@ -279,6 +282,7 @@ class SendySettings(QDialog):
         data.photo_processing_dpi = int(self.ui.lineEdit_photo_processing_dpi.text())
         data.photo_processing_font_size_px = int(self.ui.lineEdit_photo_processing_fontsize.text())
         data.photo_processing_crop_px = int(self.ui.lineEdit_photo_processing_crop.text())
+        data.photo_processing_strip_length_px = int(self.ui.lineEdit_photo_processing_strip_length.text())
 
         # image counter
         list_widget = self.ui.listWidget_image_counter_exceptions
