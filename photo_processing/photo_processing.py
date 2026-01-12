@@ -86,8 +86,8 @@ class PhotoProc:
     def stretch(self):
         image_width, image_height = self.image.size
         wrap_px = self.cm_to_px(self.wrap_cm)
-        strip_crop_px = 50
-        corner_crop_px = 50
+        strip_crop_px = data.photo_processing_strip_length_px
+        corner_crop_px = data.photo_processing_strip_length_px
 
         def stretched_strip(crop_box, strip_position):
             position = {
