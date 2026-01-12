@@ -20,7 +20,7 @@ import os
 import logging
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 from data import data
 
@@ -86,19 +86,30 @@ class PhotoProc:
     def stretch(self):
         image_width, image_height = self.image.size
         wrap_px = self.cm_to_px(self.wrap_cm)
-        strip_crop_px = 20
-        corner_crop_px = 20
+        strip_crop_px = 50
+        corner_crop_px = 50
 
-        def stretched_strip(crop_box, final_size):
+        def stretched_strip(crop_box, strip_position):
+            position = {
+                'left': (wrap_px, image_height),
+                'right': (wrap_px, image_height),
+                'top': (image_width, wrap_px),
+                'bottom': (image_width, wrap_px),
+            }
+
             strip = self.image.crop(crop_box)
-            return strip.resize(final_size, Image.LANCZOS)
+            if strip_position == 'left' or strip_position == 'right':
+                strip = strip.resize(position[strip_position], Image.LANCZOS)
+            elif strip_position == 'top' or strip_position == 'bottom':
+                strip = strip.resize(position[strip_position], Image.LANCZOS)
 
-        left_strip = stretched_strip((0, 0, strip_crop_px, image_height), (wrap_px, image_height))
-        right_strip = stretched_strip((image_width - strip_crop_px, 0, image_width, image_height),
-                                      (wrap_px, image_height))
-        top_strip = stretched_strip((0, 0, image_width, strip_crop_px), (image_width, wrap_px))
-        bottom_strip = stretched_strip((0, image_height - strip_crop_px, image_width, image_height),
-                                       (image_width, wrap_px))
+            strip = strip.filter(ImageFilter.GaussianBlur(radius=5))
+            return strip
+
+        left_strip = stretched_strip((0, 0, strip_crop_px, image_height), 'left')
+        right_strip = stretched_strip((image_width - strip_crop_px, 0, image_width, image_height), 'right')
+        top_strip = stretched_strip((0, 0, image_width, strip_crop_px), 'top')
+        bottom_strip = stretched_strip((0, image_height - strip_crop_px, image_width, image_height), 'bottom')
 
         left_wrap = left_strip.crop((wrap_px - wrap_px, 0, wrap_px, image_height)).transpose(Image.FLIP_LEFT_RIGHT)
         right_wrap = right_strip.crop((0, 0, wrap_px, image_height)).transpose(Image.FLIP_LEFT_RIGHT)
@@ -120,6 +131,11 @@ class PhotoProc:
             (0, wrap_px - wrap_px, wrap_px, wrap_px))
         corner_bottom_right = corner_bottom_right.resize((wrap_px, wrap_px)).crop(
             (wrap_px - wrap_px, wrap_px - wrap_px, wrap_px, wrap_px))
+
+        corner_top_left = corner_top_left.filter(ImageFilter.GaussianBlur(radius=10))
+        corner_top_right = corner_top_right.filter(ImageFilter.GaussianBlur(radius=10))
+        corner_bottom_left = corner_bottom_left.filter(ImageFilter.GaussianBlur(radius=10))
+        corner_bottom_right = corner_bottom_right.filter(ImageFilter.GaussianBlur(radius=10))
 
         new_image = Image.new("RGB", (image_width + 2 * wrap_px, image_height + 2 * wrap_px))
 
@@ -255,7 +271,7 @@ class PhotoProc:
             self.save_image()
 
         return Path(self.filepath)
-    
+
     def get_result_image(self) -> Image.Image:
         if self.image:
             self.image = self.image.crop(self.coordinates)
@@ -265,5 +281,5 @@ class PhotoProc:
             self.white_frame()
             self.black_frame()
             self.add_number()
-        
+
         return self.image
