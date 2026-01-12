@@ -25,6 +25,7 @@ Attributes:
     photo_processing_dpi (int): Output resolution in DPI.
     photo_processing_crop_px (int): Cropping border of image in pixels.
     photo_processing_font_size_px (int): Font size in pixels for nuber on image.
+    photo_processing_strip_length_px (int): Font size in pixels for nuber on image.
 
     cropper_qss (str): Path to the stylesheet used by the Cropper windows.
 
@@ -58,6 +59,7 @@ class Data:
     photo_processing_dpi: int = 300
     photo_processing_crop_px: int = 9
     photo_processing_font_size_px: int = 85
+    photo_processing_strip_length_px: int = 50
 
     cropper_css: str = ':/cropper_bright.css'
 
