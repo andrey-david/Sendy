@@ -28,7 +28,6 @@ Attributes:
 - main_window: Reference to the main application window.
   """
 
-
 import logging
 from pathlib import Path
 import sys
@@ -36,7 +35,7 @@ from functools import partial
 import winreg
 import os
 
-from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem
+from PyQt5.QtWidgets import QDialog, QFileDialog, QListWidgetItem, QFontDialog, QColorDialog
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QCloseEvent
 from PyQt5.QtCore import Qt, QFile, QTextStream
@@ -70,11 +69,11 @@ class SendySettings(QDialog):
             self.ui.lineEdit_image_loader_path)
         )
         self.ui.pushButton_image_counter_exceptions_add_elem.clicked.connect(self.image_counter_exceptions_add_item)
+        self.ui.pushButton_set_photo_processing_font.clicked.connect(self.choose_font)
+        self.ui.pushButton_set_photo_processing_color.clicked.connect(self.choose_color)
         self.ui.pushButton_settings_apply.clicked.connect(self.button_apply_settings_pushed)
         self.ui.lineEdit_image_counter_exceptions_add_elem.returnPressed.connect(self.image_counter_exceptions_add_item)
         self.ui.checkBox.stateChanged.connect(self.add_app_to_system_startup)
-
-        self.fill_values()
 
         widget_list = [self.ui.lineEdit_photo_processing_path,
                        self.ui.lineEdit_photo_processing_wrap,
@@ -84,9 +83,15 @@ class SendySettings(QDialog):
                        self.ui.lineEdit_photo_processing_fontsize,
                        self.ui.lineEdit_photo_processing_crop,
                        self.ui.lineEdit_photo_processing_strip_length,
+                       self.ui.lineEdit_photo_processing_blur,
                        self.ui.lineEdit_image_counter_path,
-                       self.ui.lineEdit_image_loader_path
+                       self.ui.lineEdit_image_loader_path,
+                       self.ui.lineEdit_photo_processing_annotation_canvas,
+                       self.ui.lineEdit_photo_processing_annotation_banner,
+                       self.ui.lineEdit_photo_processing_annotation_cotton,
+                       self.ui.lineEdit_photo_processing_annotation_matte,
                        ]
+
         for widget in widget_list:
             widget.textChanged.connect(self.check_validation)
 
@@ -100,15 +105,15 @@ class SendySettings(QDialog):
                                 QPushButton {
                                     border: 2px solid #fa5f5f;
                                     color: #fa5f5f;
-                                    background-color: #424242;
-                                }
-    
-                                QPushButton {
-                                    border: 2px solid #fa5f5f;
-                                    color: #fa5f5f;
-                                    background-color: #424242;
                                 }
                             """
+
+        self.theme = [':/cropper_bright.css',
+                      ':/cropper_dark.css',
+                      ':/cropper_pink.css',
+                      ]
+
+        self.fill_values()
 
     def set_QSS(self):
         try:
@@ -147,8 +152,7 @@ class SendySettings(QDialog):
 
     def fill_values(self):
         # main
-        current_theme = {':/cropper_bright.css': 0, ':/cropper_dark.css': 1}
-        self.ui.comboBox_theme.setCurrentIndex(current_theme[data.cropper_css])
+        self.ui.comboBox_theme.setCurrentIndex(self.theme.index(data.cropper_css))
 
         # photo processing
         self.ui.lineEdit_photo_processing_path.setText(str(data.photo_processing_path))
@@ -159,6 +163,14 @@ class SendySettings(QDialog):
         self.ui.lineEdit_photo_processing_fontsize.setText(str(data.photo_processing_font_size_px))
         self.ui.lineEdit_photo_processing_crop.setText(str(data.photo_processing_crop_px))
         self.ui.lineEdit_photo_processing_strip_length.setText(str(data.photo_processing_strip_length_px))
+        self.ui.lineEdit_photo_processing_blur.setText(str(data.photo_processing_blur_px))
+        self.ui.lineEdit_photo_processing_font.setText(data.photo_processing_font)
+        self.ui.lineEdit_photo_processing_font_color.setText(str(data.photo_processing_font_color))
+
+        self.ui.lineEdit_photo_processing_annotation_canvas.setText(data.photo_processing_annotation_canvas)
+        self.ui.lineEdit_photo_processing_annotation_banner.setText(data.photo_processing_annotation_banner)
+        self.ui.lineEdit_photo_processing_annotation_cotton.setText(data.photo_processing_annotation_cotton)
+        self.ui.lineEdit_photo_processing_annotation_matte.setText(data.photo_processing_annotation_matte)
 
         # image counter
         self.ui.lineEdit_image_counter_path.setText(str(data.image_counter_path))
@@ -167,6 +179,14 @@ class SendySettings(QDialog):
 
         # image loader
         self.ui.lineEdit_image_loader_path.setText(str(data.image_loader_path))
+        self.ui.lineEdit_image_loader_parsing_canvas.setText(str(data.image_loader_parsing_canvas))
+        self.ui.lineEdit_image_loader_parsing_banner.setText(str(data.image_loader_parsing_banner))
+        self.ui.lineEdit_image_loader_parsing_cotton.setText(str(data.image_loader_parsing_cotton))
+        self.ui.lineEdit_image_loader_parsing_matte.setText(str(data.image_loader_parsing_matte))
+        self.ui.lineEdit_image_loader_parsing_size.setText(str(data.image_loader_parsing_size))
+        self.ui.lineEdit_image_loader_parsing_number.setText(str(data.image_loader_parsing_number))
+        self.ui.lineEdit_image_loader_parsing_cropper.setText(str(data.image_loader_parsing_cropper))
+        self.ui.lineEdit_image_loader_parsing_urgent.setText(str(data.image_loader_parsing_urgent))
 
         # autorun
         app_name = "SendyApp"
@@ -188,6 +208,33 @@ class SendySettings(QDialog):
         )
         if folder:
             lineedit.setText(folder)
+
+    def _get_font_path(self, font_name):
+        key = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+        )
+
+        for i in range(winreg.QueryInfoKey(key)[1]):
+            name, value, _ = winreg.EnumValue(key, i)
+            if font_name.lower() in name.lower():
+                return os.path.join(r"C:\Windows\Fonts", value)
+
+        return None
+
+    def choose_font(self):
+        font, ok = QFontDialog.getFont()
+        if ok:
+            path = self._get_font_path(font.family())
+            data.photo_processing_font_path = path
+            data.photo_processing_font = font.family()
+            self.ui.lineEdit_photo_processing_font.setText(font.family())
+            self.ui.lineEdit_photo_processing_fontsize.setText(str(font.pointSize()))
+
+    def choose_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.ui.lineEdit_photo_processing_font_color.setText(color.name())
 
     def image_counter_exceptions_add_item(self):
         text = self.ui.lineEdit_image_counter_exceptions_add_elem.text()
@@ -246,6 +293,8 @@ class SendySettings(QDialog):
             except Exception as e:
                 return invalid_data(widget)
 
+        valid_filename = lambda s: not any(c in s.text() for c in '<>:"/\\|?*')
+
         check_list = [
             # photo processing
             check_validation(self.ui.lineEdit_photo_processing_path, lambda p: Path(p.text()).exists()),
@@ -256,6 +305,12 @@ class SendySettings(QDialog):
             check_validation(self.ui.lineEdit_photo_processing_fontsize, lambda x: 1 <= int(x.text()) <= 500),
             check_validation(self.ui.lineEdit_photo_processing_crop, lambda x: 1 <= int(x.text()) <= 500),
             check_validation(self.ui.lineEdit_photo_processing_strip_length, lambda x: 1 <= int(x.text()) <= 500),
+            check_validation(self.ui.lineEdit_photo_processing_blur, lambda x: 0 <= int(x.text()) <= 500),
+
+            check_validation(self.ui.lineEdit_photo_processing_annotation_canvas, valid_filename),
+            check_validation(self.ui.lineEdit_photo_processing_annotation_banner, valid_filename),
+            check_validation(self.ui.lineEdit_photo_processing_annotation_cotton, valid_filename),
+            check_validation(self.ui.lineEdit_photo_processing_annotation_matte, valid_filename),
 
             # image counter
             check_validation(self.ui.lineEdit_image_counter_path, lambda p: Path(p.text()).exists()),
@@ -270,8 +325,7 @@ class SendySettings(QDialog):
 
     def button_apply_settings_pushed(self):
         # main
-        themes = {0: ':/cropper_bright.css', 1: ':/cropper_dark.css'}
-        data.cropper_css = themes[self.ui.comboBox_theme.currentIndex()]
+        data.cropper_css = self.theme[self.ui.comboBox_theme.currentIndex()]
         self.main_window.set_QSS()
 
         # photo processing
@@ -281,8 +335,15 @@ class SendySettings(QDialog):
         data.photo_processing_black_px = int(self.ui.lineEdit_photo_processing_black.text())
         data.photo_processing_dpi = int(self.ui.lineEdit_photo_processing_dpi.text())
         data.photo_processing_font_size_px = int(self.ui.lineEdit_photo_processing_fontsize.text())
+        data.photo_processing_font_color = self.ui.lineEdit_photo_processing_font_color.text()
         data.photo_processing_crop_px = int(self.ui.lineEdit_photo_processing_crop.text())
         data.photo_processing_strip_length_px = int(self.ui.lineEdit_photo_processing_strip_length.text())
+        data.photo_processing_blur_px = int(self.ui.lineEdit_photo_processing_blur.text())
+
+        data.photo_processing_annotation_canvas = self.ui.lineEdit_photo_processing_annotation_canvas.text()
+        data.photo_processing_annotation_banner = self.ui.lineEdit_photo_processing_annotation_banner.text()
+        data.photo_processing_annotation_cotton = self.ui.lineEdit_photo_processing_annotation_cotton.text()
+        data.photo_processing_annotation_matte = self.ui.lineEdit_photo_processing_annotation_matte.text()
 
         # image counter
         list_widget = self.ui.listWidget_image_counter_exceptions
@@ -291,6 +352,16 @@ class SendySettings(QDialog):
 
         # image loader
         data.image_loader_path = Path(self.ui.lineEdit_image_loader_path.text())
+
+        # parsing
+        data.image_loader_parsing_canvas = self.ui.lineEdit_image_loader_parsing_canvas.text()
+        data.image_loader_parsing_banner = self.ui.lineEdit_image_loader_parsing_banner.text()
+        data.image_loader_parsing_cotton = self.ui.lineEdit_image_loader_parsing_cotton.text()
+        data.image_loader_parsing_matte = self.ui.lineEdit_image_loader_parsing_matte.text()
+        data.image_loader_parsing_size = self.ui.lineEdit_image_loader_parsing_size.text()
+        data.image_loader_parsing_number = self.ui.lineEdit_image_loader_parsing_number.text()
+        data.image_loader_parsing_cropper = self.ui.lineEdit_image_loader_parsing_cropper.text()
+        data.image_loader_parsing_urgent = self.ui.lineEdit_image_loader_parsing_urgent.text()
 
         data.save()
         self.accept()
@@ -303,6 +374,7 @@ def open_settings_app():
     dlg = SendySettings()
     dlg.set_QSS()
     dlg.exec_()
+
 
 if __name__ == '__main__':
     open_settings_app()
