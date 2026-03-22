@@ -1,7 +1,9 @@
+/* Main window */
 QMainWindow {
     background-color: #F0F0F0;
 }
 
+/* General widgets */
 QWidget {
     background-color: #F0F0F0;
     color: #000000;
@@ -9,6 +11,7 @@ QWidget {
     font-size: 15px;
 }
 
+/* Menu bar */
 QMenuBar {
     background-color: #F0F0F0;
     color: #000000;
@@ -19,6 +22,7 @@ QMenuBar::item:selected {
     color: #000000;
 }
 
+/* Menu */
 QMenu {
     background-color: #FFFFFF;
     color: #000000;
@@ -29,14 +33,31 @@ QMenu::item:selected {
     color: #000000;
 }
 
+QMenu::separator {
+    background: #D0D0D0;
+    margin: 4px 6px;
+}
+
+/* Status bar */
 QStatusBar {
     background-color: #F0F0F0;
     color: #FF0000;
 }
 
+QStatusBar QLabel {
+    font-family: "Helvetica";
+    color: #D0D0D0;
+}
+
+/* Tabs */
 QTabWidget {
     background: transparent;
     border: none;
+}
+
+QTabWidget::pane {
+    border: none;
+    background: transparent;
 }
 
 QTabBar::tab {
@@ -52,11 +73,11 @@ QTabBar::tab:selected {
     color: #000000;
 }
 
-QTabWidget::pane {
-    border: none;
-    background: transparent;
+QTabBar:focus {
+    border: #ff0000;
 }
 
+/* Buttons */
 QPushButton {
     background-color: #E0E0E0;
     color: #000000;
@@ -77,6 +98,7 @@ QPushButton:pressed {
     background-color: #C0C0C0;
 }
 
+/* Line edit */
 QLineEdit {
     background-color: #FFFFFF;
     color: #000000;
@@ -84,15 +106,29 @@ QLineEdit {
     border-radius: 5px;
     padding: 10px;
     font-family: "Helvetica";
-    font-size: 22px;
+    font-size: 16px;
 }
 
-QLineEdit:placeholder {
-    color: #00FF00;
+/* Group Box */
+QGroupBox {
+    border: 2px solid #A0A0A0;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 
+QGroupBox::title {
+    color: #000000;
+    font-size: 16px;
+    font-family: "Helvetica";
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+}
+
+/* Combo box */
 QComboBox {
     font: 18pt "Helvetica";
+    font-size: 16pt;
     color: #000000;
     background-color: #FFFFFF;
     border: 2px solid #A0A0A0;
@@ -105,43 +141,120 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 20px;
-    border-left: 2px solid #FFFFFF;
     background-color: transparent;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
 }
 
+QComboBox::down-arrow {
+    image: url(:/unfold_more_black);
+    width: 25px;
+    height: 25px;
+}
+
+/* Graphics view */
 QGraphicsView {
     background-color: #FFFFFF;
     border: 2px solid #A0A0A0;
+    border-radius: 2px;
 }
 
+QGraphicsView:focus {
+    border: 2px solid #A0A0A0;
+}
+
+/* Frame */
 QFrame[frameShape="4"] {
     background-color: #A0A0A0;
     max-height: 1px;
     border: none;
 }
 
-QStatusBar QLabel {
-	font-family: "Helvetica";
-    color: #FF0000;
+/* List widget */
+QListWidget {
+    border-radius: 5px;
+    background: #E0E0E0;
+    font-size: 16px;
 }
 
+QListWidget:focus {
+    border: 2px solid transparent;
+    outline: none;
+}
+
+QListWidget::item {
+    border-radius: 5px;
+    color: #000000;
+    padding: 16px;
+}
+
+QListWidget::item:hover {
+    border-radius: 5px;
+    background: #D0D0D0;
+}
+
+QListWidget::item:selected {
+    border-radius: 5px;
+    background: #C0C0C0;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #E0E0E0;
+    width: 14px;
+    margin: 1px 0px 1px 4px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background: #C0C0C0;
+    min-height: 8px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    width: 0px;
+    background: none;
+    border: none;
+}
+
+/* Check boxes */
+QCheckBox {
+    spacing: 10px;
+    color: #000000;
+    border: 2px solid transparent;
+    font-family: "Helvetica";
+    font-size: 16px;
+}
+
+QCheckBox::indicator {
+    width: 20px; 
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 10px;
+    background: #fff;
+}
+
+QCheckBox::indicator:checked {
+    background: #C0C0C0;
+    border: 2px solid #C0C0C0;
+    image: url(:/sendy.ico);
+}
+
+QCheckBox::indicator:unchecked {
+    background: #E0E0E0;
+    border: 2px solid #E0E0E0;
+}
+
+/* Global focus */
 *:focus {
     border: 2px solid #0078d7;
     outline: none;
     }
-
-QGraphicsView:focus {
-    border: 2px solid #A0A0A0;
-}
-
-QListWidget {
-    border-radius: 5px;
-    background: #E0E0E0;
-    border: 2px solid #A0A0A0;
-    font-size: 16px;
-}
-
-QListWidget::item {
-    color: #000000;
-    padding: 16px;
-}

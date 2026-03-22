@@ -1,7 +1,9 @@
+/* Main window */
 QMainWindow {
     background-color: #0F0F0F;
 }
 
+/* General widgets */
 QWidget {
     background-color: #0F0F0F;
     color: #F1F1F1;
@@ -9,6 +11,7 @@ QWidget {
     font-size: 15px;
 }
 
+/* Menu bar */
 QMenuBar {
     background-color: #0F0F0F;
     color: #F1F1F1;
@@ -19,6 +22,7 @@ QMenuBar::item:selected {
     color: #0F0F0F;
 }
 
+/* Menu */
 QMenu {
     background-color: #0F0F0F;
     color: #F1F1F1;
@@ -34,14 +38,26 @@ QMenu::separator {
     margin: 4px 6px;
 }
 
+/* Status bar */
 QStatusBar {
     background-color: #0F0F0F;
     color: #FF6B6B;
 }
 
+QStatusBar QLabel {
+    font-family: "Helvetica";
+    color: #F1F1F1;
+}
+
+/* Tabs */
 QTabWidget {
     background: transparent;
     border: none;
+}
+
+QTabWidget::pane {
+    border: none;
+    background: transparent;
 }
 
 QTabBar::tab {
@@ -57,15 +73,11 @@ QTabBar::tab:selected {
     color: #FFFFFF;
 }
 
-QTabWidget::pane {
-    border: none;
-    background: transparent;
-}
-
 QTabBar:focus {
     border: #ff0000;
 }
 
+/* Buttons */
 QPushButton {
     background-color: #272727;
     color: #F1F1F1;
@@ -86,6 +98,7 @@ QPushButton:pressed {
     border: 2px solid #656565;
 }
 
+/* Line edit */
 QLineEdit {
     background-color: #121212;
     color: #F1F1F1;
@@ -96,17 +109,31 @@ QLineEdit {
     font-size: 16px;
 }
 
-QLineEdit:placeholder {
-    color: #FF0000;
+/* Group Box */
+QGroupBox {
+    border: 2px solid #272727;
+    border-radius: 22px;
+    margin-top: 10px;
 }
 
+QGroupBox::title {
+    color: #F1F1F1;
+    font-size: 16px;
+    font-family: "Helvetica";
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+}
+
+/* Combo box */
 QComboBox {
     font: 14pt "Helvetica";
+    font-size: 16pt;
     color: #F1F1F1;
     background-color: #272727;
     border: 2px solid #272727;
     border-radius: 22px;
-    padding: 6px 30px 6px 10px;
+    padding: 6px 6px 6px 10px;
     min-width: 150px;
 }
 
@@ -114,31 +141,42 @@ QComboBox::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 20px;
-    border-left: 2px solid #272727;
     background-color: transparent;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
+QComboBox::down-arrow {
+    image: url(:/unfold_more);
+    width: 25px;
+    height: 25px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #272727;
+    selection-background-color: #F1F1F1;
+    selection-color: #656565;
+}
+
+/* Graphics view */
 QGraphicsView {
     background-color: #2B2D30;
     border: 2px solid #272727;
     border-radius: 8px;
 }
 
+QGraphicsView:focus {
+    border: 2px solid #272727;
+}
+
+/* Frame */
 QFrame[frameShape="4"] {
     background-color: #2B2D30;
     max-height: 1px;
     border: none;
 }
 
-QStatusBar QLabel {
-	font-family: "Helvetica";
-    color: #F1F1F1;
-}
-
-QGraphicsView:focus {
-    border: 2px solid #272727;
-}
-
+/* List widget */
 QListWidget {
     border-radius: 22px;
     background: #272727;
@@ -148,13 +186,12 @@ QListWidget {
 QListWidget:focus {
     border: 2px solid transparent;
     outline: none;
-    }
+}
 
 QListWidget::item {
     border-radius: 22px;
     color: #F1F1F1;
     padding: 16px;
-    
 }
 
 QListWidget::item:hover {
@@ -164,9 +201,10 @@ QListWidget::item:hover {
 
 QListWidget::item:selected {
     border-radius: 22px;
-    background: #656565;    
+    background: #656565;
 }
 
+/* Scrollbars */
 QScrollBar:vertical {
     background: #272727;
     width: 14px;
@@ -193,6 +231,7 @@ QScrollBar::sub-line:vertical {
     border: none;
 }
 
+/* Check boxes */
 QCheckBox {
     spacing: 10px;
     color: #F1F1F1;
@@ -220,7 +259,8 @@ QCheckBox::indicator:unchecked {
     border: 2px solid #272727;
 }
 
+/* Global focus */
 *:focus {
     border: 2px solid #0078d7;
     outline: none;
-    }
+}

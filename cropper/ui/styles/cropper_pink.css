@@ -1,0 +1,270 @@
+/* Main window */
+QMainWindow {
+    background-color: #F8BBD0;
+}
+
+/* General widgets */
+QWidget {
+    background-color: #F8BBD0;
+    color: #4A148C;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 15px;
+}
+
+/* Menu bar */
+QMenuBar {
+    background-color: #F8BBD0;
+    color: #AD1457;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+}
+
+QMenuBar::item:selected {
+    background-color: #F06292;
+    color: #FFFFFF;
+    border-radius: 12px;
+}
+
+/* Menu */
+QMenu {
+    background-color: #FCE4EC;
+    color: #AD1457;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+}
+
+QMenu::item:selected {
+    background-color: #F06292;
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+QMenu::separator {
+    background: #F06292;
+    height: 1px;
+    margin: 4px 6px;
+}
+
+/* Status bar */
+QStatusBar {
+    background-color: #F8BBD0;
+    color: #880E4F;
+}
+
+QStatusBar QLabel {
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    color: #4A148C;
+}
+
+/* Tabs */
+QTabWidget {
+    background: transparent;
+    border: none;
+}
+
+QTabWidget::pane {
+    border: none;
+    background: transparent;
+}
+
+QTabBar::tab {
+    background: transparent;
+    color: #AD1457;
+    padding: 10px 18px;
+    border: 2px solid #F06292;
+    border-radius: 22px;
+    min-width: 80px;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+}
+
+QTabBar::tab:selected {
+    background: #EC407A;
+    color: #FFFFFF;
+}
+
+QTabBar:focus {
+    border: none;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #EC407A;
+    color: #FFFFFF;
+    border: 2px solid #EC407A;
+    border-radius: 22px;
+    padding: 12px 10px;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 15px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #F06292;
+    border: 2px solid #F06292;
+}
+
+QPushButton:pressed {
+    background-color: #C2185B;
+    border: 2px solid #C2185B;
+}
+
+/* Line edit */
+QLineEdit {
+    background-color: #FFFFFF;
+    color: #880E4F;
+    border: 2px solid #F06292;
+    border-radius: 22px;
+    padding: 10px;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 15px;
+}
+
+/* Group Box */
+QGroupBox {
+    border: 2px solid #F06292;
+    border-radius: 22px;
+    margin-top: 10px;
+}
+
+QGroupBox::title {
+    color: #880E4F;
+    font-size: 15px;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+}
+
+/* Combo box */
+QComboBox {
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 14pt;
+    color: #880E4F;
+    background-color: #FFFFFF;
+    border: 2px solid #F06292;
+    border-radius: 8px;
+    padding: 5px 30px 5px 5px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 25px;
+    background-color: #EC407A;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+QComboBox::down-arrow {
+    image: url(:/unfold_more);
+    width: 25px;
+    height: 25px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #EC407A;
+    selection-background-color: #880E4F;
+    selection-color: #FFFFFF;
+}
+
+/* Graphics view */
+QGraphicsView {
+    background-color: #FFF1F6;
+    border: 2px solid #F06292;
+    border-radius: 30px;
+}
+
+QGraphicsView:focus {
+    border: 2px solid #EC407A;
+}
+
+/* Frame */
+QFrame[frameShape="4"] {
+    background-color: #F06292;
+    max-height: 1px;
+    border: none;
+}
+
+/* List widget */
+QListWidget {
+    border-radius: 25px;
+    background: #FFFFFF;
+    border: 2px solid #F06292;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 15px;
+}
+
+QListWidget:focus {
+    border: 2px solid #EC407A;
+    outline: none;
+}
+
+QListWidget::item {
+    border-radius: 18px;
+    color: #880E4F;
+    padding: 12px;
+    margin: 3px;
+}
+
+QListWidget::item:hover {
+    background: #FCE4EC;
+}
+
+QListWidget::item:selected {
+    background: #EC407A;
+    color: #FFFFFF;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background: #F8BBD0;
+    width: 14px;
+    margin: 4px;
+    border-radius: 7px;
+}
+
+QScrollBar::handle:vertical {
+    background: #F06292;
+    min-height: 25px;
+    border-radius: 7px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    background: none;
+}
+
+/* Check boxes */
+QCheckBox {
+    spacing: 12px;
+    color: #880E4F;
+    font-family: "Comic Sans MS", "Segoe Script", "cursive";
+    font-size: 15px;
+}
+
+QCheckBox::indicator {
+    width: 22px; 
+    height: 22px;
+    border: 2px solid #F06292;
+    border-radius: 11px;
+    background: #FFFFFF;
+}
+
+QCheckBox::indicator:checked {
+    background: #F06292;
+    image: url(:/sendy.ico);
+}
+
+QCheckBox::indicator:unchecked {
+    background: #FFFFFF;
+}
+
+/* Global focus */
+*:focus {
+    border: 2px solid #EC407A;
+    outline: none;
+}
