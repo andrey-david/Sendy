@@ -56,6 +56,7 @@ class SendyCropper(QMainWindow):
         self.ui.setupUi(self)
 
         # Load QSS
+        self.black_icons = ''
         self.set_QSS()
 
         # Internal state variables
@@ -85,6 +86,8 @@ class SendyCropper(QMainWindow):
         self.crop_frame = None
         self.overlay = None
         self.resize_handle = None
+        self.full_screen_flag = False
+        self.contrast_flag = True
 
         # Event filters
         self.wheel_filter = WheelFilter(self)
@@ -161,6 +164,21 @@ class SendyCropper(QMainWindow):
             logger.exception(f'Cannot load QSS')
             return
 
+        buttons = {self.ui.pushButton_swap: ':/swap',
+                   self.ui.pushButton_rotate: ':/rotate',
+                   self.ui.pushButton_test: ':/test_image',
+                   self.ui.pushButton_contrast: ':/contrast1',
+                   self.ui.pushButton_full_screen: ':/full'
+                   }
+
+        if data.cropper_css == ':/cropper_bright.css':
+            self.black_icons = '_black'
+        else:
+            self.black_icons = ''
+
+        for button, image in buttons.items():
+            button.setStyleSheet(f'QPushButton {{qproperty-icon: url({image}{self.black_icons}); qproperty-iconSize: 25px;}}')
+
     def load_icon(self):
         if QFile.exists(":/sendy.ico"):
             return QIcon(":/sendy.ico")
@@ -172,11 +190,13 @@ class SendyCropper(QMainWindow):
         if self.width() < 1500:
             self.ui.sizes.hide()
             self.ui.graphicsView_preview.hide()
-            self.ui.pushButton_full_screen.setText('🗗')
+            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.full_screen_flag = True
         else:
             self.ui.sizes.show()
             self.ui.graphicsView_preview.show()
-            self.ui.pushButton_full_screen.setText('⛶')
+            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.full_screen_flag = False
         self.rescale_main()
         self.rescale_preview()
 
@@ -245,7 +265,7 @@ class SendyCropper(QMainWindow):
             'Холст': 0,
             'Баннер': 1,
             'Хлопок': 2,
-            'Матовый холст': 3
+            'Матовый': 3
         }
         self.ui.comboBox_material.setCurrentIndex(material_dict[material])
 
@@ -258,7 +278,7 @@ class SendyCropper(QMainWindow):
     def dragEnterEvent(self, event):
         drag_image_qss = """
                                       QGraphicsView {
-                                          background-color: #232c3b;
+                                          background-color: rgba(0, 120, 215, 60);
                                           border: 2px solid #0078d7;
                                       }
                                   """
@@ -412,12 +432,15 @@ class SendyCropper(QMainWindow):
         self.create_crop_frame()
 
     def full_screen(self):
-        if self.ui.pushButton_full_screen.text() == '⛶':
-            self.ui.graphicsView_preview.hide()
-            self.ui.pushButton_full_screen.setText('🗗')
-        else:
-            self.ui.pushButton_full_screen.setText('⛶')
+        if self.full_screen_flag:
+            self.ui.pushButton_full_screen.setStyleSheet(
+            f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.ui.graphicsView_preview.show()
+            self.full_screen_flag = False
+        else:
+            self.ui.graphicsView_preview.hide()
+            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.full_screen_flag = True
             QTimer.singleShot(0, self.rescale_preview)
         QTimer.singleShot(0, self.rescale_main)
 
@@ -427,7 +450,7 @@ class SendyCropper(QMainWindow):
         overlay_standard = '#000000'
         overlay_contrast = '#FF00FF'
         if self.crop_frame:
-            if self.ui.pushButton_contrast.text() == '◐':
+            if self.contrast_flag:
                 self.crop_frame.color(clr=QColor(crop_frame_contrast))
                 self.overlay.color(clr=QColor(overlay_contrast))
                 self.resize_handle.color(clr=QColor(crop_frame_contrast))
@@ -435,9 +458,10 @@ class SendyCropper(QMainWindow):
                 self.overlay_color = QColor(overlay_contrast)
                 self.scene.removeItem(self.overlay)
                 self.scene.addItem(self.overlay)
-                self.ui.pushButton_contrast.setText('◑')
+                self.ui.pushButton_contrast.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/contrast2{self.black_icons}); qproperty-iconSize: 25px;}}')
+                self.contrast_flag = False
             else:
-                self.ui.pushButton_contrast.setText('◐')
+                self.ui.pushButton_contrast.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/contrast1{self.black_icons}); qproperty-iconSize: 25px;}}')
                 self.crop_frame.color()
                 self.overlay.color()
                 self.resize_handle.color()
@@ -445,6 +469,7 @@ class SendyCropper(QMainWindow):
                 self.overlay_color = QColor(overlay_standard)
                 self.scene.removeItem(self.overlay)
                 self.scene.addItem(self.overlay)
+                self.contrast_flag = True
         else:
             self.statusBar().showMessage(f"Нет изображения.", 2000)
             logger.debug('No frame for Contrast')
@@ -717,7 +742,7 @@ def sendy_cropper(
     try:
         app = QApplication(sys.argv)
         window = SendyCropper()
-        window.showMaximized()
+        window.showNormal()
         window.load_image(image)
         window.set_number(number)
         window.set_width_and_height(width, height)
