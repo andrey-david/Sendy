@@ -45,6 +45,7 @@ from photo_processing import PhotoProc
 from keyboards import photo_paths, manage_photo_inline_kb
 from lexicon import handlers_lex, processing_lex
 from config import config
+from data import data
 
 image_processing_router = Router(name='image_processing_router')
 logger = logging.getLogger(__name__)
@@ -71,32 +72,32 @@ def parser(text: str) -> dict[str, list[str] | str | bool]:
                 - "urgent" (bool): True if urgency markers are detected (!, ‼️, 🚨).
     """
     parser_sizes = []
-    parser_width_height = re.finditer(r'(\d{2,})[xх*ч/\\;:.,-](\d{2,})', text.lower())
+    parser_width_height = re.finditer(data.image_loader_parsing_size, text.lower())
     for w_h in parser_width_height:
         parser_sizes.append(f'{w_h.group(1)}х{w_h.group(2)}')
 
-    parser_number = re.search(r'(?:[#№Nn ]|^)(\d+[a-wyzA-WYZа-фц-яА-ФЦ-ЯёЁ]*)-?\b', text)
+    parser_number = re.search(data.image_loader_parsing_number, text)
     if parser_number:
         parser_number = parser_number.group(1)
     else:
         parser_number = False
 
     parser_no_material = False
-    if re.search(r'мат', text.lower()):
+    if re.search(data.image_loader_parsing_matte, text.lower()):
         parser_material = 'Матовый'
-    elif re.search(r'холст|глян|хол', text.lower()):
+    elif re.search(data.image_loader_parsing_canvas, text.lower()):
         parser_material = 'Холст'
-    elif re.search(r'хлоп', text.lower()):
+    elif re.search(data.image_loader_parsing_cotton, text.lower()):
         parser_material = 'Хлопок'
-    elif re.search(r'бан{1,2}ер|бан', text.lower()):
+    elif re.search(data.image_loader_parsing_banner, text.lower()):
         parser_material = 'Баннер'
     else:
         parser_material = 'Холст'
         parser_no_material = True
 
-    parser_cropper = re.search(r'%|✂️|cropper', text)
+    parser_cropper = re.search(data.image_loader_parsing_cropper, text)
 
-    parser_urgent = re.search(r'[!‼️🚨]', text)
+    parser_urgent = re.search(data.image_loader_parsing_urgent, text)
 
     return {'sizes': parser_sizes,
             'number': parser_number,
