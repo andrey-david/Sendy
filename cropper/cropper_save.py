@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import QDialog, QShortcut
 from PyQt5.QtGui import QKeySequence
 
 from cropper.save_ui import Ui_CropperSave
+from data import data
 
 logger = logging.getLogger(__name__)
 
@@ -58,13 +59,13 @@ class SendySave(QDialog):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.Enter:
             if obj == self.ui.pushButton_canvas:
-                self.ui.filename.setText(f'{self.width_height} {self.number} Холст.jpg')
+                self.ui.filename.setText(f'{data.photo_processing_annotation_canvas}{self.width_height} {self.number} Холст.jpg')
             elif obj == self.ui.pushButton_banner:
-                self.ui.filename.setText(f'_{self.width_height} {self.number} Баннер.jpg')
+                self.ui.filename.setText(f'{data.photo_processing_annotation_banner}{self.width_height} {self.number} Баннер.jpg')
             elif obj == self.ui.pushButton_cotton:
-                self.ui.filename.setText(f'{self.width_height} {self.number} Хлопок.jpg')
+                self.ui.filename.setText(f'{data.photo_processing_annotation_cotton}{self.width_height} {self.number} Хлопок.jpg')
             elif obj == self.ui.pushButton_matte:
-                self.ui.filename.setText(f'@{self.width_height} {self.number} Матовый холст.jpg')
+                self.ui.filename.setText(f'{data.photo_processing_annotation_matte}{self.width_height} {self.number} Матовый.jpg')
 
         elif event.type() == QEvent.Leave:
             self.ui.filename.setText(f'{self.width_height} {self.number} _______.jpg')
