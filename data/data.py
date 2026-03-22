@@ -48,6 +48,14 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Data:
     image_loader_path: Path = Path(r'C:\Users\PrinterPC\OneDrive\Pictures\CameraRoll')
+    image_loader_parsing_canvas: str = r'холст|глян|хол'
+    image_loader_parsing_banner: str = r'бан{1,2}ер|бан'
+    image_loader_parsing_cotton: str = r'хлоп'
+    image_loader_parsing_matte: str = r'мат'
+    image_loader_parsing_size: str = r'(\d{2,})[xх*ч/\\;:.,-](\d{2,})'
+    image_loader_parsing_number: str = r'(?:[#№Nn ]|^)(\d+[a-wyzA-WYZа-фц-яА-ФЦ-ЯёЁ]*)-?\b'
+    image_loader_parsing_cropper: str = r'%|✂️|cropper'
+    image_loader_parsing_urgent: str = r'[!‼️🚨]'
 
     image_counter_path: Path = Path(r'D:\Печать\Фото')
     image_counter_exceptions: list[str] = field(default_factory=lambda: ['Макеты', 'макеты', '_Макеты', '_макеты', 'BOT', 'отмены'])
@@ -60,6 +68,15 @@ class Data:
     photo_processing_crop_px: int = 9
     photo_processing_font_size_px: int = 85
     photo_processing_strip_length_px: int = 50
+    photo_processing_blur_px: int = 5
+    photo_processing_font_path: str = "arial.ttf"
+    photo_processing_font: str = "Arial"
+    photo_processing_font_color: str = '#FF0000'
+
+    photo_processing_annotation_canvas: str = ''
+    photo_processing_annotation_banner: str = '_'
+    photo_processing_annotation_cotton: str = ''
+    photo_processing_annotation_matte: str = '@'
 
     cropper_css: str = ':/cropper_bright.css'
 
