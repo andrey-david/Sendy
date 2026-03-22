@@ -2,12 +2,23 @@
     <qresource prefix="/">
         <file alias="cropper_bright.css">cropper/ui/styles/cropper_bright.css</file>
         <file alias="cropper_dark.css">cropper/ui/styles/cropper_dark.css</file>
+        <file alias="cropper_pink.css">cropper/ui/styles/cropper_pink.css</file>
         <file alias="sendy.ico">sendy.ico</file>
-        <file alias="rotate">cropper/ui/icons/rotate.svg</file>
-        <file alias="swap">cropper/ui/icons/swap.svg</file>
-        <file alias="full">cropper/ui/icons/full.svg</file>
-        <file alias="split">cropper/ui/icons/split.svg</file>
-        <file alias="contrast1">cropper/ui/icons/contrast1.svg</file>
-        <file alias="contrast2">cropper/ui/icons/contrast2.svg</file>
+        <file alias="rotate">cropper/ui/icons/white/rotate.svg</file>
+        <file alias="swap">cropper/ui/icons/white/swap.svg</file>
+        <file alias="full">cropper/ui/icons/white/full.svg</file>
+        <file alias="split">cropper/ui/icons/white/split.svg</file>
+        <file alias="contrast1">cropper/ui/icons/white/contrast1.svg</file>
+        <file alias="contrast2">cropper/ui/icons/white/contrast2.svg</file>
+        <file alias="unfold_more">cropper/ui/icons/white/unfold_more.svg</file>
+        <file alias="test_image">cropper/ui/icons/white/test_image.svg</file>
+        <file alias="rotate_black">cropper/ui/icons/black/rotate.svg</file>
+        <file alias="swap_black">cropper/ui/icons/black/swap.svg</file>
+        <file alias="full_black">cropper/ui/icons/black/full.svg</file>
+        <file alias="split_black">cropper/ui/icons/black/split.svg</file>
+        <file alias="contrast1_black">cropper/ui/icons/black/contrast1.svg</file>
+        <file alias="contrast2_black">cropper/ui/icons/black/contrast2.svg</file>
+        <file alias="unfold_more_black">cropper/ui/icons/black/unfold_more.svg</file>
+        <file alias="test_image_black">cropper/ui/icons/black/test_image.svg</file>
     </qresource>
 </RCC>
