@@ -1663,11 +1663,7 @@
            <string>Повернуть по часовой</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton {
-	qproperty-icon: url(:/rotate);
-    qproperty-iconSize: 28px;
-}
-</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -1695,14 +1691,10 @@
            <string>Контраст</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton {
-
-    qproperty-iconSize: 32px;
-}
-</string>
+           <string notr="true"/>
           </property>
           <property name="text">
-           <string>◐</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1727,14 +1719,10 @@
            <string>Контраст</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton {
-
-    qproperty-iconSize: 32px;
-}
-</string>
+           <string notr="true"/>
           </property>
           <property name="text">
-           <string>T</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1786,7 +1774,7 @@
 </string>
           </property>
           <property name="text">
-           <string>⛶</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1886,11 +1874,7 @@
          <string>Обменять ширину и высоту</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">QPushButton {
-	qproperty-icon: url(:/swap);
-    qproperty-iconSize: 28px;
-}
-</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>

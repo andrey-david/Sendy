@@ -765,11 +765,7 @@ class Ui_Cropper(object):
         self.pushButton_rotate.setMaximumSize(QtCore.QSize(44, 44))
         font = QtGui.QFont()
         self.pushButton_rotate.setFont(font)
-        self.pushButton_rotate.setStyleSheet("QPushButton {\n"
-"    qproperty-icon: url(:/rotate);\n"
-"    qproperty-iconSize: 28px;\n"
-"}\n"
-"")
+        self.pushButton_rotate.setStyleSheet("")
         self.pushButton_rotate.setText("")
         self.pushButton_rotate.setObjectName("pushButton_rotate")
         self.verticalLayout_4.addWidget(self.pushButton_rotate)
@@ -778,11 +774,8 @@ class Ui_Cropper(object):
         self.pushButton_contrast.setMaximumSize(QtCore.QSize(44, 44))
         font = QtGui.QFont()
         self.pushButton_contrast.setFont(font)
-        self.pushButton_contrast.setStyleSheet("QPushButton {\n"
-"\n"
-"    qproperty-iconSize: 32px;\n"
-"}\n"
-"")
+        self.pushButton_contrast.setStyleSheet("")
+        self.pushButton_contrast.setText("")
         self.pushButton_contrast.setObjectName("pushButton_contrast")
         self.verticalLayout_4.addWidget(self.pushButton_contrast)
         self.pushButton_test = QtWidgets.QPushButton(self.centralwidget)
@@ -790,11 +783,8 @@ class Ui_Cropper(object):
         self.pushButton_test.setMaximumSize(QtCore.QSize(44, 44))
         font = QtGui.QFont()
         self.pushButton_test.setFont(font)
-        self.pushButton_test.setStyleSheet("QPushButton {\n"
-"\n"
-"    qproperty-iconSize: 32px;\n"
-"}\n"
-"")
+        self.pushButton_test.setStyleSheet("")
+        self.pushButton_test.setText("")
         self.pushButton_test.setObjectName("pushButton_test")
         self.verticalLayout_4.addWidget(self.pushButton_test)
         spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -815,6 +805,7 @@ class Ui_Cropper(object):
 "}\n"
 "\n"
 "")
+        self.pushButton_full_screen.setText("")
         self.pushButton_full_screen.setObjectName("pushButton_full_screen")
         self.verticalLayout_4.addWidget(self.pushButton_full_screen)
         self.horizontalLayout_3.addLayout(self.verticalLayout_4)
@@ -845,11 +836,7 @@ class Ui_Cropper(object):
         font = QtGui.QFont()
         self.pushButton_swap.setFont(font)
         self.pushButton_swap.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.pushButton_swap.setStyleSheet("QPushButton {\n"
-"    qproperty-icon: url(:/swap);\n"
-"    qproperty-iconSize: 28px;\n"
-"}\n"
-"")
+        self.pushButton_swap.setStyleSheet("")
         self.pushButton_swap.setText("")
         self.pushButton_swap.setObjectName("pushButton_swap")
         self.horizontalLayout.addWidget(self.pushButton_swap)
@@ -1047,11 +1034,8 @@ class Ui_Cropper(object):
         self.pushButton_20_40.setText(_translate("Cropper", "20 × 40"))
         self.pushButton_rotate.setToolTip(_translate("Cropper", "Повернуть по часовой"))
         self.pushButton_contrast.setToolTip(_translate("Cropper", "Контраст"))
-        self.pushButton_contrast.setText(_translate("Cropper", "◐"))
         self.pushButton_test.setToolTip(_translate("Cropper", "Контраст"))
-        self.pushButton_test.setText(_translate("Cropper", "T"))
         self.pushButton_full_screen.setToolTip(_translate("Cropper", "Полный экран"))
-        self.pushButton_full_screen.setText(_translate("Cropper", "⛶"))
         self.lineEdit_width.setToolTip(_translate("Cropper", "Ширина"))
         self.lineEdit_width.setPlaceholderText(_translate("Cropper", "ШИРИНА"))
         self.pushButton_swap.setToolTip(_translate("Cropper", "Обменять ширину и высоту"))
