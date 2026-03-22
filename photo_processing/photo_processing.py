@@ -41,7 +41,7 @@ class PhotoProc:
         self.black_px: int = data.photo_processing_black_px
         self.text_px: int = data.photo_processing_font_size_px
         self.crop_px: int = data.photo_processing_crop_px
-        self.font_path: str = "arial.ttf"
+        self.font_path: str = data.photo_processing_font_path
         self.dpi: int = data.photo_processing_dpi
         self.icc: bytes | None = None
 
@@ -88,6 +88,7 @@ class PhotoProc:
         wrap_px = self.cm_to_px(self.wrap_cm)
         strip_crop_px = data.photo_processing_strip_length_px
         corner_crop_px = data.photo_processing_strip_length_px
+        blur_px = data.photo_processing_blur_px
 
         def stretched_strip(crop_box, strip_position):
             position = {
@@ -103,7 +104,7 @@ class PhotoProc:
             elif strip_position == 'top' or strip_position == 'bottom':
                 strip = strip.resize(position[strip_position], Image.LANCZOS)
 
-            strip = strip.filter(ImageFilter.GaussianBlur(radius=5))
+            strip = strip.filter(ImageFilter.GaussianBlur(radius=blur_px))
             return strip
 
         left_strip = stretched_strip((0, 0, strip_crop_px, image_height), 'left')
@@ -132,10 +133,10 @@ class PhotoProc:
         corner_bottom_right = corner_bottom_right.resize((wrap_px, wrap_px)).crop(
             (wrap_px - wrap_px, wrap_px - wrap_px, wrap_px, wrap_px))
 
-        corner_top_left = corner_top_left.filter(ImageFilter.GaussianBlur(radius=10))
-        corner_top_right = corner_top_right.filter(ImageFilter.GaussianBlur(radius=10))
-        corner_bottom_left = corner_bottom_left.filter(ImageFilter.GaussianBlur(radius=10))
-        corner_bottom_right = corner_bottom_right.filter(ImageFilter.GaussianBlur(radius=10))
+        corner_top_left = corner_top_left.filter(ImageFilter.GaussianBlur(radius=blur_px))
+        corner_top_right = corner_top_right.filter(ImageFilter.GaussianBlur(radius=blur_px))
+        corner_bottom_left = corner_bottom_left.filter(ImageFilter.GaussianBlur(radius=blur_px))
+        corner_bottom_right = corner_bottom_right.filter(ImageFilter.GaussianBlur(radius=blur_px))
 
         new_image = Image.new("RGB", (image_width + 2 * wrap_px, image_height + 2 * wrap_px))
 
@@ -203,15 +204,16 @@ class PhotoProc:
             bbox = draw.textbbox((0, 0), self.number, font=font)
             text_width = bbox[2] - bbox[0]
             text_height = bbox[3] - bbox[1]
+            text_color = data.photo_processing_font_color
 
             # top number
             x = (canvas.width - text_width) // 2
             y = (white_px + self.black_px) // 2 - text_height // 2 - 10
-            draw.text((x, y), self.number, font=font, fill="red", stroke_width=5, stroke_fill="white")
+            draw.text((x, y), self.number, font=font, fill=text_color, stroke_width=5, stroke_fill="white")
 
             # bottom number
             y = canvas.height - self.black_px - text_height * 2 + 10
-            draw.text((x, y), self.number, font=font, fill="red", stroke_width=5, stroke_fill="white")
+            draw.text((x, y), self.number, font=font, fill=text_color, stroke_width=5, stroke_fill="white")
 
             self.image = canvas
 
@@ -232,10 +234,14 @@ class PhotoProc:
         os.makedirs(material_dir, exist_ok=True)
 
         filename = f"{self.width_cm}х{self.height_cm}"
-        if self.material == 'Баннер':
-            filename = '_' + filename
+        if self.material == 'Холст':
+            filename = f'{data.photo_processing_annotation_canvas}{filename}'
+        elif self.material == 'Баннер':
+            filename = f'{data.photo_processing_annotation_banner}{filename}'
+        elif self.material == 'Хлопок':
+            filename = f'{data.photo_processing_annotation_cotton}{filename}'
         elif self.material == 'Матовый':
-            filename = '@' + filename
+            filename = f'{data.photo_processing_annotation_matte}{filename}'
 
         if self.number:
             filename += f" {self.number}"
