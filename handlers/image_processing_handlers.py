@@ -200,7 +200,8 @@ async def download_image(file, bot: Bot):
         await bot.download_file(file.file_path, destination=img_data)
     except TimeoutError:
         logger.exception('TimeoutError while downloading image')
-        return None
+        image = 'TimeoutError'
+        return image
 
     pillow_heif.register_heif_opener()
     try:
@@ -209,7 +210,12 @@ async def download_image(file, bot: Bot):
         image = ImageOps.exif_transpose(image)
     except UnidentifiedImageError:
         logger.exception('Corrupted image')
-        return None
+        image = 'CorruptedImageError'
+        return image
+    except MemoryError:
+        logger.exception('Memory Error')
+        image = 'MemoryError'
+        return image
 
     return image
 
@@ -252,6 +258,15 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
         parsed = parser(user_message.caption or '%')
         if not image and not parsed['cropper']:
             await reply_message.edit_text(handlers_lex['processing_image_error'])
+            return
+        elif image == 'MemoryError':
+            await reply_message.edit_text(handlers_lex['processing_image_memory_error'])
+            return
+        elif image == 'TimeoutError':
+            await reply_message.edit_text(handlers_lex['processing_image_timeout_error'])
+            return
+        elif image == 'CorruptedImageError':
+            await reply_message.edit_text(handlers_lex['processing_image_corrupted_error'])
             return
 
         await reply_message.edit_text(random.choice(processing_lex))
