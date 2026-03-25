@@ -130,37 +130,37 @@
          <string>Цветовая схема приложения</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QGroupBox" name="groupBox_8">
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>110</y>
+          <y>100</y>
           <width>541</width>
-          <height>51</height>
+          <height>91</height>
          </rect>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QCheckBox:focus {
+        <property name="title">
+         <string>Автозапуск</string>
+        </property>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>20</y>
+           <width>471</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QCheckBox:focus {
 	border: 2px solid transparent;
     outline: none;
     }</string>
-        </property>
-        <property name="text">
-         <string>Запускать Sendy вместе с системой</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_15">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>100</y>
-          <width>361</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Автозапуск</string>
-        </property>
+         </property>
+         <property name="text">
+          <string>Запускать Sendy вместе с системой</string>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_2">
