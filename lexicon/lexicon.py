@@ -11,7 +11,7 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.7', 'date': '20.03.26'}
+sendy_info: dict[str, str] = {'version': 'v2.8', 'date': '23.03.26'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
 
@@ -26,12 +26,9 @@ MENU_COMMANDS: dict[str, str] = {
 menu: dict[str, str] = {
     '/start': f'<b>Мы <i>Sendy {sendy_info['version']}</i></b>'
               '\n'
-              '\n📌 Уменьшены артефакты при создании растянутых краёв изображений.'
+              '\n📌 В меню настроек добавлены новые параметры для более тонкой настройки работы Sendy.'
               '\n'
-              '\n📌 Добавлен параметр «Длина захвата края, px» (по умолчанию 50) для настройки захвата пикселей '
-              'изображения перед растяжкой.'
-              '\n'
-              '\n📌 Добавлена Розовая тема. Обновлён дизайн.',
+              '\n🔧 Исправлен баг с неверным написанием материала. "Матовый холст" → "Матовый"',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)
@@ -72,7 +69,7 @@ welcome_message: list[str] = [
     "Вот ты где, а я тебя повсюду ищу!",
     "🦭 Ау-Ау-Ау-Ау-Ау-Ау!",
     "General Kenobi!",
-    "Мы есть Грут!",
+    "💊 Akira!",
     "Я родился!",
     "Робот не может причинить вред человеку или своим бездействием допустить, чтобы человеку был причинён вред",
     "Покажи пальцем на лоб, теперь на левую руку... теперь на колено... теперь покажи на себя... где ты?..",
@@ -188,6 +185,9 @@ handlers_lex: dict[str, str] = {
     'processing_no_number': '⚠️ <b>Номер не был указан</b>\n',
     'processing_error': '💀 Ошибка:',
     'processing_image_error': '💀 Ошибка: <b>Не удалось скачать изображение или изображение повреждено.</b>',
+    'processing_image_timeout_error': '💀 Ошибка: <b>Превышено время ожидания.</b>',
+    'processing_image_corrupted_error': '💀 Ошибка: <b>Изображение повреждено.</b>',
+    'processing_image_memory_error': '💀 Ошибка: <b>Недостаточно памяти.</b>',
 }
 
 processing_lex: list[str] = [
