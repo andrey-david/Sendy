@@ -183,7 +183,7 @@ handlers_lex: dict[str, str] = {
     'processing_image_saved': '✅ <b>Изображение сохранено</b>',
     'processing_no_material': '⚠️ <b>Материал не был указан</b>\n',
     'processing_no_number': '⚠️ <b>Номер не был указан</b>\n',
-    'processing_error': '💀 Ошибка:',
+    'processing_error': '💀 Ошибка: Непредвиденная ошибка.',
     'processing_image_error': '💀 Ошибка: <b>Не удалось скачать изображение или изображение повреждено.</b>',
     'processing_image_timeout_error': '💀 Ошибка: <b>Превышено время ожидания.</b>',
     'processing_image_corrupted_error': '💀 Ошибка: <b>Изображение повреждено.</b>',
@@ -227,5 +227,8 @@ def image_loader_error_text() -> str:
 
 image_loader_lex: dict[str, str] = {
     'sending_file': '📤 <b>Загружаю файл из папки...</b>',
-    'error_corrupted_file': '💀 Ошибка: <b>Невозможно отправить повреждённый файл или файл превышающий 50 МБ.</b>'
+    'error_corrupted_file': '💀 Ошибка: <b>Невозможно отправить повреждённый файл.</b>',
+    'error_file_is_too_large': '💀 Ошибка: <b>Невозможно отправить файл превышающий 50 МБ.</b>',
+    'error_while_sending_file': '💀 Ошибка: <b>Ошибка при загрузке файла.</b>',
+    'error_file_not_found': '💀 Ошибка: <b>Файл не найден.</b>'
 }
