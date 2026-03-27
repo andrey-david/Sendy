@@ -167,6 +167,14 @@ class SendySettings(QDialog):
         self.ui.lineEdit_photo_processing_font.setText(data.photo_processing_font)
         self.ui.lineEdit_photo_processing_font_color.setText(str(data.photo_processing_font_color))
 
+        chat = data.photo_processing_chat
+        if chat == 'any':
+            self.ui.radioButton.setChecked(True)
+        elif chat == 'private':
+            self.ui.radioButton_2.setChecked(True)
+        elif chat == 'group':
+            self.ui.radioButton_3.setChecked(True)
+
         self.ui.lineEdit_photo_processing_annotation_canvas.setText(data.photo_processing_annotation_canvas)
         self.ui.lineEdit_photo_processing_annotation_banner.setText(data.photo_processing_annotation_banner)
         self.ui.lineEdit_photo_processing_annotation_cotton.setText(data.photo_processing_annotation_cotton)
@@ -344,6 +352,13 @@ class SendySettings(QDialog):
         data.photo_processing_annotation_banner = self.ui.lineEdit_photo_processing_annotation_banner.text()
         data.photo_processing_annotation_cotton = self.ui.lineEdit_photo_processing_annotation_cotton.text()
         data.photo_processing_annotation_matte = self.ui.lineEdit_photo_processing_annotation_matte.text()
+
+        chat = 'any'
+        if self.ui.radioButton_2.isChecked():
+            chat = 'private'
+        elif self.ui.radioButton_3.isChecked():
+            chat = 'group'
+        data.photo_processing_chat = chat
 
         # image counter
         list_widget = self.ui.listWidget_image_counter_exceptions
