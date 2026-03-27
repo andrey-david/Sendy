@@ -1,1 +1,2 @@
 from .admin_verification_middleware import IsAdminMiddleware
+from .chat_type_filter_middleware import ChatTypeFilterMiddleware

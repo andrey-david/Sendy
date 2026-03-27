@@ -22,7 +22,7 @@ from image_loader.image_loader import (
     image_loader_router
 )
 from startup import send_welcome_message
-from middlewares import IsAdminMiddleware
+from middlewares import IsAdminMiddleware, ChatTypeFilterMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +58,7 @@ async def main() -> None:
         dp.startup.register(set_main_menu)
 
         dp.update.outer_middleware(IsAdminMiddleware())
+        image_processing_router.message.outer_middleware(ChatTypeFilterMiddleware())
 
         _ = asyncio.create_task(image_loader())
     except Exception as e:
