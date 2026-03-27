@@ -253,6 +253,30 @@ QCheckBox::indicator:unchecked {
     border: 2px solid #E0E0E0;
 }
 
+/* Radio button */
+QRadioButton {
+    spacing: 10px;
+    color: #000000;
+    font-family: "Helvetica";
+    font-size: 16px;
+}
+
+QRadioButton::indicator {
+    width: 20px; 
+    height: 20px;
+    border-radius: 3px;
+    background: #fff;
+}
+
+QRadioButton::indicator:checked {
+    background: #C0C0C0;
+}
+
+QRadioButton:focus {
+    outline: none;
+    border: none;
+}
+
 /* Global focus */
 *:focus {
     border: 2px solid #0078d7;

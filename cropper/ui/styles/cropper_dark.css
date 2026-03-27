@@ -231,7 +231,7 @@ QScrollBar::sub-line:vertical {
     border: none;
 }
 
-/* Check boxes */
+/* Check box */
 QCheckBox {
     spacing: 10px;
     color: #F1F1F1;
@@ -257,6 +257,30 @@ QCheckBox::indicator:checked {
 QCheckBox::indicator:unchecked {
     background: #272727;
     border: 2px solid #272727;
+}
+
+/* Radio button */
+QRadioButton {
+    spacing: 10px;
+    color: #F1F1F1;
+    font-family: "Helvetica";
+    font-size: 16px;
+}
+
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background: #272727;
+}
+
+QRadioButton::indicator:checked {
+    background-color: #fff;
+}
+
+QRadioButton:focus {
+    outline: none;
+    border: none;
 }
 
 /* Global focus */
