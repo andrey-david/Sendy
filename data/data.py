@@ -58,7 +58,14 @@ class Data:
     image_loader_parsing_urgent: str = r'[!‼️🚨]'
 
     image_counter_path: Path = Path(r'D:\Печать\Фото')
-    image_counter_exceptions: list[str] = field(default_factory=lambda: ['Макеты', 'макеты', '_Макеты', '_макеты', 'BOT', 'отмены'])
+    image_counter_exceptions: list[str] = field(default_factory=lambda: ['Макеты',
+                                                                         'макеты',
+                                                                         '_Макеты',
+                                                                         '_макеты',
+                                                                         'BOT',
+                                                                         'отмены'
+                                                                         ]
+                                                )
 
     photo_processing_path: Path = Path(r'D:\Печать\Фото\BOT')
     photo_processing_wrap_cm: float = 2.8
@@ -72,6 +79,7 @@ class Data:
     photo_processing_font_path: str = "arial.ttf"
     photo_processing_font: str = "Arial"
     photo_processing_font_color: str = '#FF0000'
+    photo_processing_chat: str = 'any'
 
     photo_processing_annotation_canvas: str = ''
     photo_processing_annotation_banner: str = '_'
