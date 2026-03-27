@@ -189,6 +189,8 @@ async def _image_queue_worker(user_id: int, bot: Bot) -> None:
         await process_image_add_to_queue(user_id, bot)
     except Exception:
         logger.exception("Error processing image queue for user %s", user_id)
+        await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                          text=handlers_lex['processing_error'])
     finally:
         _ = image_queue_tasks.pop(user_id, None)
 
