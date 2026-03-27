@@ -136,7 +136,7 @@
           <x>30</x>
           <y>100</y>
           <width>541</width>
-          <height>91</height>
+          <height>81</height>
          </rect>
         </property>
         <property name="title">
@@ -145,9 +145,9 @@
         <widget class="QCheckBox" name="checkBox">
          <property name="geometry">
           <rect>
-           <x>40</x>
+           <x>10</x>
            <y>20</y>
-           <width>471</width>
+           <width>521</width>
            <height>51</height>
           </rect>
          </property>
@@ -159,6 +159,61 @@
          </property>
          <property name="text">
           <string>Запускать Sendy вместе с системой</string>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_9">
+        <property name="geometry">
+         <rect>
+          <x>29</x>
+          <y>220</y>
+          <width>541</width>
+          <height>151</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Где обрабатывать изображения</string>
+        </property>
+        <widget class="QRadioButton" name="radioButton">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>521</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Во всех чатах</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>521</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>В основном чате бота</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>521</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Только в сторонних чатах</string>
          </property>
         </widget>
        </widget>
