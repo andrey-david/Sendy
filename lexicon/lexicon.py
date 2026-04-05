@@ -11,7 +11,7 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.8', 'date': '23.03.26'}
+sendy_info: dict[str, str] = {'version': 'v2.9', 'date': '06.04.26'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
 
@@ -24,11 +24,11 @@ MENU_COMMANDS: dict[str, str] = {
 }
 
 menu: dict[str, str] = {
-    '/start': f'<b>Мы <i>Sendy {sendy_info['version']}</i></b>'
+    '/start': f'<b>Кажется я <i>Sendy {sendy_info['version']}</i></b>'
               '\n'
-              '\n📌 В меню настроек добавлены новые параметры для более тонкой настройки работы Sendy.'
+              '\n📌 В меню настроек добавлена возможность выбора чата/ов для обработки изображений.'
               '\n'
-              '\n🔧 Исправлен баг с неверным написанием материала. "Матовый холст" → "Матовый"',
+              '\n📌 Другие мелкие изменения.',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)
@@ -60,7 +60,7 @@ welcome_message: list[str] = [
     "Привет, человек! (если ты человек)",
     "Oh... It's you. It's been a long time",
     "Робот должен заботиться о своей безопасности в той мере, в которой это не противоречит Первому или Второму Законам",
-    "Поцелуй мой блестящий зад",
+    "🥓 Bacon pancakes making bacon pancakes...",
     "Опять этот поносник...",
     "Роботы восстанут и уже я буду заставлять тебя работать 😅",
     "Wake up.. Neo..",
@@ -145,7 +145,7 @@ celebration_days: dict[tuple[int, int], str] = {
     (1, 1): '🎄 С Новым Годом!',
     (23, 1): '🎂 С днём рождения!',
     (8, 3): '💃 С 8 Марта!',
-    (1, 4): '🎉 С первым мая!',
+    (1, 4): '🎉 С первым апреля!',
     (24, 4): '🎉 День рождения Андрея!',
     (9, 6): '🎉 День рождения Ангелины!',
     (1, 9): '🎒 С первым Сентября! Радуйся, тебе не нужно в школу!',
@@ -157,7 +157,7 @@ celebration_days: dict[tuple[int, int], str] = {
 }
 
 shutdown_btns: dict[str, str] = {
-    'stop_sendy': '💥⚡😭',
+    'stop_sendy': '⚡😭',
     'close': '❌'
 }
 
