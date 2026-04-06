@@ -11,7 +11,7 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.9', 'date': '06.04.26'}
+sendy_info: dict[str, str] = {'version': 'v2.9fix', 'date': '06.04.26'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
 
@@ -28,7 +28,12 @@ menu: dict[str, str] = {
               '\n'
               '\n📌 В меню настроек добавлена возможность выбора чата/ов для обработки изображений.'
               '\n'
-              '\n📌 Другие мелкие изменения.',
+              '\n📌 Другие мелкие изменения.'
+              '\n'
+              '\n🔧 Исправлено создание директории «Матовый холст» при работе через Cropper: устранено дублирование '
+              'папок, теперь используется только «Матовый».'
+              '\n'
+              '\n🔧 Нестабильная работа Cropper: добавлена обработка исключений при создании потоков (threading).',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)
