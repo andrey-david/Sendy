@@ -12,6 +12,7 @@ Functionality:
 
 import os
 import logging
+import asyncio
 
 import aiohttp
 from aiogram import Bot
@@ -22,6 +23,7 @@ from lexicon import sendy_info, handlers_lex
 
 logger = logging.getLogger(__name__)
 
+
 async def check_for_updates(bot: Bot) -> None:
     list_dir = os.listdir(config.info.app_directory)
     url = "https://drive.usercontent.google.com/u/0/uc?id=1vjf8McN-gm7pc3Gfl4sYyOpOcXph5nXz&export=download"
@@ -29,20 +31,44 @@ async def check_for_updates(bot: Bot) -> None:
 
     if 'updater_new.exe' in list_dir:
         os.replace('updater_new.exe', 'updater.exe')
-    if 'updater.exe' in list_dir:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                if response.status == 200:
-                    text = await response.text()
-                    try:
-                        latest_version, update_link = text.split('|')
-                    except ValueError:
-                        logger.error('Wrong update data')
-                    if latest_version != sendy_info['version']:
-                        await bot.send_message(chat_id=config.bot.chat_id,
-                                               text=f'🆕')
-                        await bot.send_message(chat_id=config.bot.chat_id,
-                                               text=f'<b><i>{handlers_lex['update_available']} {latest_version}</i></b>',
-                                               reply_markup=update_inline_kb)
-    else:
+
+    if 'updater.exe' not in list_dir:
         logger.warning('`updater.exe` not found')
+        return
+
+    try:
+        timeout = aiohttp.ClientTimeout(total=3)
+
+        async with aiohttp.ClientSession(timeout=timeout) as session:
+            async with session.get(url) as response:
+                if response.status != 200:
+                    logger.error(f"Update server returned {response.status}")
+                    return
+
+                text = await response.text()
+
+    except aiohttp.ClientError as e:
+        logger.error(f"Network error during update check: {e}")
+        return
+    except asyncio.TimeoutError:
+        logger.error("Update check timeout")
+        return
+    except Exception as e:
+        logger.error(f"Update request failed: {e}")
+        return
+
+    try:
+        latest_version, update_link = text.split('|')
+    except ValueError:
+        logger.error('Wrong update data format')
+        return
+
+    if latest_version != sendy_info['version']:
+        await bot.send_message(chat_id=config.bot.chat_id,
+                               text=f'🆕',
+                               )
+
+        await bot.send_message(chat_id=config.bot.chat_id,
+                               text=f'<b><i>{handlers_lex['update_available']} {latest_version}</i></b>',
+                               reply_markup=update_inline_kb,
+                               )
