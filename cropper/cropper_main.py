@@ -50,6 +50,7 @@ class SendyCropper(QMainWindow):
         self.setFocusPolicy(Qt.StrongFocus)
         self.setWindowIcon(self.load_icon())
         self.frame_scale = 1.2
+        self.window_geometry = data.cropper_window_geometry
 
         # UI setup
         self.ui = Ui_Cropper()
@@ -177,7 +178,8 @@ class SendyCropper(QMainWindow):
             self.black_icons = ''
 
         for button, image in buttons.items():
-            button.setStyleSheet(f'QPushButton {{qproperty-icon: url({image}{self.black_icons}); qproperty-iconSize: 25px;}}')
+            button.setStyleSheet(
+                f'QPushButton {{qproperty-icon: url({image}{self.black_icons}); qproperty-iconSize: 25px;}}')
 
     def load_icon(self):
         if QFile.exists(":/sendy.ico"):
@@ -190,15 +192,28 @@ class SendyCropper(QMainWindow):
         if self.width() < 1500:
             self.ui.sizes.hide()
             self.ui.graphicsView_preview.hide()
-            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.ui.pushButton_full_screen.setStyleSheet(
+                f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.full_screen_flag = True
         else:
             self.ui.sizes.show()
             self.ui.graphicsView_preview.show()
-            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.ui.pushButton_full_screen.setStyleSheet(
+                f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.full_screen_flag = False
+
+        self.window_geometry['width'] = self.width()
+        self.window_geometry['height'] = self.height()
+        logger.debug(f'cropper window geometry: {self.window_geometry}')
+
         self.rescale_main()
         self.rescale_preview()
+
+    def moveEvent(self, event):
+        super().moveEvent(event)
+        self.window_geometry['x'] = self.x()
+        self.window_geometry['y'] = self.y()
+        logger.debug(f'cropper window geometry: {self.window_geometry}')
 
     # Set image and other presets
     def load_image(self, image):
@@ -434,12 +449,13 @@ class SendyCropper(QMainWindow):
     def full_screen(self):
         if self.full_screen_flag:
             self.ui.pushButton_full_screen.setStyleSheet(
-            f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
+                f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.ui.graphicsView_preview.show()
             self.full_screen_flag = False
         else:
             self.ui.graphicsView_preview.hide()
-            self.ui.pushButton_full_screen.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
+            self.ui.pushButton_full_screen.setStyleSheet(
+                f'QPushButton {{qproperty-icon: url(:/split{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.full_screen_flag = True
             QTimer.singleShot(0, self.rescale_preview)
         QTimer.singleShot(0, self.rescale_main)
@@ -458,10 +474,12 @@ class SendyCropper(QMainWindow):
                 self.overlay_color = QColor(overlay_contrast)
                 self.scene.removeItem(self.overlay)
                 self.scene.addItem(self.overlay)
-                self.ui.pushButton_contrast.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/contrast2{self.black_icons}); qproperty-iconSize: 25px;}}')
+                self.ui.pushButton_contrast.setStyleSheet(
+                    f'QPushButton {{qproperty-icon: url(:/contrast2{self.black_icons}); qproperty-iconSize: 25px;}}')
                 self.contrast_flag = False
             else:
-                self.ui.pushButton_contrast.setStyleSheet(f'QPushButton {{qproperty-icon: url(:/contrast1{self.black_icons}); qproperty-iconSize: 25px;}}')
+                self.ui.pushButton_contrast.setStyleSheet(
+                    f'QPushButton {{qproperty-icon: url(:/contrast1{self.black_icons}); qproperty-iconSize: 25px;}}')
                 self.crop_frame.color()
                 self.overlay.color()
                 self.resize_handle.color()
@@ -731,6 +749,12 @@ class SendyCropper(QMainWindow):
         finally:
             self.close()
 
+    def closeEvent(self, event):
+        data.cropper_window_geometry = self.window_geometry
+        data.save()
+
+        event.accept()
+
 
 def sendy_cropper(
         image=None,
@@ -742,6 +766,7 @@ def sendy_cropper(
     try:
         app = QApplication(sys.argv)
         window = SendyCropper()
+        window.setGeometry(*data.cropper_window_geometry.values())
         window.showNormal()
         window.load_image(image)
         window.set_number(number)

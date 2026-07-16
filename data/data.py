@@ -87,6 +87,12 @@ class Data:
     photo_processing_annotation_matte: str = '@'
 
     cropper_css: str = ':/cropper_bright.css'
+    cropper_window_geometry: dict = field(default_factory=lambda: {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+    })
 
     def save(self):
         data_path = os.path.join(config.info.app_directory, 'sendy.data')
