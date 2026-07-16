@@ -344,22 +344,26 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
                 )
                 cropper_queue.put(result)
 
-            Thread(target=wrapper, daemon=True).start()
-            # Waiting for Cropper to return result
-            result = True
-            while result:
-                try:
-                    result = cropper_queue.get_nowait()
-                    number = result['number']
-                    no_material = False
-                    processing.presets(**result)
-                    break
-                except:
-                    await asyncio.sleep(3)
-            else:
-                # Deleting reply message if no result from Cropper (user closed Cropper)
-                await reply_message.delete()
-                return
+            try:
+                Thread(target=wrapper, daemon=True).start()
+                # Waiting for Cropper to return result
+                result = True
+                while result:
+                    try:
+                        result = cropper_queue.get_nowait()
+                        number = result['number']
+                        no_material = False
+                        processing.presets(**result)
+                        break
+                    except:
+                        await asyncio.sleep(3)
+                else:
+                    # Deleting reply message if no result from Cropper (user closed Cropper)
+                    await reply_message.delete()
+                    return
+            except:
+                logger.exception('Exception while processing image via Cropper')
+                await reply_message.edit_text(handlers_lex['processing_error'])
 
         else:
             processing.presets(
