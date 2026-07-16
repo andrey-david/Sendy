@@ -86,55 +86,11 @@
        <attribute name="title">
         <string>Общие</string>
        </attribute>
-       <widget class="QComboBox" name="comboBox_theme">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>30</y>
-          <width>541</width>
-          <height>44</height>
-         </rect>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>44</height>
-         </size>
-        </property>
-        <item>
-         <property name="text">
-          <string>Светлая тема</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Тёмная тема</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Розовая тема</string>
-         </property>
-        </item>
-       </widget>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>10</y>
-          <width>361</width>
-          <height>16</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Цветовая схема приложения</string>
-        </property>
-       </widget>
        <widget class="QGroupBox" name="groupBox_8">
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>100</y>
+          <y>150</y>
           <width>541</width>
           <height>81</height>
          </rect>
@@ -145,9 +101,9 @@
         <widget class="QCheckBox" name="checkBox">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>20</x>
            <y>20</y>
-           <width>521</width>
+           <width>491</width>
            <height>51</height>
           </rect>
          </property>
@@ -166,7 +122,7 @@
         <property name="geometry">
          <rect>
           <x>29</x>
-          <y>220</y>
+          <y>260</y>
           <width>541</width>
           <height>151</height>
          </rect>
@@ -177,9 +133,9 @@
         <widget class="QRadioButton" name="radioButton">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>20</x>
            <y>30</y>
-           <width>521</width>
+           <width>491</width>
            <height>20</height>
           </rect>
          </property>
@@ -193,9 +149,9 @@
         <widget class="QRadioButton" name="radioButton_2">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>20</x>
            <y>70</y>
-           <width>521</width>
+           <width>491</width>
            <height>20</height>
           </rect>
          </property>
@@ -206,15 +162,108 @@
         <widget class="QRadioButton" name="radioButton_3">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>20</x>
            <y>110</y>
-           <width>521</width>
+           <width>491</width>
            <height>20</height>
           </rect>
          </property>
          <property name="text">
           <string>Только в сторонних чатах</string>
          </property>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_10">
+        <property name="geometry">
+         <rect>
+          <x>29</x>
+          <y>440</y>
+          <width>541</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Режим окна Cropper</string>
+        </property>
+        <widget class="QComboBox" name="comboBox">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>30</y>
+           <width>500</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>500</width>
+           <height>50</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>Нормальный</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Максимизированный</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Полноэкрынный</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Поверх всех окон</string>
+          </property>
+         </item>
+        </widget>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_11">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>20</y>
+          <width>541</width>
+          <height>101</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Цветовая схема приложения</string>
+        </property>
+        <widget class="QComboBox" name="comboBox_theme">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>30</y>
+           <width>500</width>
+           <height>50</height>
+          </rect>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>500</width>
+           <height>50</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>Светлая тема</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Тёмная тема</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Розовая тема</string>
+          </property>
+         </item>
         </widget>
        </widget>
       </widget>
