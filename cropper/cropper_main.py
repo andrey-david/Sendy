@@ -700,7 +700,7 @@ class SendyCropper(QMainWindow):
             material_dict = {0: 'Холст',
                              1: 'Баннер',
                              2: 'Хлопок',
-                             3: 'Матовый холст'
+                             3: 'Матовый'
                              }
             if not material:
                 material = self.ui.comboBox_material.currentIndex()
