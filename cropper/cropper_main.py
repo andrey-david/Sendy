@@ -118,6 +118,7 @@ class SendyCropper(QMainWindow):
         QShortcut(QKeySequence("Ctrl+C"), self).activated.connect(self.contrast)
         QShortcut(QKeySequence("Ctrl+T"), self).activated.connect(self.test)
         QShortcut(QKeySequence("F3"), self).activated.connect(self.save)
+        QShortcut(QKeySequence("ESC"), self).activated.connect(self.esc_full_window_mode)
 
         # Menu actions
         self.ui.action_open.triggered.connect(self.open_file_dialog)
@@ -492,6 +493,14 @@ class SendyCropper(QMainWindow):
             self.statusBar().showMessage(f"Нет изображения.", 2000)
             logger.debug('No frame for Contrast')
 
+    def esc_full_window_mode(self):
+        if data.cropper_window_mode == 2:  # FullScreen
+            data.cropper_window_mode = 0  # Normal
+            self.showNormal()
+
+        self.setGeometry(500, 500, 1920, 1080)
+
+
     def set_width_height_from_button(self):
         if self.image_item:
             button = self.sender()
@@ -765,13 +774,23 @@ def sendy_cropper(
 ):
     try:
         app = QApplication(sys.argv)
+
         window = SendyCropper()
         window.setGeometry(*data.cropper_window_geometry.values())
-        window.showNormal()
+        window_mode = {0: window.showNormal,
+                       1: window.showMaximized,
+                       2: window.showFullScreen,
+                       }
+        window_mode[data.cropper_window_mode]()
+        if data.cropper_always_on_top:
+            window.setWindowFlag(Qt.WindowStaysOnTopHint)
+            window.show()
+
         window.load_image(image)
         window.set_number(number)
         window.set_width_and_height(width, height)
         window.set_material(material)
+
         app.exec_()
 
         return window.result
