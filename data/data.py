@@ -93,6 +93,8 @@ class Data:
         "width": 1920,
         "height": 1080
     })
+    cropper_window_mode: int = 0
+    cropper_always_on_top: bool = False
 
     def save(self):
         data_path = os.path.join(config.info.app_directory, 'sendy.data')
