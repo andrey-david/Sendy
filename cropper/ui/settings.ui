@@ -179,13 +179,13 @@
           <x>29</x>
           <y>440</y>
           <width>541</width>
-          <height>101</height>
+          <height>141</height>
          </rect>
         </property>
         <property name="title">
          <string>Режим окна Cropper</string>
         </property>
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="comboBox_window_mode">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -215,11 +215,19 @@
            <string>Полноэкрынный</string>
           </property>
          </item>
-         <item>
-          <property name="text">
-           <string>Поверх всех окон</string>
-          </property>
-         </item>
+        </widget>
+        <widget class="QRadioButton" name="radioButton_always_on_top">
+         <property name="geometry">
+          <rect>
+           <x>21</x>
+           <y>100</y>
+           <width>501</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Всегда поверх всех окон</string>
+         </property>
         </widget>
        </widget>
        <widget class="QGroupBox" name="groupBox_11">
