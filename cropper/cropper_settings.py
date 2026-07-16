@@ -153,6 +153,8 @@ class SendySettings(QDialog):
     def fill_values(self):
         # main
         self.ui.comboBox_theme.setCurrentIndex(self.theme.index(data.cropper_css))
+        self.ui.comboBox_window_mode.setCurrentIndex(data.cropper_window_mode)
+        self.ui.radioButton_always_on_top.setChecked(data.cropper_always_on_top)
 
         # photo processing
         self.ui.lineEdit_photo_processing_path.setText(str(data.photo_processing_path))
@@ -334,6 +336,8 @@ class SendySettings(QDialog):
     def button_apply_settings_pushed(self):
         # main
         data.cropper_css = self.theme[self.ui.comboBox_theme.currentIndex()]
+        data.cropper_window_mode = self.ui.comboBox_window_mode.currentIndex()
+        data.cropper_always_on_top = self.ui.radioButton_always_on_top.isChecked()
         self.main_window.set_QSS()
 
         # photo processing
