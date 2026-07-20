@@ -50,7 +50,6 @@ class SendyCropper(QMainWindow):
         self.setFocusPolicy(Qt.StrongFocus)
         self.setWindowIcon(self.load_icon())
         self.frame_scale = 1.2
-        self.window_geometry = data.cropper_window_geometry
 
         # UI setup
         self.ui = Ui_Cropper()
@@ -203,18 +202,11 @@ class SendyCropper(QMainWindow):
                 f'QPushButton {{qproperty-icon: url(:/full{self.black_icons}); qproperty-iconSize: 25px;}}')
             self.full_screen_flag = False
 
-        self.window_geometry['width'] = self.width()
-        self.window_geometry['height'] = self.height()
-        logger.debug(f'cropper window geometry: {self.window_geometry}')
-
         self.rescale_main()
         self.rescale_preview()
 
     def moveEvent(self, event):
         super().moveEvent(event)
-        self.window_geometry['x'] = self.x()
-        self.window_geometry['y'] = self.y()
-        logger.debug(f'cropper window geometry: {self.window_geometry}')
 
     # Set image and other presets
     def load_image(self, image):
@@ -759,7 +751,7 @@ class SendyCropper(QMainWindow):
             self.close()
 
     def closeEvent(self, event):
-        data.cropper_window_geometry = self.window_geometry
+        data.cropper_window_geometry = self.saveGeometry()
         data.save()
 
         event.accept()
@@ -776,7 +768,14 @@ def sendy_cropper(
         app = QApplication(sys.argv)
 
         window = SendyCropper()
-        window.setGeometry(*data.cropper_window_geometry.values())
+
+        geometry = data.cropper_window_geometry
+        try:
+            if geometry is not None:
+                window.restoreGeometry(geometry)
+        except TypeError as e:
+            window.setGeometry(500, 500, 1920, 1080)
+
         window_mode = {0: window.showNormal,
                        1: window.showMaximized,
                        2: window.showFullScreen,
