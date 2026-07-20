@@ -11,7 +11,7 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.9.1', 'date': '10.07.26'}
+sendy_info: dict[str, str] = {'version': 'v2.9.2', 'date': '20.07.26'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
 
@@ -26,10 +26,7 @@ MENU_COMMANDS: dict[str, str] = {
 menu: dict[str, str] = {
     '/start': f'<b>Кажется я <i>Sendy {sendy_info['version']}</i></b>'
               '\n'
-              '\n📌 Окно Cropper теперь запоминает свои размеры.'
-              '\n'
-              '\n🔧 Исправлена критическая ошибка, приводившая к падению бота при невозможности установить соединение '
-              'с сервером обновлений (ошибка DNS).',
+              '\n🔧 Исправлена ошибка: при перезапуске окно Cropper больше не сползает.',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)
