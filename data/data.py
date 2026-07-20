@@ -40,6 +40,8 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 import pickle
 
+from PyQt5.QtCore import QByteArray
+
 from config import config
 
 logger = logging.getLogger(__name__)
@@ -87,12 +89,7 @@ class Data:
     photo_processing_annotation_matte: str = '@'
 
     cropper_css: str = ':/cropper_bright.css'
-    cropper_window_geometry: dict = field(default_factory=lambda: {
-        "x": 0,
-        "y": 0,
-        "width": 1920,
-        "height": 1080
-    })
+    cropper_window_geometry: QByteArray | None = None
     cropper_window_mode: int = 0
     cropper_always_on_top: bool = False
 

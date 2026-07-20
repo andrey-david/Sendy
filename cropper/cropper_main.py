@@ -770,11 +770,10 @@ def sendy_cropper(
         window = SendyCropper()
 
         geometry = data.cropper_window_geometry
-        try:
-            if geometry is not None:
+        if geometry is not None:
                 window.restoreGeometry(geometry)
-        except TypeError as e:
-            window.setGeometry(500, 500, 1920, 1080)
+        else:
+            window.setGeometry(100, 100, 1920, 1080)
 
         window_mode = {0: window.showNormal,
                        1: window.showMaximized,
