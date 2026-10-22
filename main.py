@@ -13,7 +13,8 @@ from handlers import (
     set_main_menu,
     handlers_router,
     settings_router,
-    image_processing_router
+    image_processing_router,
+    link_router,
 )
 from lexicon import sendy_info
 from updater import check_for_updates
@@ -49,16 +50,30 @@ async def main() -> None:
         dp = Dispatcher()
         config.bot.dp = dp
 
+        dp.include_router(link_router)
         dp.include_router(handlers_router)
         dp.include_router(settings_router)
         dp.include_router(menu_router)
         dp.include_router(image_loader_router)
         dp.include_router(image_processing_router)
 
-        dp.startup.register(set_main_menu)
+        admin_middleware = IsAdminMiddleware()
 
-        dp.update.outer_middleware(IsAdminMiddleware())
-        image_processing_router.message.outer_middleware(ChatTypeFilterMiddleware())
+        for router in (
+                handlers_router,
+                settings_router,
+                menu_router,
+                image_loader_router,
+                image_processing_router,
+        ):
+            router.message.outer_middleware(admin_middleware)
+            router.callback_query.outer_middleware(admin_middleware)
+
+        image_processing_router.message.outer_middleware(
+            ChatTypeFilterMiddleware()
+        )
+
+        dp.startup.register(set_main_menu)
 
         _ = asyncio.create_task(image_loader())
     except Exception as e:
