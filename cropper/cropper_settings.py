@@ -68,6 +68,10 @@ class SendySettings(QDialog):
             self.button_browse_pushed,
             self.ui.lineEdit_image_loader_path)
         )
+        self.ui.pushButton_set_link_credentials_file_path.clicked.connect(partial(
+            self.button_browse_file_pushed,
+            self.ui.lineEdit_link_credentials_file_path)
+        )
         self.ui.pushButton_image_counter_exceptions_add_elem.clicked.connect(self.image_counter_exceptions_add_item)
         self.ui.pushButton_set_photo_processing_font.clicked.connect(self.choose_font)
         self.ui.pushButton_set_photo_processing_color.clicked.connect(self.choose_color)
@@ -90,6 +94,7 @@ class SendySettings(QDialog):
                        self.ui.lineEdit_photo_processing_annotation_banner,
                        self.ui.lineEdit_photo_processing_annotation_cotton,
                        self.ui.lineEdit_photo_processing_annotation_matte,
+                       self.ui.lineEdit_link_credentials_file_path,
                        ]
 
         for widget in widget_list:
@@ -198,6 +203,9 @@ class SendySettings(QDialog):
         self.ui.lineEdit_image_loader_parsing_cropper.setText(str(data.image_loader_parsing_cropper))
         self.ui.lineEdit_image_loader_parsing_urgent.setText(str(data.image_loader_parsing_urgent))
 
+        # link handlers
+        self.ui.lineEdit_link_credentials_file_path.setText(str(data.link_credentials_file_path))
+
         # autorun
         app_name = "SendyApp"
         key_path = r"Software\Microsoft\Windows\CurrentVersion\Run"
@@ -218,6 +226,16 @@ class SendySettings(QDialog):
         )
         if folder:
             lineedit.setText(folder)
+
+    def button_browse_file_pushed(self, lineedit):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Выберите файл",
+            "",
+            "JSON files (*.json);;All files (*)",
+        )
+        if file_path:
+            lineedit.setText(file_path)
 
     def _get_font_path(self, font_name):
         key = winreg.OpenKey(
@@ -303,6 +321,10 @@ class SendySettings(QDialog):
             except Exception as e:
                 return invalid_data(widget)
 
+        valid_credentials_filename = (
+            lambda p: Path(p.text()).name == "credentials.json"
+        )
+
         valid_filename = lambda s: not any(c in s.text() for c in '<>:"/\\|?*')
 
         check_list = [
@@ -326,7 +348,10 @@ class SendySettings(QDialog):
             check_validation(self.ui.lineEdit_image_counter_path, lambda p: Path(p.text()).exists()),
 
             # image loader
-            check_validation(self.ui.lineEdit_image_loader_path, lambda p: Path(p.text()).exists())
+            check_validation(self.ui.lineEdit_image_loader_path, lambda p: Path(p.text()).exists()),
+
+            # linh handler
+            check_validation(self.ui.lineEdit_link_credentials_file_path, valid_credentials_filename,),
         ]
 
         all_valid = all(check_list)
@@ -381,6 +406,9 @@ class SendySettings(QDialog):
         data.image_loader_parsing_number = self.ui.lineEdit_image_loader_parsing_number.text()
         data.image_loader_parsing_cropper = self.ui.lineEdit_image_loader_parsing_cropper.text()
         data.image_loader_parsing_urgent = self.ui.lineEdit_image_loader_parsing_urgent.text()
+
+        # link handlers
+        data.link_credentials_file_path = Path(self.ui.lineEdit_link_credentials_file_path.text())
 
         data.save()
         self.accept()
