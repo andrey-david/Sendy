@@ -157,27 +157,37 @@ async def add_image_to_queue(message: Message, cropper=False) -> None:
         - Starts a new queue worker for the user if none is running.
     """
     user_id = message.from_user.id
+    logger.debug('Creating new queue for user_id %s', user_id)
     if not cropper:
+        logger.debug('No cropper is enabled, checking file size')
         file_size = message.document.file_size if message.document else message.photo[-1].file_size
         max_file_size = 20 * 1024 * 1024  # 20 Mb
+        logger.debug('File size is %s', file_size)
 
         if file_size > max_file_size:
+            logger.debug('File size is bigger than max size')
             await message.reply(handlers_lex['file_size_error'])
             logger.info(f'20 MB limit exceeded. File size is {file_size}, from user_id {user_id}.')
             return
 
     if user_id not in image_queue:
+        logger.debug('User %s has no image queue', user_id)
         image_queue[user_id] = asyncio.Queue()
 
     await image_queue[user_id].put(message)
+    logger.debug('Image was added to queue for user_id %s', user_id)
 
     if user_id not in locks:
+        logger.debug(f'Locking user_id {user_id}. Looks: {locks}')
         locks[user_id] = asyncio.Lock()
 
     async with locks[user_id]:
         task = image_queue_tasks.get(user_id)
+        logger.debug('Current task %s', task)
         if not task or task.done():
+            logger.debug('No task for user_id %s', user_id)
             image_queue_tasks[user_id] = asyncio.create_task(_image_queue_worker(user_id, config.bot.bot))
+            logger.debug('Task was created for user_id %s', user_id)
 
 
 async def _image_queue_worker(user_id: int, bot: Bot) -> None:
@@ -198,6 +208,7 @@ async def _image_queue_worker(user_id: int, bot: Bot) -> None:
 async def download_image(file, bot: Bot):
     img_data = BytesIO()
 
+    logger.debug('Downloading image from %s', file)
     try:
         await bot.download_file(file.file_path, destination=img_data)
     except TimeoutError:
@@ -205,10 +216,15 @@ async def download_image(file, bot: Bot):
         image = 'TimeoutError'
         return image
 
+    logger.debug('Image was successfully downloaded from %s', file)
+
     pillow_heif.register_heif_opener()
+    logger.debug('Registered heif')
+
     try:
         img_data.seek(0)
         image = Image.open(img_data).convert("RGB")
+        logger.debug('Image was successfully converted to RGB')
         image = ImageOps.exif_transpose(image)
     except UnidentifiedImageError:
         logger.exception('Corrupted image')
@@ -234,6 +250,7 @@ async def send_result(path, no_material, number, message=None):
             await message.edit_text(text, reply_markup=manage_photo_inline_kb(path))
         else:
             await config.bot.bot.send_message(config.bot.chat_id, text, reply_markup=manage_photo_inline_kb(path))
+        logger.debug('Image was successfully sent to user')
 
     except Exception as e:
         await config.bot.bot.send_message(chat_id=config.bot.chat_id,
@@ -242,9 +259,11 @@ async def send_result(path, no_material, number, message=None):
                                                f"\n{handlers_lex['processing_image_saved']}"
                                                f"\n<code>{path}</code>"
                                           )
+        logger.debug('Image sending error.')
 
 
 async def process_image_add_to_queue(user_id: int, bot: Bot):
+    logger.debug('Starting image queue cycle')
     while not image_queue[user_id].empty():
         user_message = await image_queue[user_id].get()
         reply_message = await user_message.reply(handlers_lex['processing_downloading'])
@@ -255,10 +274,13 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             file_id = (user_message.photo[-1] if user_message.photo else user_message.document).file_id
             file = await bot.get_file(file_id)
             image = await download_image(file, bot)
+            logger.debug('Image was successfully downloaded')
 
         # Parsing
         parsed = parser(user_message.caption or '%')
+        logger.debug('Parsed caption %s', parsed)
         if not image and not parsed['cropper']:
+            logger.debug('No image, no cropper')
             await reply_message.edit_text(handlers_lex['processing_image_error'])
             return
         elif image == 'MemoryError':
@@ -271,6 +293,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             await reply_message.edit_text(handlers_lex['processing_image_corrupted_error'])
             return
 
+        logger.debug('Starting image processing')
         await reply_message.edit_text(random.choice(processing_lex))
 
         width_height = parsed['sizes']
@@ -278,9 +301,11 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
 
         # Waiting data from user
         if not width_height and not cropper:
+            logger.debug('No width/height, no cropper')
             await reply_message.edit_text(handlers_lex['processing_waiting_data'])
 
             width_height_future = asyncio.get_event_loop().create_future()
+            logger.debug('Creating new future for width/height')
             user_message_text_futures[user_message.from_user.id] = width_height_future
 
             new_caption = await width_height_future
@@ -288,6 +313,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             width_height = parsed['sizes']
 
             if not width_height:
+                logger.debug('No width, cropper now is True')
                 cropper = True
 
         # Waiting for user to choose the size
@@ -331,6 +357,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
 
         # Waiting for Cropper to open
         if cropper:
+            logger.debug('Starting Cropper')
             await reply_message.edit_text(handlers_lex['processing_waiting_for_cropper'])
             cropper_queue = Queue()
 
@@ -347,18 +374,22 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
             try:
                 Thread(target=wrapper, daemon=True).start()
                 # Waiting for Cropper to return result
+                logger.debug('Waiting for Cropper to return result')
                 result = True
                 while result:
                     try:
                         result = cropper_queue.get_nowait()
                         number = result['number']
                         no_material = False
+                        logger.debug('Building processing preset (with cropper)')
                         processing.presets(**result)
+                        logger.debug('Cropper is done')
                         break
                     except:
                         await asyncio.sleep(3)
                 else:
                     # Deleting reply message if no result from Cropper (user closed Cropper)
+                    logger.debug('Deleting reply message if no result from Cropper (user closed Cropper)')
                     await reply_message.delete()
                     return
             except:
@@ -366,6 +397,7 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
                 await reply_message.edit_text(handlers_lex['processing_error'])
 
         else:
+            logger.debug('Building processing preset (no cropper)')
             processing.presets(
                 image=image,
                 number=number,
@@ -374,10 +406,14 @@ async def process_image_add_to_queue(user_id: int, bot: Bot):
                 material=material
             )
 
+        logger.debug('Starting image processing')
         filepath: Path = processing.process_image()
+        logger.debug('Image processing done successfully')
 
         # Sending result to user chat
+        logger.debug('Sending result to user chat')
         await send_result(filepath, no_material, number, reply_message)
+        logger.debug('Result was successfully sent to user')
 
 
 @image_processing_router.callback_query(F.data.startswith("choose_size:"))
