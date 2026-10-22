@@ -93,6 +93,8 @@ class Data:
     cropper_window_mode: int = 0
     cropper_always_on_top: bool = False
 
+    link_credentials_file_path: Path =  Path(config.info.app_directory) / "credentials.json"
+
     def save(self):
         data_path = os.path.join(config.info.app_directory, 'sendy.data')
 
