@@ -203,7 +203,7 @@ async def settings_other(callback: CallbackQuery, state: FSMContext):
 
 @settings_router.callback_query(F.data == 'send_logs')
 async def settings_other_send_logs(callback: CallbackQuery):
-    log_path: Path = config.info.app_directory / Path('sendy.log')
+    log_path = Path(config.info.app_directory) / 'sendy.log'
     if log_path.exists():
         await config.bot.bot.send_document(chat_id=config.bot.developer_id, document=FSInputFile(log_path))
         await callback.message.edit_text(text=settings_lexicon['logs_send'],
