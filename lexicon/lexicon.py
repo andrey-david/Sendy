@@ -11,7 +11,7 @@ from data import data
 
 logger = logging.getLogger(__name__)
 
-sendy_info: dict[str, str] = {'version': 'v2.9.3', 'date': '22.10.26'}
+sendy_info: dict[str, str] = {'version': 'v2.9.4', 'date': '23.10.26'}
 MAIN_BUTTONS: list[str] = ['🧮', '✂️', '📸', '⚙️']
 LEXICON: dict[str, str] = {}
 
@@ -26,7 +26,11 @@ MENU_COMMANDS: dict[str, str] = {
 menu: dict[str, str] = {
     '/start': f'<b>Привет! я <i>Sendy {sendy_info['version']} — твой умный помощник!</i></b>'
               '\n'
-              '\n📌 Добавлен функционал поиска номера заказа по ссылке.',
+              '\n🔧 Усовершенствован функционал поиска номера заказа по ссылке.'
+              '\n📌 Загрузчик теперь отправляет ожидающие изображения при запуске.'
+              '\n📌 Улучшена надёжность очереди обработки изображений.'
+              '\n📌 Добавлена диагностика памяти и этапов обработки изображений.'
+              '\n📌 Исправлена отправка файла логов из настроек.',
     '/info': f'''Sendy {sendy_info['version']}\nandrey-david {sendy_info['date']}
               (V\\__/V)
               (=ᵔᴥᵔ=)
