@@ -76,41 +76,47 @@ async def is_file_size_under_50mb(file_path: Path) -> bool:
     return True
 
 
+async def process_pending_files(path: Path, uploaded_path: Path) -> None:
+    allowed_suffix = (".jpg", ".png", ".heic")
+    for file_path in path.glob('*'):
+        is_image = file_path.suffix.lower() in allowed_suffix
+
+        if is_image and await is_file_size_under_50mb(file_path):
+            try:
+                msg = await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                                        text=image_loader_lex['sending_file'])
+
+                success = await safe_send(file_path)
+                if success:
+                    try:
+                        file_path.rename(unique_filename(uploaded_path, file_path.name))
+                    except FileNotFoundError:
+                        logger.exception('File not found')
+                        await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                                          text=image_loader_lex['error_file_not_found'])
+
+                await msg.delete()
+                await asyncio.sleep(2)
+
+            except TelegramBadRequest:
+                logger.exception('Corrupted file or Wrong chat ID')
+                await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                                  text=image_loader_lex['error_corrupted_file'])
+            except Exception:
+                logger.exception('Cannot send image')
+                await config.bot.bot.send_message(chat_id=config.bot.chat_id,
+                                                  text=image_loader_lex['error_while_sending_file'])
+
+
 async def image_loader_inner(path):
     uploaded_path: Path = path / 'Uploaded'
-    allowed_suffix = (".jpg", ".png", ".heic")
-
     uploaded_path.mkdir(exist_ok=True)
 
+    # Process files that were already in the folder before the watcher started.
+    await process_pending_files(path, uploaded_path)
+
     async for _ in awatch(path):
-        for file_path in path.glob('*'):
-            is_image = file_path.suffix.lower() in allowed_suffix
-
-            if is_image and await is_file_size_under_50mb(file_path):
-                try:
-                    msg = await config.bot.bot.send_message(chat_id=config.bot.chat_id,
-                                                            text=image_loader_lex['sending_file'])
-
-                    success = await safe_send(file_path)
-                    if success:
-                        try:
-                            file_path.rename(unique_filename(uploaded_path, file_path.name))
-                        except FileNotFoundError as e:
-                            logger.exception('File not found')
-                            await config.bot.bot.send_message(chat_id=config.bot.chat_id,
-                                                              text=image_loader_lex['error_file_not_found'])
-
-                    await msg.delete()
-                    await asyncio.sleep(2)
-
-                except TelegramBadRequest:
-                    logger.exception('Corrupted file or Wrong chat ID')
-                    await config.bot.bot.send_message(chat_id=config.bot.chat_id,
-                                                      text=image_loader_lex['error_corrupted_file'])
-                except Exception:
-                    logger.exception('Cannot send image')
-                    await config.bot.bot.send_message(chat_id=config.bot.chat_id,
-                                                      text=image_loader_lex['error_while_sending_file'])
+        await process_pending_files(path, uploaded_path)
 
 
 async def image_loader() -> None:

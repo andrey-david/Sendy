@@ -23,6 +23,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 from data import data
+from photo_processing.memory_diagnostics import log_memory_snapshot
 
 logger = logging.getLogger(__name__)
 
@@ -267,14 +268,44 @@ class PhotoProc:
 
     def process_image(self) -> Path:
         if self.image:
+            output_width = self.cm_to_px(self.width_cm + 2 * self.wrap_cm + 2 * self.white_cm)
+            output_height = self.cm_to_px(self.height_cm + 2 * self.wrap_cm + 2 * self.white_cm)
+            logger.info(
+                "Photo pipeline start input=%sx%s print_cm=%sx%s dpi=%s "
+                "estimated_output=%sx%s pixels=%s",
+                *self.image.size,
+                self.width_cm,
+                self.height_cm,
+                self.dpi,
+                output_width,
+                output_height,
+                output_width * output_height,
+            )
+            log_memory_snapshot(logger, "pipeline_start")
+
             self.image = self.image.crop(self.coordinates)
+            logger.info("Photo pipeline stage=crop size=%sx%s", *self.image.size)
+            log_memory_snapshot(logger, "after_crop")
+
             self.image = self.image.resize((self.cm_to_px(self.width_cm), self.cm_to_px(self.height_cm)))
+            logger.info("Photo pipeline stage=resize size=%sx%s", *self.image.size)
+            log_memory_snapshot(logger, "after_resize")
 
             self.stretch()
+            logger.info("Photo pipeline stage=stretch size=%sx%s", *self.image.size)
+            log_memory_snapshot(logger, "after_stretch")
+
             self.white_frame()
+            logger.info("Photo pipeline stage=white_frame size=%sx%s", *self.image.size)
+            log_memory_snapshot(logger, "after_white_frame")
+
             self.black_frame()
             self.add_number()
+            logger.info("Photo pipeline stage=frames_and_number size=%sx%s", *self.image.size)
+            log_memory_snapshot(logger, "before_save")
+
             self.save_image()
+            log_memory_snapshot(logger, "after_save")
 
         return Path(self.filepath)
 
