@@ -104,10 +104,13 @@ def search_in_worksheet(
     return found
 
 
-@link_router.message(F.text.regexp(URL_PATTERN))
+@link_router.message(
+    (F.text.contains("instagram.com"))
+    | (F.caption.contains("instagram.com"))
+)
 async def find_link(message: Message) -> None:
     """Search Google Sheets for the Instagram link in a message."""
-    text = message.text or ""
+    text = message.text or message.caption or ""
     user_link = extract_url(text)
     spreadsheet = create_spreadsheet()
 
