@@ -42,6 +42,7 @@ import pillow_heif
 
 from cropper.cropper_main import sendy_cropper
 from photo_processing import PhotoProc
+from photo_processing.memory_diagnostics import log_memory_snapshot
 from keyboards import photo_paths, manage_photo_inline_kb
 from lexicon import handlers_lex, processing_lex
 from config import config
@@ -202,7 +203,17 @@ async def _image_queue_worker(user_id: int, bot: Bot) -> None:
         await config.bot.bot.send_message(chat_id=config.bot.chat_id,
                                           text=handlers_lex['processing_error'])
     finally:
-        _ = image_queue_tasks.pop(user_id, None)
+        # Serialize worker teardown with enqueueing so an item added just as
+        # this worker exits cannot be left waiting without a consumer.
+        lock = locks.setdefault(user_id, asyncio.Lock())
+        async with lock:
+            current_task = asyncio.current_task()
+            if image_queue.get(user_id) and not image_queue[user_id].empty():
+                image_queue_tasks[user_id] = asyncio.create_task(
+                    _image_queue_worker(user_id, bot)
+                )
+            elif image_queue_tasks.get(user_id) is current_task:
+                image_queue_tasks.pop(user_id, None)
 
 
 async def download_image(file, bot: Bot):
@@ -223,9 +234,25 @@ async def download_image(file, bot: Bot):
 
     try:
         img_data.seek(0)
-        image = Image.open(img_data).convert("RGB")
+        with Image.open(img_data) as source:
+            width, height = source.size
+            pixels = width * height
+            logger.info(
+                "Image decoded source metadata format=%s mode=%s width=%s height=%s "
+                "pixels=%s encoded_mib=%.1f",
+                source.format,
+                source.mode,
+                width,
+                height,
+                pixels,
+                img_data.getbuffer().nbytes / (1024 * 1024),
+            )
+            log_memory_snapshot(logger, "before_rgb_decode")
+            image = source.convert("RGB")
         logger.debug('Image was successfully converted to RGB')
         image = ImageOps.exif_transpose(image)
+        logger.info("Image ready for processing width=%s height=%s", *image.size)
+        log_memory_snapshot(logger, "after_rgb_decode")
     except UnidentifiedImageError:
         logger.exception('Corrupted image')
         image = 'CorruptedImageError'
@@ -434,9 +461,10 @@ async def choose_size(callback: CallbackQuery) -> None:
 async def any_message(message: Message) -> None:
     """Sets the result of a pending Future for the user with the received message text."""
     user_id = message.from_user.id
-    fut = user_message_text_futures.pop(user_id, None)
+    fut = user_message_text_futures.get(user_id)
 
-    if fut and not fut.done():
+    if fut and not fut.done() and message.text is not None:
+        user_message_text_futures.pop(user_id, None)
         fut.set_result(message.text)
     else:
         logger.info(f'No pending Future for user {user_id}')
